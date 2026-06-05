@@ -17,3 +17,8 @@ yarn-error.log
 /auth.json
 .phpunit.cache
 *.md
+activite_commercant.png
+classes_system.png
+classes_systeme.png
+sequence_paiement.png
+use-cases_revenue_counter.png
