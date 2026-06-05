@@ -41,3 +41,13 @@ Route::middleware(['auth'])->group(function () {
     // Sync Offline Endpoint
     Route::post('/api/paiement/sync-offline', [PaiementController::class, 'offlineSync'])->name('api.paiement.sync');
 });
+
+// Temporary Route to Migrate Database on Vercel
+Route::get('/setup/migrate', function () {
+    try {
+        \Illuminate\Support\Facades\Artisan::call('migrate:fresh', ['--force' => true, '--seed' => true]);
+        return 'Base de données migrée et initialisée avec succès. <br>' . nl2br(\Illuminate\Support\Facades\Artisan::output());
+    } catch (\Exception $e) {
+        return 'Erreur: ' . $e->getMessage() . '<br><pre>' . $e->getTraceAsString() . '</pre>';
+    }
+});
