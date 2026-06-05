@@ -22,6 +22,9 @@ try {
     $app = require_once $appPath;
     echo "DEBUG: App bootstrapped successfully.<br>";
 
+    // Force JSON so Laravel doesn't try to render an HTML view for the error
+    $_SERVER['HTTP_ACCEPT'] = 'application/json';
+
     $app->handleRequest(Illuminate\Http\Request::capture());
 } catch (\Throwable $e) {
     echo "<h2>FATAL ERROR CAUGHT:</h2>";
