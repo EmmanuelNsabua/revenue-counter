@@ -1,5 +1,12 @@
 <?php
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
 echo "DEBUG: api/index.php is reached.<br>";
 
-// Forward the request to the Laravel public/index.php
-require __DIR__ . '/../public/index.php';
+if (file_exists($maintenance = __DIR__.'/../storage/framework/maintenance.php')) {
+    require $maintenance;
+}
+
+require __DIR__.'/../vendor/autoload.php';
+$app = require_once __DIR__.'/../bootstrap/app.php';
+$app->handleRequest(Illuminate\Http\Request::capture());
