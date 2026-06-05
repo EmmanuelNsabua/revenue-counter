@@ -9,24 +9,7 @@
   },
   "routes": [
     {
-      "src": "/build/(.*)",
-      "dest": "/public/build/$1"
-    },
-    {
-      "src": "/js/(.*)",
-      "dest": "/public/js/$1"
-    },
-    {
-      "src": "/service-worker.js",
-      "dest": "/public/service-worker.js"
-    },
-    {
-      "src": "/manifest.json",
-      "dest": "/public/manifest.json"
-    },
-    {
-      "src": "/(css|js|images)/(.*)",
-      "dest": "/public/$1/$2"
+      "handle": "filesystem"
     },
     {
       "src": "/(.*)",
