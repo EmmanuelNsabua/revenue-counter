@@ -1,4 +1,8 @@
 <?php
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
+echo "DEBUG: public/index.php is reached.<br>";
+
 
 use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
