@@ -15,10 +15,6 @@ $app = Application::configure(basePath: dirname(__DIR__))
         //
     })
     ->withExceptions(function (Exceptions $exceptions): void {
-        $exceptions->reportable(function (\Throwable $e) {
-            echo "<h1>REAL ERROR BEFORE CRASH: " . $e->getMessage() . "</h1>";
-            echo "<pre>" . $e->getTraceAsString() . "</pre>";
-        });
         $exceptions->shouldRenderJsonWhen(
             fn (Request $request) => $request->is('api/*'),
         );

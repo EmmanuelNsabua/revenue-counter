@@ -19,6 +19,11 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
+        // Force HTTPS behind Vercel proxy to fix Mixed Content (broken CSS)
+        if (isset($_ENV['VERCEL']) || env('APP_ENV') === 'production') {
+            \Illuminate\Support\Facades\URL::forceScheme('https');
+        }
+
         // Centralized Audit Logging via Observer
         Agent::observe(AuditObserver::class);
         Commercant::observe(AuditObserver::class);
