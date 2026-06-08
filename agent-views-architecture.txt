@@ -1,0 +1,74 @@
+.
+└── app
+    ├── (agent)
+    │   ├── layout.tsx
+    │   ├── dashboard
+    │   │   └── page.tsx
+    │   │
+    │   ├── commercants
+    │   │   ├── page.tsx
+    │   │   └── [id]
+    │   │       └── page.tsx
+    │   │
+    │   ├── paiements
+    │   │   ├── page.tsx
+    │   │   └── nouveau
+    │   │       └── page.tsx
+    │   │
+    │   ├── taxes
+    │   │   └── page.tsx
+    │   │
+    │   └── profil
+    │       └── page.tsx
+    │
+    ├── layout.tsx
+    └── page.tsx
+
+
+.
+├── components
+│   ├── layout
+│   │   ├── sidebar.tsx
+│   │   ├── topbar.tsx
+│   │   └── logo.tsx
+│   │
+│   ├── ui (shadcn)
+│   │   ├── button.tsx
+│   │   ├── table.tsx
+│   │   ├── card.tsx
+│   │   ├── dialog.tsx
+│   │   └── dropdown-menu.tsx
+│   │
+│   ├── commercants
+│   │   ├── commercant-table.tsx
+│   │   └── commercant-filters.tsx
+│   │
+│   ├── paiements
+│   │   ├── paiement-table.tsx
+│   │   └── paiement-form.tsx
+│   │
+│   └── dashboard
+│       ├── kpi-cards.tsx
+│       └── recent-paiements.tsx
+
+
+.
+├── lib
+│   └── utils.ts
+
+
+.
+├── public
+│   └── logo-mairie.png
+
+
+.
+├── styles
+│   └── globals.css
+
+
+.
+├── types
+│   ├── commercant.ts
+│   ├── paiement.ts
+│   └── taxe.ts
