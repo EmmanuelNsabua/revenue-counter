@@ -1,10 +1,11 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import { Bell, Search, User, Calendar } from "lucide-react";
+import { Bell, Search, User, Calendar, LogOut, Settings, UserCircle } from "lucide-react";
 import { useState } from "react";
 import Link from "next/link";
 import { Input } from "@/components/ui/input";
+import { useAuth } from "@/providers/auth-provider";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -88,20 +89,16 @@ function getPageMeta(pathname: string) {
 }
 
 interface TopbarProps {
-  user?: {
-    name: string;
-    role: string;
-  };
   profilHref?: string;
 }
 
 export default function Topbar({
-  user = { name: "Agent 001", role: "Secteur A" },
   profilHref = "/profil",
 }: TopbarProps) {
   const pathname = usePathname();
   const { title, subtitle } = getPageMeta(pathname);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const { user, logout } = useAuth();
 
   const today = new Date().toLocaleDateString("fr-CD", {
     weekday: "long",
@@ -109,6 +106,13 @@ export default function Topbar({
     month: "long",
     day: "numeric",
   });
+
+  const displayUser = {
+    name: user?.nom || "Utilisateur",
+    role: user?.role === "agent" ? "Agent de recouvrement" : 
+          user?.role === "admin" ? "Administrateur Marché" : 
+          user?.role === "superadmin" ? "Direction Générale" : "Chargement...",
+  };
 
   return (
     <header className="relative h-16 flex items-center justify-between px-6 bg-card border-b border-border flex-shrink-0 gap-4">
@@ -175,23 +179,44 @@ export default function Topbar({
           </DropdownMenuContent>
         </DropdownMenu>
 
-        {/* User avatar */}
-        <Link 
-          href={profilHref} 
-          className="flex items-center gap-2 ml-1 pl-2 sm:pl-3 border-l border-border hover:opacity-80 transition-opacity cursor-pointer"
-        >
-          <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-primary flex items-center justify-center ring-2 ring-primary/20">
-            <User size={18} className="text-primary-foreground pointer-events-none" />
-          </div>
-          <div className="hidden md:block">
-            <p className="text-xs font-semibold text-foreground leading-tight">
-              {user.name}
-            </p>
-            <p className="text-xs text-muted-foreground leading-tight">
-              {user.role}
-            </p>
-          </div>
-        </Link>
+        {/* User profile dropdown */}
+        <DropdownMenu>
+          <DropdownMenuTrigger className="flex items-center gap-2 ml-1 pl-2 sm:pl-3 border-l border-border hover:opacity-80 transition-opacity cursor-pointer outline-none">
+            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-primary flex items-center justify-center ring-2 ring-primary/20">
+              <User size={18} className="text-primary-foreground pointer-events-none" />
+            </div>
+            <div className="hidden md:block text-left">
+              <p className="text-xs font-semibold text-foreground leading-tight">
+                {displayUser.name}
+              </p>
+              <p className="text-xs text-muted-foreground leading-tight">
+                {displayUser.role}
+              </p>
+            </div>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="w-56">
+            <DropdownMenuGroup>
+              <DropdownMenuLabel>Mon Compte</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem render={<Link href={profilHref} className="cursor-pointer flex items-center" />}>
+                <UserCircle className="mr-2 h-4 w-4" />
+                <span>Mon Profil</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem render={<Link href="/parametres" className="cursor-pointer flex items-center" />}>
+                <Settings className="mr-2 h-4 w-4" />
+                <span>Paramètres</span>
+              </DropdownMenuItem>
+            </DropdownMenuGroup>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem 
+              onClick={() => logout()}
+              className="text-destructive focus:text-destructive cursor-pointer"
+            >
+              <LogOut className="mr-2 h-4 w-4" />
+              <span>Déconnexion</span>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
 
       {/* Deployed Search Bar */}

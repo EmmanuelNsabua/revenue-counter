@@ -1,22 +1,20 @@
-import type { Metadata } from "next";
+"use client";
+
+import { useState } from "react";
 import { PaiementTable } from "@/components/paiements/paiement-table";
-import type { Paiement } from "@/types/paiement";
 import { Button } from "@/components/ui/button";
 import { ActionButton } from "@/components/ui/action-button";
 import { Download, Plus } from "lucide-react";
 import Link from "next/link";
-
-export const metadata: Metadata = { title: "Paiements" };
-
-const mockPaiements: Paiement[] = [
-  { id: "TXN-0091", commercantId: "C-0042", commercantNom: "Mama Bea Mutombo", stand: "B-12", taxeCode: "TX-J01", taxeLibelle: "Taxe journalière", montant: "3 500 FC", heure: "08:14", date: "07/06/2026", statut: "Payé", agent: "Agent 001" },
-  { id: "TXN-0090", commercantId: "C-0041", commercantNom: "Weza Distributors", stand: "C-03", taxeCode: "TX-H01", taxeLibelle: "Taxe hebdomadaire", montant: "7 000 FC", heure: "08:02", date: "07/06/2026", statut: "Payé", agent: "Agent 001" },
-  { id: "TXN-0089", commercantId: "C-0040", commercantNom: "Boucherie Kapolowe", stand: "A-07", taxeCode: "TX-J02", taxeLibelle: "Taxe journalière", montant: "5 500 FC", heure: "07:48", date: "07/06/2026", statut: "Payé", agent: "Agent 002" },
-  { id: "TXN-0088", commercantId: "C-0039", commercantNom: "Épicerie Lukusa", stand: "D-15", taxeCode: "TX-J01", taxeLibelle: "Taxe journalière", montant: "3 500 FC", heure: "07:30", date: "07/06/2026", statut: "En attente", agent: "Agent 001" },
-  { id: "TXN-0087", commercantId: "C-0038", commercantNom: "Salon Mbote Beauty", stand: "E-02", taxeCode: "TX-J01", taxeLibelle: "Taxe journalière", montant: "3 500 FC", heure: "07:15", date: "07/06/2026", statut: "Payé", agent: "Agent 003" },
-];
+import { mockPaiements } from "@/mocks/agent";
+import { TableSkeleton } from "@/components/ui/skeletons";
+import { EmptyPaiements } from "@/components/ui/empty-state";
 
 export default function PaiementsPage() {
+  // isLoading simulé — sera remplacé par useQuery en Phase 4
+  const [isLoading] = useState(false);
+  const paiements = mockPaiements;
+
   return (
     <div className="space-y-6 max-w-7xl pb-16 md:pb-0">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
@@ -39,7 +37,13 @@ export default function PaiementsPage() {
         </div>
       </div>
 
-      <PaiementTable paiements={mockPaiements} />
+      {isLoading ? (
+        <TableSkeleton rows={5} cols={6} />
+      ) : paiements.length === 0 ? (
+        <EmptyPaiements />
+      ) : (
+        <PaiementTable paiements={paiements} />
+      )}
     </div>
   );
 }

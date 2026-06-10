@@ -1,15 +1,21 @@
+"use client";
+
+import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Globe, Building2, TrendingUp, ShieldAlert, Users } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { ActionButton } from "@/components/ui/action-button";
+import { mockSuperAdminStats, mockStructurePerformance, mockAuditLogs } from "@/mocks/superadmin";
+import { KpiSkeleton, ProgressSkeleton, ActivitySkeleton } from "@/components/ui/skeletons";
+import { EmptyAlertes } from "@/components/ui/empty-state";
+
+const statIcons = [Globe, Building2, Users, ShieldAlert];
 
 export default function SuperAdminDashboardPage() {
-  const stats = [
-    { label: "Total Collecté Global (Jour)", value: "1 245 000 FC", icon: Globe, trend: "+8% vs hier", color: "text-primary" },
-    { label: "Structures Connectées", value: "8 / 10", icon: Building2, trend: "2 inactives", color: "text-rdc-yellow" },
-    { label: "Admins Connectés", value: "15", icon: Users, trend: "Stable", color: "text-primary" },
-    { label: "Alertes Critiques", value: "3", icon: ShieldAlert, trend: "Nécessite attention", color: "text-destructive" },
-  ];
+  // isLoading simulé — sera remplacé par useQuery en Phase 4
+  const [isLoading] = useState(false);
+  const stats = mockSuperAdminStats;
+  const structures = mockStructurePerformance;
+  const auditLogs = mockAuditLogs;
 
   return (
     <div className="space-y-8 max-w-7xl pb-16 md:pb-0">
@@ -24,20 +30,27 @@ export default function SuperAdminDashboardPage() {
         </div>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        {stats.map((stat, i) => (
-          <Card key={i} className="border-t-4 border-t-transparent hover:border-t-primary transition-all">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-semibold">{stat.label}</CardTitle>
-              <stat.icon className={`h-5 w-5 ${stat.color}`} />
-            </CardHeader>
-            <CardContent>
-              <div className="text-3xl font-black tracking-tight">{stat.value}</div>
-              <p className="text-xs text-muted-foreground mt-2 font-medium">{stat.trend}</p>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
+      {isLoading ? (
+        <KpiSkeleton count={4} cols={4} />
+      ) : (
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+          {stats.map((stat, i) => {
+            const Icon = statIcons[i];
+            return (
+              <Card key={i} className="border-t-4 border-t-transparent hover:border-t-primary transition-all">
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-sm font-semibold">{stat.label}</CardTitle>
+                  <Icon className={`h-5 w-5 ${stat.color}`} />
+                </CardHeader>
+                <CardContent>
+                  <div className="text-3xl font-black tracking-tight">{stat.value}</div>
+                  <p className="text-xs text-muted-foreground mt-2 font-medium">{stat.trend}</p>
+                </CardContent>
+              </Card>
+            );
+          })}
+        </div>
+      )}
 
       <div className="grid gap-6 md:grid-cols-2">
         {/* Comparaison des Structures */}
@@ -49,27 +62,28 @@ export default function SuperAdminDashboardPage() {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="space-y-6">
-              {[
-                { name: "Marché Kenya", amount: "12 500 000 FC", progress: 100 },
-                { name: "Marché Mzee", amount: "8 200 000 FC", progress: 65 },
-                { name: "Commune Kampemba", amount: "5 400 000 FC", progress: 40 },
-                { name: "Commune Kamalondo", amount: "3 100 000 FC", progress: 25 },
-              ].map((struct, i) => (
-                <div key={i}>
-                  <div className="flex justify-between text-sm font-semibold mb-2">
-                    <span>{struct.name}</span>
-                    <span>{struct.amount}</span>
+            {isLoading ? (
+              <ProgressSkeleton rows={4} />
+            ) : structures.length === 0 ? (
+              <p className="text-sm text-muted-foreground text-center py-4">Aucune donnée de structure disponible.</p>
+            ) : (
+              <div className="space-y-6">
+                {structures.map((struct, i) => (
+                  <div key={i}>
+                    <div className="flex justify-between text-sm font-semibold mb-2">
+                      <span>{struct.name}</span>
+                      <span>{struct.amount}</span>
+                    </div>
+                    <div className="h-4 bg-secondary rounded-full overflow-hidden">
+                      <div
+                        className="h-full bg-primary rounded-full"
+                        style={{ width: `${struct.progress}%` }}
+                      />
+                    </div>
                   </div>
-                  <div className="h-4 bg-secondary rounded-full overflow-hidden">
-                    <div 
-                      className="h-full bg-primary rounded-full" 
-                      style={{ width: `${struct.progress}%` }}
-                    />
-                  </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            )}
           </CardContent>
         </Card>
 
@@ -82,26 +96,30 @@ export default function SuperAdminDashboardPage() {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="space-y-4">
-              {[
-                { type: "Connexion échouée", target: "Admin Kamalondo", time: "08:45", severity: "high" },
-                { type: "Modification Taxe", target: "Marché Kenya - Taxe Moto", time: "Hier 14:20", severity: "medium" },
-                { type: "Hors ligne prolongé", target: "Serveur local Mzee", time: "Depuis 2j", severity: "high" },
-              ].map((log, i) => (
-                <div key={i} className="flex items-start justify-between border-b border-border last:border-0 pb-3 last:pb-0">
-                  <div>
-                    <p className="text-sm font-bold text-foreground">{log.type}</p>
-                    <p className="text-xs text-muted-foreground">{log.target}</p>
+            {isLoading ? (
+              <ActivitySkeleton rows={3} />
+            ) : auditLogs.length === 0 ? (
+              <EmptyAlertes />
+            ) : (
+              <div className="space-y-4">
+                {auditLogs.map((log, i) => (
+                  <div key={i} className="flex items-start justify-between border-b border-border last:border-0 pb-3 last:pb-0">
+                    <div>
+                      <p className="text-sm font-bold text-foreground">{log.type}</p>
+                      <p className="text-xs text-muted-foreground">{log.target}</p>
+                    </div>
+                    <div className="text-right">
+                      <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${log.severity === "high" ? "bg-destructive/10 text-destructive" : "bg-rdc-yellow/10 text-rdc-yellow"}`}>
+                        {log.time}
+                      </span>
+                    </div>
                   </div>
-                  <div className="text-right">
-                    <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${log.severity === 'high' ? 'bg-destructive/10 text-destructive' : 'bg-rdc-yellow/10 text-rdc-yellow'}`}>
-                      {log.time}
-                    </span>
-                  </div>
-                </div>
-              ))}
-              <ActionButton variant="outline" className="w-full mt-2 text-xs" toastMessage="Ouverture des archives d'audit...">Voir tout le journal d'audit</ActionButton>
-            </div>
+                ))}
+                <ActionButton variant="outline" className="w-full mt-2 text-xs" toastMessage="Ouverture des archives d'audit...">
+                  Voir tout le journal d&apos;audit
+                </ActionButton>
+              </div>
+            )}
           </CardContent>
         </Card>
       </div>

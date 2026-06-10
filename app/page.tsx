@@ -1,53 +1,80 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Lock, User, AlertCircle, CheckCircle2 } from "lucide-react";
+import { Lock, User, AlertCircle, CheckCircle2, Eye, EyeOff } from "lucide-react";
+import { useAuth } from "@/providers/auth-provider";
+import { api } from "@/lib/api";
+import { AuthResponse } from "@/types/auth";
+import axios from "axios";
 
 export default function LoginPage() {
   const router = useRouter();
+  const { login, isAuthenticated, user, isLoading: authLoading } = useAuth();
   const [matricule, setMatricule] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  useEffect(() => {
+    if (isAuthenticated && user) {
+      switch (user.role) {
+        case "agent":
+          router.push("/dashboard");
+          break;
+        case "admin":
+          router.push("/admin/dashboard");
+          break;
+        case "superadmin":
+          router.push("/superadmin/dashboard");
+          break;
+      }
+    }
+  }, [isAuthenticated, user, router]);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
     setIsLoading(true);
 
-    // Simulation of network delay
-    setTimeout(() => {
-      setIsLoading(false);
+    try {
+      const response = await api.post<AuthResponse>("/login", {
+        code_agent: matricule.trim().toUpperCase(),
+        password,
+      });
 
-      if (password !== "testAuth123") {
-        setError("Mot de passe incorrect.");
-        return;
-      }
-
-      const mat = matricule.trim().toUpperCase();
-
-      // Regex validation based on role
-      const agentRegex = /^\d{2}[A-Z]{2}\d{4}-AG$/;
-      const adminRegex = /^\d{2}[A-Z]{2}\d{3}-AD$/;
-      const superAdminRegex = /^\d{2}[A-Z]{2}\d{2}-SA$/;
-
-      if (agentRegex.test(mat)) {
-        router.push("/dashboard");
-      } else if (adminRegex.test(mat)) {
-        router.push("/admin/dashboard");
-      } else if (superAdminRegex.test(mat)) {
-        router.push("/superadmin/dashboard");
+      const { access_token, agent: userData } = response.data;
+      login(access_token, userData);
+    } catch (err: any) {
+      if (axios.isAxiosError(err)) {
+        if (err.response?.status === 401) {
+          setError("Code Agent ou mot de passe incorrect.");
+        } else if (err.response?.data?.error) {
+          setError(err.response.data.error);
+        } else if (err.response?.data?.message) {
+          setError(err.response.data.message);
+        } else {
+          setError("Une erreur est survenue lors de la connexion. Veuillez réessayer.");
+        }
       } else {
-        setError(
-          "Matricule non reconnu ou format invalide. Ex: 00AB1234-AG, 00AB123-AD, 00AB12-SA"
-        );
+        setError("Impossible de contacter le serveur.");
       }
-    }, 800);
+    } finally {
+      setIsLoading(false);
+    }
   };
+
+  if (authLoading) {
+    return (
+      <div className="min-h-screen w-full flex items-center justify-center bg-background">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen w-full flex bg-background">
@@ -140,17 +167,18 @@ export default function LoginPage() {
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="space-y-2">
               <label htmlFor="matricule" className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                Matricule
+                Code Agent
               </label>
               <div className="relative">
                 <User className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
                 <Input
                   id="matricule"
                   type="text"
-                  placeholder="Ex: 00AB1234-AG"
+                  placeholder="ATXXXXXX"
                   value={matricule}
                   onChange={(e) => setMatricule(e.target.value)}
                   className="pl-10 h-12 bg-background border-input"
+                  maxLength={8}
                   required
                 />
               </div>
@@ -166,13 +194,20 @@ export default function LoginPage() {
                 <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
                 <Input
                   id="password"
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   placeholder="••••••••"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="pl-10 h-12 bg-background border-input"
+                  className="pl-10 pr-10 h-12 bg-background border-input"
                   required
                 />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
+                >
+                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                </button>
               </div>
             </div>
 
@@ -184,18 +219,6 @@ export default function LoginPage() {
               {isLoading ? "Vérification..." : "Connexion"}
             </Button>
           </form>
-
-          <div className="mt-8 pt-8 border-t border-border/50">
-            <div className="bg-muted/50 rounded-lg p-4 text-xs text-muted-foreground space-y-2">
-              <p className="font-semibold text-foreground">Aide pour les tests :</p>
-              <ul className="list-disc pl-4 space-y-1">
-                <li>Agent : <code className="bg-background px-1 rounded">00AA0000-AG</code></li>
-                <li>Admin : <code className="bg-background px-1 rounded">00AA000-AD</code></li>
-                <li>Super Admin : <code className="bg-background px-1 rounded">00AA00-SA</code></li>
-              </ul>
-              <p className="pt-2">Mot de passe pour tous : <code className="bg-background px-1 rounded">testAuth123</code></p>
-            </div>
-          </div>
 
         </div>
       </div>

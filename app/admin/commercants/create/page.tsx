@@ -7,7 +7,6 @@ import { Save, Store, MapPin, Tag, Phone, ArrowLeft, CheckCircle2 } from "lucide
 import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Alert, AlertDescription } from "@/components/ui/alert"; // Will use a div instead to avoid shadcn missing alert issue
 
 export default function AdminCreateCommercantPage() {
   const router = useRouter();

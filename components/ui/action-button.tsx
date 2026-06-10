@@ -1,17 +1,19 @@
 "use client";
 
-import { Button, ButtonProps } from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
+import React from "react";
 
-interface ActionButtonProps extends ButtonProps {
+interface ActionButtonProps extends React.ComponentProps<typeof Button> {
   toastMessage?: string;
   toastDescription?: string;
+  children?: React.ReactNode;
 }
 
 export function ActionButton({ toastMessage, toastDescription, onClick, ...props }: ActionButtonProps) {
   return (
     <Button 
-      onClick={(e) => {
+      onClick={(e: any) => {
         if (toastMessage) {
           toast(toastMessage, { description: toastDescription });
         }

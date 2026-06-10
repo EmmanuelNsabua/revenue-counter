@@ -175,7 +175,7 @@ function FormContent() {
           <Select
             value={taxeCode}
             onValueChange={(val) => {
-              setTaxeCode(val);
+              setTaxeCode(val || "");
               if (val === "TX-J01") setMontant("3500");
               if (val === "TX-H01") setMontant("7000");
             }}

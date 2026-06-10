@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ActionButton } from "@/components/ui/action-button";
 import { Input } from "@/components/ui/input";
@@ -5,20 +8,16 @@ import { Badge } from "@/components/ui/badge";
 import { Search, Plus, Filter, MoreVertical, Store, Eye, Edit3 } from "lucide-react";
 import Link from "next/link";
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
+  DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { mockAdminCommercants } from "@/mocks/admin";
+import { TableSkeleton } from "@/components/ui/skeletons";
+import { EmptyCommercants } from "@/components/ui/empty-state";
 
 export default function AdminCommercantsPage() {
-  const commercants = [
-    { id: "COM-001", name: "Boutique Mama Nene", activity: "Alimentation", zone: "Allée A", status: "Actif" },
-    { id: "COM-002", name: "Kiosk Airtel", activity: "Services", zone: "Allée B", status: "Inactif" },
-    { id: "COM-003", name: "Papa Pharmacie", activity: "Pharmacie", zone: "Allée C", status: "Actif" },
-    { id: "COM-004", name: "Dépôt Boissons", activity: "Alimentation", zone: "Allée A", status: "Actif" },
-    { id: "COM-005", name: "Salon de Coiffure Beauté", activity: "Services", zone: "Allée B", status: "Actif" },
-  ];
+  // isLoading simulé — sera remplacé par useQuery en Phase 4
+  const [isLoading] = useState(false);
+  const commercants = mockAdminCommercants;
 
   return (
     <div className="space-y-6 max-w-7xl pb-16 md:pb-0">
@@ -46,62 +45,70 @@ export default function AdminCommercantsPage() {
         </ActionButton>
       </div>
 
-      <div className="bg-card rounded-xl border border-border overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm text-left">
-            <thead className="bg-muted/50 text-muted-foreground text-xs uppercase">
-              <tr>
-                <th className="px-6 py-4 font-medium">ID Commerçant</th>
-                <th className="px-6 py-4 font-medium">Nom</th>
-                <th className="px-6 py-4 font-medium">Secteur d'activité</th>
-                <th className="px-6 py-4 font-medium">Zone</th>
-                <th className="px-6 py-4 font-medium">Statut</th>
-                <th className="px-6 py-4 font-medium text-right">Actions</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-border">
-              {commercants.map((commercant, i) => (
-                <tr key={i} className="hover:bg-muted/30 transition-colors">
-                  <td className="px-6 py-4 font-medium text-muted-foreground">{commercant.id}</td>
-                  <td className="px-6 py-4 font-semibold flex items-center gap-2">
-                    <div className="w-8 h-8 rounded bg-primary/10 flex items-center justify-center text-primary">
-                      <Store size={14} />
-                    </div>
-                    {commercant.name}
-                  </td>
-                  <td className="px-6 py-4">{commercant.activity}</td>
-                  <td className="px-6 py-4">{commercant.zone}</td>
-                  <td className="px-6 py-4">
-                    <Badge variant="outline" className={commercant.status === "Actif" ? "bg-primary/10 text-primary border-primary/20" : "bg-destructive/10 text-destructive border-destructive/20"}>
-                      {commercant.status}
-                    </Badge>
-                  </td>
-                  <td className="px-6 py-4 text-right">
-                    <DropdownMenu>
-                      <DropdownMenuTrigger className="flex h-8 w-8 items-center justify-center rounded-md hover:bg-muted text-muted-foreground transition-colors outline-none ml-auto">
-                        <MoreVertical size={16} />
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent align="end">
-                        <Link href={`/admin/commercants/${commercant.id}`}>
-                          <DropdownMenuItem className="gap-2 cursor-pointer">
-                            <Eye size={14} /> Voir les détails
-                          </DropdownMenuItem>
-                        </Link>
-                        <DropdownMenuItem className="gap-2 cursor-pointer">
-                          <Edit3 size={14} /> Modifier
-                        </DropdownMenuItem>
-                        <DropdownMenuItem className={commercant.status === "Actif" ? "text-destructive" : "text-primary"}>
-                          {commercant.status === "Actif" ? "Désactiver" : "Activer"}
-                        </DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
-                  </td>
+      {isLoading ? (
+        <TableSkeleton rows={5} cols={6} />
+      ) : commercants.length === 0 ? (
+        <EmptyCommercants actionHref="/admin/commercants/create" />
+      ) : (
+        <div className="bg-card rounded-xl border border-border overflow-hidden">
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm text-left">
+              <thead className="bg-muted/50 text-muted-foreground text-xs uppercase">
+                <tr>
+                  <th className="px-6 py-4 font-medium">ID Commerçant</th>
+                  <th className="px-6 py-4 font-medium">Nom</th>
+                  <th className="px-6 py-4 font-medium">Secteur d&apos;activité</th>
+                  <th className="px-6 py-4 font-medium">Zone</th>
+                  <th className="px-6 py-4 font-medium">Statut</th>
+                  <th className="px-6 py-4 font-medium text-right">Actions</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody className="divide-y divide-border">
+                {commercants.map((commercant, i) => (
+                  <tr key={i} className="hover:bg-muted/30 transition-colors">
+                    <td className="px-6 py-4 font-medium text-muted-foreground">{commercant.id}</td>
+                    <td className="px-6 py-4 font-semibold">
+                      <div className="flex items-center gap-2">
+                        <div className="w-8 h-8 rounded bg-primary/10 flex items-center justify-center text-primary">
+                          <Store size={14} />
+                        </div>
+                        {commercant.name}
+                      </div>
+                    </td>
+                    <td className="px-6 py-4">{commercant.activity}</td>
+                    <td className="px-6 py-4">{commercant.zone}</td>
+                    <td className="px-6 py-4">
+                      <Badge variant="outline" className={commercant.status === "Actif" ? "bg-primary/10 text-primary border-primary/20" : "bg-destructive/10 text-destructive border-destructive/20"}>
+                        {commercant.status}
+                      </Badge>
+                    </td>
+                    <td className="px-6 py-4 text-right">
+                      <DropdownMenu>
+                        <DropdownMenuTrigger className="flex h-8 w-8 items-center justify-center rounded-md hover:bg-muted text-muted-foreground transition-colors outline-none ml-auto">
+                          <MoreVertical size={16} />
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                          <Link href={`/admin/commercants/${commercant.id}`}>
+                            <DropdownMenuItem className="gap-2 cursor-pointer">
+                              <Eye size={14} /> Voir les détails
+                            </DropdownMenuItem>
+                          </Link>
+                          <DropdownMenuItem className="gap-2 cursor-pointer">
+                            <Edit3 size={14} /> Modifier
+                          </DropdownMenuItem>
+                          <DropdownMenuItem className={commercant.status === "Actif" ? "text-destructive" : "text-primary"}>
+                            {commercant.status === "Actif" ? "Désactiver" : "Activer"}
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }
