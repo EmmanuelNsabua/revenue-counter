@@ -1,8 +1,8 @@
 export interface Taxe {
-  code: string;
+  id: number;
   libelle: string;
-  description: string;
-  periodicite: "Journalière" | "Hebdomadaire" | "Mensuelle";
-  montant: string;
-  actif: boolean;
+  montant: number;
+  frequence: "journalier" | "mensuel" | "annuel";
+  description?: string;
+  actif?: boolean;
 }

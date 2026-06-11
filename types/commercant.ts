@@ -1,9 +1,9 @@
 export interface Commercant {
-  id: string;
+  id: number;
   nom: string;
-  activite: string;
-  stand: string;
-  telephone: string;
-  statut: "Actif" | "Suspendu";
-  zone: string;
+  numero_document: string; // Le code commerçant
+  emplacement: string;     // Stand / Zone
+  telephone?: string;
+  actif: boolean;
+  activite?: string;
 }

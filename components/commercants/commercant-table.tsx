@@ -52,22 +52,22 @@ export function CommercantTable({ commercants }: CommercantTableProps) {
                   </div>
                   <div>
                     <h3 className="font-semibold text-foreground text-base leading-tight">{c.nom}</h3>
-                    <p className="text-xs text-muted-foreground font-mono mt-0.5">{c.id}</p>
+                    <p className="text-xs text-muted-foreground font-mono mt-0.5">{c.numero_document}</p>
                   </div>
                 </div>
-                <Badge variant={c.statut === "Actif" ? "default" : "destructive"}>
-                  {c.statut}
+                <Badge variant={c.actif ? "default" : "destructive"}>
+                  {c.actif ? "Actif" : "Suspendu"}
                 </Badge>
               </div>
               
               <div className="space-y-2 mb-4">
                 <div className="flex items-center gap-2 text-sm text-muted-foreground">
                   <MapPin size={14} />
-                  <span>{c.zone} — Stand {c.stand}</span>
+                  <span>{c.emplacement}</span>
                 </div>
                 <div className="flex items-center gap-2 text-sm text-muted-foreground">
                   <Phone size={14} />
-                  <span>{c.telephone}</span>
+                  <span>{c.telephone || "N/A"}</span>
                 </div>
               </div>
 
@@ -97,7 +97,7 @@ export function CommercantTable({ commercants }: CommercantTableProps) {
             <TableRow className="bg-muted/50">
               <TableHead>Commerçant</TableHead>
               <TableHead>Contact</TableHead>
-              <TableHead>Zone/Stand</TableHead>
+              <TableHead>Emplacement</TableHead>
               <TableHead>Statut</TableHead>
               <TableHead className="text-right">Actions</TableHead>
             </TableRow>
@@ -112,30 +112,27 @@ export function CommercantTable({ commercants }: CommercantTableProps) {
                     </div>
                     <div>
                       <p className="font-medium text-foreground">{c.nom}</p>
-                      <p className="text-xs text-muted-foreground">{c.id} — {c.activite}</p>
+                      <p className="text-xs text-muted-foreground">{c.numero_document} — {c.activite || "Divers"}</p>
                     </div>
                   </div>
                 </TableCell>
                 <TableCell>
                   <span className="flex items-center gap-1.5 text-muted-foreground text-sm">
                     <Phone size={12} />
-                    {c.telephone}
+                    {c.telephone || "N/A"}
                   </span>
                 </TableCell>
                 <TableCell>
                   <div className="flex flex-col">
                     <span className="flex items-center gap-1.5 text-sm">
                       <MapPin size={12} className="text-muted-foreground" />
-                      {c.zone}
-                    </span>
-                    <span className="text-xs text-muted-foreground font-mono ml-5">
-                      Stand {c.stand}
+                      {c.emplacement}
                     </span>
                   </div>
                 </TableCell>
                 <TableCell>
-                  <Badge variant={c.statut === "Actif" ? "default" : "destructive"}>
-                    {c.statut}
+                  <Badge variant={c.actif ? "default" : "destructive"}>
+                    {c.actif ? "Actif" : "Suspendu"}
                   </Badge>
                 </TableCell>
                 <TableCell className="text-right space-x-2">

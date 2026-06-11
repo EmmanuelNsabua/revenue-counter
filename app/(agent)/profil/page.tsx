@@ -1,20 +1,19 @@
-import type { Metadata } from "next";
-import Link from "next/link";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Button, buttonVariants } from "@/components/ui/button";
-import { ActionButton } from "@/components/ui/action-button";
-import { User, MapPin, Mail, Shield, LogOut, Key } from "lucide-react";
-import { cn } from "@/lib/utils";
+"use client";
 
-export const metadata: Metadata = { title: "Profil Agent" };
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { ActionButton } from "@/components/ui/action-button";
+import { User, MapPin, Shield, LogOut, Key } from "lucide-react";
+import { useAuth } from "@/providers/auth-provider";
 
 export default function ProfilPage() {
-  const agent = {
-    nom: "Agent 001",
-    email: "agent001@mairie-lubumbashi.cd",
-    role: "Agent de recouvrement",
-    zone: "Marché Kenya - Secteur A",
-    matricule: "AGT-2026-001",
+  const { user, logout } = useAuth();
+
+  const displayUser = {
+    nom: user?.nom || "Chargement...",
+    role: user?.role === "agent" ? "Agent de recouvrement" : "Administrateur",
+    zone: "Marché Kenya",
+    code: user?.code_agent || "ATXXXXXX",
   };
 
   return (
@@ -31,10 +30,10 @@ export default function ProfilPage() {
               <User size={32} />
             </div>
             <div>
-              <CardTitle className="text-xl">{agent.nom}</CardTitle>
+              <CardTitle className="text-xl">{displayUser.nom}</CardTitle>
               <CardDescription className="flex items-center gap-1.5 mt-1">
                 <Shield size={14} className="text-primary" />
-                {agent.role} — Matricule: {agent.matricule}
+                {displayUser.role} — Code Agent: {displayUser.code}
               </CardDescription>
             </div>
           </CardHeader>
@@ -42,15 +41,15 @@ export default function ProfilPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-1">
                 <p className="text-sm text-muted-foreground flex items-center gap-2">
-                  <Mail size={14} /> Adresse Email
+                  <Shield size={14} /> Identifiant Système
                 </p>
-                <p className="font-medium text-foreground">{agent.email}</p>
+                <p className="font-medium text-foreground">#{user?.id || "..."}</p>
               </div>
               <div className="space-y-1">
                 <p className="text-sm text-muted-foreground flex items-center gap-2">
-                  <MapPin size={14} /> Zone d'affectation
+                  <MapPin size={14} /> Structure d'affectation
                 </p>
-                <p className="font-medium text-foreground">{agent.zone}</p>
+                <p className="font-medium text-foreground">{displayUser.zone}</p>
               </div>
             </div>
           </CardContent>
@@ -66,13 +65,14 @@ export default function ProfilPage() {
               <Key size={16} />
               Modifier le mot de passe
             </ActionButton>
-            <Link 
-              href="/"
-              className={cn(buttonVariants({ variant: "destructive" }), "w-full sm:w-auto justify-start gap-2 sm:ml-4")}
+            <Button 
+              onClick={() => logout()}
+              variant="destructive"
+              className="w-full sm:w-auto justify-start gap-2 sm:ml-4"
             >
               <LogOut size={16} />
               Se déconnecter
-            </Link>
+            </Button>
           </CardContent>
         </Card>
       </div>

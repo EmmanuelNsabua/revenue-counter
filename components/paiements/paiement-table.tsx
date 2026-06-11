@@ -1,6 +1,6 @@
 "use client";
 
-import { CheckCircle, Clock, XCircle, Search, Calendar, MapPin, ReceiptText } from "lucide-react";
+import { CheckCircle, Search, Calendar, MapPin, ReceiptText } from "lucide-react";
 import {
   Table,
   TableBody,
@@ -21,16 +21,11 @@ import {
 import { Card, CardContent } from "@/components/ui/card";
 import type { Paiement } from "@/types/paiement";
 import { useRouter } from "next/navigation";
+import { formatCurrency, formatDateTime } from "@/lib/utils";
 
 interface PaiementTableProps {
   paiements: Paiement[];
 }
-
-const statutConfig = {
-  "Payé": { color: "default", icon: CheckCircle },
-  "En attente": { color: "secondary", icon: Clock },
-  "Annulé": { color: "destructive", icon: XCircle },
-} as const;
 
 export function PaiementTable({ paiements }: PaiementTableProps) {
   const router = useRouter();
@@ -84,8 +79,6 @@ export function PaiementTable({ paiements }: PaiementTableProps) {
           {/* Vue Mobile (Cards) */}
           <div className="md:hidden space-y-4">
             {paiements.map((p) => {
-              const config = statutConfig[p.statut as keyof typeof statutConfig] || statutConfig["En attente"];
-              const Icon = config.icon;
               return (
                 <Card 
                   key={p.id} 
@@ -95,21 +88,21 @@ export function PaiementTable({ paiements }: PaiementTableProps) {
                   <CardContent className="p-4">
                     <div className="flex justify-between items-start mb-3">
                       <div>
-                        <p className="font-semibold text-foreground">{p.commercantNom}</p>
-                        <p className="text-xs text-muted-foreground font-mono mt-0.5">{p.id} — Stand {p.stand}</p>
+                        <p className="font-semibold text-foreground">{p.commercant?.nom || "Commerçant inconnu"}</p>
+                        <p className="text-xs text-muted-foreground font-mono mt-0.5">TXN-{p.id} — {p.commercant?.emplacement}</p>
                       </div>
-                      <Badge variant={config.color} className="gap-1 flex-shrink-0">
-                        <Icon size={12} />
-                        <span className="hidden sm:inline">{p.statut}</span>
+                      <Badge className="gap-1 flex-shrink-0">
+                        <CheckCircle size={12} />
+                        <span>Payé</span>
                       </Badge>
                     </div>
                     
                     <div className="flex justify-between items-end border-t border-border pt-3 mt-2">
                       <div>
-                        <p className="text-xs text-muted-foreground">{p.taxeLibelle}</p>
-                        <p className="text-xs text-muted-foreground mt-1">{p.date} • {p.heure}</p>
+                        <p className="text-xs text-muted-foreground">{p.taxe?.libelle}</p>
+                        <p className="text-xs text-muted-foreground mt-1">{formatDateTime(p.created_at)}</p>
                       </div>
-                      <p className="text-xl font-bold text-foreground">{p.montant}</p>
+                      <p className="text-xl font-bold text-foreground">{formatCurrency(p.montant)}</p>
                     </div>
                   </CardContent>
                 </Card>
@@ -127,14 +120,12 @@ export function PaiementTable({ paiements }: PaiementTableProps) {
                   <TableHead>Taxe</TableHead>
                   <TableHead>Montant</TableHead>
                   <TableHead>Date & Heure</TableHead>
-                  <TableHead>Agent</TableHead>
+                  <TableHead>Mode</TableHead>
                   <TableHead>Statut</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {paiements.map((p) => {
-                  const config = statutConfig[p.statut as keyof typeof statutConfig] || statutConfig["En attente"];
-                  const Icon = config.icon;
                   return (
                     <TableRow 
                       key={p.id} 
@@ -142,31 +133,28 @@ export function PaiementTable({ paiements }: PaiementTableProps) {
                       onClick={() => router.push(`/paiements/${p.id}`)}
                     >
                       <TableCell className="font-mono text-xs text-muted-foreground">
-                        {p.id}
+                        TXN-{p.id}
                       </TableCell>
                       <TableCell>
                         <div className="flex flex-col">
-                          <span className="font-medium text-foreground">{p.commercantNom}</span>
-                          <span className="text-xs text-muted-foreground">Stand {p.stand}</span>
+                          <span className="font-medium text-foreground">{p.commercant?.nom}</span>
+                          <span className="text-xs text-muted-foreground">{p.commercant?.emplacement}</span>
                         </div>
                       </TableCell>
                       <TableCell className="text-muted-foreground">
-                        {p.taxeLibelle}
+                        {p.taxe?.libelle}
                       </TableCell>
-                      <TableCell className="font-semibold text-base">{p.montant}</TableCell>
+                      <TableCell className="font-semibold text-base">{formatCurrency(p.montant)}</TableCell>
                       <TableCell>
-                        <div className="flex flex-col">
-                          <span className="text-sm">{p.date}</span>
-                          <span className="text-xs text-muted-foreground">{p.heure}</span>
-                        </div>
+                        <span className="text-sm">{formatDateTime(p.created_at)}</span>
                       </TableCell>
-                      <TableCell className="text-muted-foreground text-sm">
-                        {p.agent}
+                      <TableCell className="text-muted-foreground text-sm uppercase">
+                        {p.mode_paiement}
                       </TableCell>
                       <TableCell>
-                        <Badge variant={config.color} className="gap-1">
-                          <Icon size={12} />
-                          {p.statut}
+                        <Badge className="gap-1">
+                          <CheckCircle size={12} />
+                          Payé
                         </Badge>
                       </TableCell>
                     </TableRow>

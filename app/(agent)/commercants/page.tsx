@@ -1,22 +1,32 @@
 "use client";
 
 import { useState } from "react";
-import type { Metadata } from "next";
 import { CommercantFilters } from "@/components/commercants/commercant-filters";
 import { CommercantTable } from "@/components/commercants/commercant-table";
 import { Badge } from "@/components/ui/badge";
-import { Store, CheckCircle, XCircle } from "lucide-react";
-import { mockCommercants } from "@/mocks/agent";
+import { Store, CheckCircle, XCircle, AlertCircle } from "lucide-react";
+import { useCommercants } from "@/hooks/use-commercants";
 import { TableSkeleton } from "@/components/ui/skeletons";
 import { EmptyCommercants } from "@/components/ui/empty-state";
 
 export default function CommerciantsPage() {
-  // isLoading simulé — sera remplacé par useQuery en Phase 4
-  const [isLoading] = useState(false);
-  const commercants = mockCommercants;
+  const [search, setSearch] = useState("");
+  const { data: commercants, isLoading, isError } = useCommercants(search);
 
-  const actifs = commercants.filter((c) => c.statut === "Actif").length;
-  const suspendus = commercants.filter((c) => c.statut === "Suspendu").length;
+  const actifs = commercants?.filter((c) => c.actif).length || 0;
+  const suspendus = commercants?.filter((c) => !c.actif).length || 0;
+
+  if (isError) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[400px] space-y-4">
+        <AlertCircle className="w-12 h-12 text-destructive" />
+        <div className="text-center">
+          <h3 className="text-lg font-semibold">Erreur de chargement</h3>
+          <p className="text-muted-foreground">Impossible de récupérer la liste des commerçants.</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6 max-w-7xl pb-16 md:pb-0">
@@ -26,7 +36,7 @@ export default function CommerciantsPage() {
           <p className="text-sm text-muted-foreground">Gestion des commerçants du marché Kenya</p>
         </div>
         <div className="flex gap-3 flex-wrap items-center">
-          {!isLoading && (
+          {!isLoading && commercants && (
             <>
               <Badge variant="outline" className="flex items-center gap-1.5 px-3 py-1.5 text-primary border-primary/20 bg-primary/5">
                 <Store size={14} />
@@ -46,12 +56,12 @@ export default function CommerciantsPage() {
       </div>
 
       <div className="bg-card p-4 rounded-xl border border-border">
-        <CommercantFilters />
+        <CommercantFilters search={search} onSearchChange={setSearch} />
       </div>
 
       {isLoading ? (
         <TableSkeleton rows={5} cols={6} />
-      ) : commercants.length === 0 ? (
+      ) : !commercants || commercants.length === 0 ? (
         <EmptyCommercants />
       ) : (
         <CommercantTable commercants={commercants} />
