@@ -147,13 +147,13 @@ export function CommercantTable({ commercants }: CommercantTableProps) {
                       <MoreHorizontal className="h-4 w-4" />
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
-                      <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                      <DropdownMenuItem>
-                        <Link href={`/commercants/${c.id}`} className="cursor-pointer flex items-center w-full">
+                      <DropdownMenuGroup>
+                        <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                        <DropdownMenuItem render={<Link href={`/commercants/${c.id}`} className="cursor-pointer flex items-center w-full" />}>
                           <Eye className="mr-2 h-4 w-4" />
                           Voir détail
-                        </Link>
-                      </DropdownMenuItem>
+                        </DropdownMenuItem>
+                      </DropdownMenuGroup>
                     </DropdownMenuContent>
                   </DropdownMenu>
                 </TableCell>
