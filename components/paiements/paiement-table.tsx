@@ -88,8 +88,10 @@ export function PaiementTable({ paiements }: PaiementTableProps) {
                   <CardContent className="p-4">
                     <div className="flex justify-between items-start mb-3">
                       <div>
-                        <p className="font-semibold text-foreground">{p.commercant?.nom || "Commerçant inconnu"}</p>
-                        <p className="text-xs text-muted-foreground font-mono mt-0.5">TXN-{p.id} — {p.commercant?.emplacement}</p>
+                        <p className="font-semibold text-foreground">
+                          {p.commercant?.nom || `Commerçant #${p.commercant_id}`}
+                        </p>
+                        <p className="text-xs text-muted-foreground font-mono mt-0.5">TXN-{p.id} — {p.commercant?.emplacement || "N/A"}</p>
                       </div>
                       <Badge className="gap-1 flex-shrink-0">
                         <CheckCircle size={12} />
@@ -99,7 +101,9 @@ export function PaiementTable({ paiements }: PaiementTableProps) {
                     
                     <div className="flex justify-between items-end border-t border-border pt-3 mt-2">
                       <div>
-                        <p className="text-xs text-muted-foreground">{p.taxe?.libelle}</p>
+                        <p className="text-xs text-muted-foreground">
+                          {p.taxe?.libelle || `Taxe #${p.taxe_id}`}
+                        </p>
                         <p className="text-xs text-muted-foreground mt-1">{formatDateTime(p.created_at)}</p>
                       </div>
                       <p className="text-xl font-bold text-foreground">{formatCurrency(p.montant)}</p>
@@ -137,12 +141,14 @@ export function PaiementTable({ paiements }: PaiementTableProps) {
                       </TableCell>
                       <TableCell>
                         <div className="flex flex-col">
-                          <span className="font-medium text-foreground">{p.commercant?.nom}</span>
-                          <span className="text-xs text-muted-foreground">{p.commercant?.emplacement}</span>
+                          <span className="font-medium text-foreground">
+                            {p.commercant?.nom || `Commerçant #${p.commercant_id}`}
+                          </span>
+                          <span className="text-xs text-muted-foreground">{p.commercant?.emplacement || "Emplacement N/A"}</span>
                         </div>
                       </TableCell>
                       <TableCell className="text-muted-foreground">
-                        {p.taxe?.libelle}
+                        {p.taxe?.libelle || `Taxe #${p.taxe_id}`}
                       </TableCell>
                       <TableCell className="font-semibold text-base">{formatCurrency(p.montant)}</TableCell>
                       <TableCell>

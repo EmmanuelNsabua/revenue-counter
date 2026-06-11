@@ -20,19 +20,22 @@ export function RecentPaiements() {
   if (isError) {
     return (
       <Card className="border-destructive/20 bg-destructive/5">
-        <CardContent className="flex flex-col items-center justify-center py-10 space-y-3">
+        <CardContent className="flex flex-col items-center justify-center py-10 space-y-3 text-center">
           <AlertCircle className="h-10 w-10 text-destructive" />
-          <p className="text-sm font-medium text-destructive">Impossible de charger les transactions récentes.</p>
+          <div>
+            <p className="text-sm font-semibold text-destructive">Historique indisponible</p>
+            <p className="text-xs text-destructive/80 max-w-[200px]">Impossible de charger vos dernières transactions.</p>
+          </div>
         </CardContent>
       </Card>
     );
   }
 
   // On n'affiche que les 5 dernières transactions sur le dashboard
-  const recentTransactions = paiements?.slice(0, 5) || [];
+  const recentTransactions = Array.isArray(paiements) ? paiements.slice(0, 5) : [];
 
   return (
-    <Card>
+    <Card className="border-border/50">
       <CardHeader className="flex flex-row items-center justify-between">
         <div>
           <CardTitle className="text-lg">Transactions récentes</CardTitle>
@@ -59,7 +62,7 @@ export function RecentPaiements() {
               {recentTransactions.map((tx) => (
                 <TableRow
                   key={tx.id}
-                  className="cursor-pointer hover:bg-muted/50"
+                  className="cursor-pointer hover:bg-muted/50 transition-colors"
                   onClick={() => router.push(`/paiements/${tx.id}`)}
                 >
                   <TableCell>
@@ -68,15 +71,19 @@ export function RecentPaiements() {
                         <CreditCard size={14} className="text-primary" />
                       </div>
                       <div>
-                        <p className="font-medium text-foreground">{tx.commercant?.nom || "Inconnu"}</p>
-                        <p className="text-xs text-muted-foreground">TXN-{tx.id}</p>
+                        <p className="font-medium text-foreground leading-none mb-1">
+                          {tx.commercant?.nom || `Commerçant #${tx.commercant_id}`}
+                        </p>
+                        <p className="text-[10px] font-mono text-muted-foreground">REF-{tx.id}</p>
                       </div>
                     </div>
                   </TableCell>
-                  <TableCell className="font-semibold">{formatCurrency(tx.montant)}</TableCell>
-                  <TableCell className="text-muted-foreground text-xs">{formatDateTime(tx.created_at)}</TableCell>
+                  <TableCell className="font-semibold text-sm">{formatCurrency(tx.montant)}</TableCell>
+                  <TableCell className="text-muted-foreground text-[11px]">{formatDateTime(tx.created_at)}</TableCell>
                   <TableCell>
-                    <Badge>Payé</Badge>
+                    <Badge variant="outline" className="text-[10px] h-5 bg-green-50 text-green-700 border-green-200">
+                      Payé
+                    </Badge>
                   </TableCell>
                 </TableRow>
               ))}
