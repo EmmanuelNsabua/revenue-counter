@@ -1,9 +1,9 @@
 "use client";
 
-import { usePathname } from "next/navigation";
 import { Bell, Search, User, Calendar, LogOut, Settings, UserCircle } from "lucide-react";
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { Input } from "@/components/ui/input";
 import { useAuth } from "@/providers/auth-provider";
 import {
@@ -16,78 +16,6 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-const pageTitles: Record<string, { title: string; subtitle: string }> = {
-  "/dashboard": {
-    title: "Tableau de bord",
-    subtitle: "Vue d'ensemble des recettes",
-  },
-  "/commercants": {
-    title: "Commerçants",
-    subtitle: "Gestion des commerçants du marché Kenya",
-  },
-  "/paiements": {
-    title: "Paiements",
-    subtitle: "Historique des transactions",
-  },
-  "/taxes": {
-    title: "Taxes",
-    subtitle: "Barèmes et types de taxes",
-  },
-  "/settings": {
-    title: "Paramètres",
-    subtitle: "Configuration de l'application",
-  },
-  // ADMIN
-  "/admin/dashboard": {
-    title: "Vue d'ensemble",
-    subtitle: "Supervision des recettes et performances",
-  },
-  "/admin/agents": {
-    title: "Agents",
-    subtitle: "Gestion des agents de recouvrement",
-  },
-  "/admin/commercants": {
-    title: "Commerçants (Admin)",
-    subtitle: "Création et gestion des fiches commerçants",
-  },
-  "/admin/taxes": {
-    title: "Taxes",
-    subtitle: "Configuration des montants et types",
-  },
-  "/admin/zones": {
-    title: "Zones",
-    subtitle: "Attribution des secteurs",
-  },
-  // SUPERADMIN
-  "/superadmin/dashboard": {
-    title: "Pilotage Global",
-    subtitle: "Indicateurs stratégiques centraux",
-  },
-  "/superadmin/structures": {
-    title: "Structures",
-    subtitle: "Entités administratives et villes",
-  },
-  "/superadmin/commercants": {
-    title: "Commerçants (SuperAdmin)",
-    subtitle: "Audit et vue globale du registre",
-  },
-  "/superadmin/admins": {
-    title: "Administrateurs",
-    subtitle: "Gestion des accès et droits",
-  },
-  "/superadmin/configuration": {
-    title: "Configuration",
-    subtitle: "Paramètres globaux du système",
-  },
-};
-
-function getPageMeta(pathname: string) {
-  for (const [key, value] of Object.entries(pageTitles)) {
-    if (pathname === key || pathname.startsWith(key + "/")) return value;
-  }
-  return { title: "Revenue Counter", subtitle: "Mairie de Lubumbashi" };
-}
-
 interface TopbarProps {
   profilHref?: string;
 }
@@ -95,8 +23,6 @@ interface TopbarProps {
 export default function Topbar({
   profilHref = "/profil",
 }: TopbarProps) {
-  const pathname = usePathname();
-  const { title, subtitle } = getPageMeta(pathname);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const { user, logout } = useAuth();
 
@@ -121,7 +47,7 @@ export default function Topbar({
         {/* Mobile Logo */}
         <Link href="/dashboard" className="md:hidden flex items-center gap-2 sm:gap-3 min-w-0">
           <div className="relative flex-shrink-0 w-9 h-9 sm:w-10 sm:h-10 rounded-full overflow-hidden ring-2 ring-border">
-            <img src="/assets/logo.png" alt="Logo" className="w-full h-full object-contain p-0.5 sm:p-1" />
+            <Image src="/assets/logo.png" alt="Logo" width={40} height={40} className="w-full h-full object-contain p-0.5 sm:p-1" />
           </div>
           <div className="flex flex-col min-w-0">
             <span className="text-sm font-bold leading-tight truncate">Revenue Counter</span>

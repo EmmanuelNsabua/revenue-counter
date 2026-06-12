@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { ArrowLeft, Store, Tag, MapPin, Phone, History, Building2, ShieldAlert, FileText } from "lucide-react";
+import { ArrowLeft, Store, Tag, MapPin, Phone, Building2, ShieldAlert, FileText } from "lucide-react";
 import Link from "next/link";
 
 export default function SuperAdminCommercantDetailsPage({ params }: { params: { id: string } }) {

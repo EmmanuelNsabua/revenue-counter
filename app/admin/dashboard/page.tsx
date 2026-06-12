@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Users, TrendingUp, AlertCircle, Banknote, MapPin } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
 import { mockAdminStats, mockAdminActivities, mockZonePerformance } from "@/mocks/admin";
 import { KpiSkeleton, ActivitySkeleton, ProgressSkeleton } from "@/components/ui/skeletons";
 import { EmptyAlertes } from "@/components/ui/empty-state";

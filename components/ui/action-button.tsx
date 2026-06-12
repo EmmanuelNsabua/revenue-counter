@@ -13,7 +13,7 @@ interface ActionButtonProps extends React.ComponentProps<typeof Button> {
 export function ActionButton({ toastMessage, toastDescription, onClick, ...props }: ActionButtonProps) {
   return (
     <Button 
-      onClick={(e: any) => {
+      onClick={(e) => {
         if (toastMessage) {
           toast(toastMessage, { description: toastDescription });
         }

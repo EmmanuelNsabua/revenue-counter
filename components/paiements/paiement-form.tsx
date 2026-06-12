@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, Suspense, useEffect } from "react";
+import { useState, Suspense } from "react";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import {
@@ -19,7 +19,6 @@ import { useTaxes } from "@/hooks/use-taxes";
 import { useCommercants } from "@/hooks/use-commercants";
 import { useCreatePaiement } from "@/hooks/use-paiements";
 import { formatCurrency, cn } from "@/lib/utils";
-import { Commercant } from "@/types/commercant";
 import { ModePaiement, Paiement } from "@/types/paiement";
 
 function FormContent() {

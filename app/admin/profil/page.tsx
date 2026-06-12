@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { buttonVariants } from "@/components/ui/button";
-import { User, MapPin, Mail, Shield, LogOut, Key } from "lucide-react";
+import { MapPin, Mail, Shield, LogOut, Key } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = { title: "Profil Admin" };

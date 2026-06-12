@@ -40,7 +40,7 @@ export default function TaxesPage() {
               journalier: taxes.filter((t) => t.frequence === "journalier").length,
               mensuel: taxes.filter((t) => t.frequence === "mensuel").length,
               annuel: taxes.filter((t) => t.frequence === "annuel").length,
-            }).filter(([_, count]) => count > 0).map(([key, count]) => (
+            }).filter(([, count]) => count > 0).map(([key, count]) => (
               <span
                 key={key}
                 className={`flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-full ${

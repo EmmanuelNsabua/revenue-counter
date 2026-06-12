@@ -46,7 +46,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         // Validation réelle du token auprès du backend
         const response = await api.get<User>("/user");
         setUser(response.data);
-      } catch (error) {
+      } catch {
         // En cas d'échec (401), le token est invalidé
         setUser(null);
         clearSession();
