@@ -4,7 +4,8 @@ import React from "react";
 import { usePaiement } from "@/hooks/use-paiements";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { ArrowLeft, Printer, MessageCircle, Loader2, AlertCircle, CheckCircle2 } from "lucide-react";
+import { ArrowLeft, Printer, Loader2, AlertCircle, CheckCircle2 } from "lucide-react";
+import { WhatsAppIcon } from "@/components/ui/whatsapp-icon";
 import Link from "next/link";
 import { formatCurrency, formatDateTime } from "@/lib/utils";
 
@@ -115,7 +116,7 @@ export default function PaiementDetailPage({ params }: { params: any }) {
           Imprimer
         </Button>
         <Button className="w-full gap-2 h-12 bg-[#25D366] hover:bg-[#1DA851] text-white shadow-sm">
-          <MessageCircle size={18} />
+          <WhatsAppIcon size={18} />
           WhatsApp
         </Button>
       </div>

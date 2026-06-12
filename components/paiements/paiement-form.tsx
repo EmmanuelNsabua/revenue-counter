@@ -11,7 +11,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
-import { CheckCircle2, Printer, MessageCircle, Search, Loader2 } from "lucide-react";
+import { CheckCircle2, Printer, Search, Loader2 } from "lucide-react";
+import { WhatsAppIcon } from "@/components/ui/whatsapp-icon";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useTaxes } from "@/hooks/use-taxes";
@@ -131,7 +132,7 @@ function FormContent() {
             Imprimer
           </Button>
           <Button className="w-full gap-2 bg-[#25D366] hover:bg-[#1DA851] text-white">
-            <MessageCircle size={16} />
+            <WhatsAppIcon size={16} />
             WhatsApp
           </Button>
         </div>
