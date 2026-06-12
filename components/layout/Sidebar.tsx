@@ -47,7 +47,7 @@ const defaultBottomItems = [
 export interface NavItem {
   label: string;
   href: string;
-  icon: any;
+  icon: React.ElementType;
 }
 
 interface SidebarProps {

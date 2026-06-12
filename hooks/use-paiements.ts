@@ -3,6 +3,7 @@ import { paiementsService } from "@/services/paiements";
 import { CreatePaiementDTO, Paiement } from "@/types/paiement";
 import { toast } from "sonner";
 import { api } from "@/lib/api";
+import axios from "axios";
 
 export const usePaiements = () => {
   return useQuery({
@@ -27,14 +28,18 @@ export const useCreatePaiement = () => {
 
   return useMutation({
     mutationFn: (data: CreatePaiementDTO) => paiementsService.create(data),
-    onSuccess: () => {
+    onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ["paiements"] });
       queryClient.invalidateQueries({ queryKey: ["stats"] });
       queryClient.invalidateQueries({ queryKey: ["commercants"] });
       toast.success("Paiement enregistré avec succès");
+      return data;
     },
-    onError: (error: any) => {
-      const message = error.response?.data?.error || "Une erreur est survenue lors de l'enregistrement";
+    onError: (error: unknown) => {
+      let message = "Une erreur est survenue lors de l'enregistrement";
+      if (axios.isAxiosError(error)) {
+        message = error.response?.data?.error || message;
+      }
       toast.error(message);
     },
   });

@@ -9,8 +9,8 @@ import { WhatsAppIcon } from "@/components/ui/whatsapp-icon";
 import Link from "next/link";
 import { formatCurrency, formatDateTime } from "@/lib/utils";
 
-export default function PaiementDetailPage({ params }: { params: any }) {
-  const { id } = React.use(params) as { id: string };
+export default function PaiementDetailPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = React.use(params);
   const { data: paiement, isLoading, isError } = usePaiement(id);
 
   if (isLoading) {
@@ -28,10 +28,10 @@ export default function PaiementDetailPage({ params }: { params: any }) {
         <AlertCircle className="w-12 h-12 text-destructive" />
         <div>
           <h3 className="text-lg font-semibold">Transaction introuvable</h3>
-          <p className="text-muted-foreground">Le reçu demandé n'existe pas ou vous n'y avez pas accès.</p>
+          <p className="text-muted-foreground">Le reçu demandé n&apos;existe pas ou vous n&apos;y avez pas accès.</p>
         </div>
         <Link href="/paiements">
-          <Button variant="outline">Retour à l'historique</Button>
+          <Button variant="outline">Retour à l&apos;historique</Button>
         </Link>
       </div>
     );

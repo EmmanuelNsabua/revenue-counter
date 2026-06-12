@@ -69,7 +69,7 @@ export default function SuperAdminCommercantDetailsPage({ params }: { params: { 
             <CardHeader className="pb-3 border-b border-border mb-4">
               <CardTitle className="text-lg flex items-center gap-2">
                 <FileText size={18} className="text-primary" />
-                Journal d'Audit & Modifications
+                Journal d&apos;Audit & Modifications
               </CardTitle>
             </CardHeader>
             <CardContent>

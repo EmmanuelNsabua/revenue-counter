@@ -162,7 +162,7 @@ export default function Topbar({
                 <DropdownMenuItem className="flex flex-col items-start gap-1 p-3 cursor-pointer">
                   <div className="flex justify-between w-full">
                     <span className="font-semibold text-sm">Paiement reçu</span>
-                    <span className="text-xs text-muted-foreground">À l'instant</span>
+                    <span className="text-xs text-muted-foreground">À l&apos;instant</span>
                   </div>
                   <span className="text-xs text-muted-foreground">La taxe journalière a été réglée par Mama Bea (3 500 FC).</span>
                 </DropdownMenuItem>

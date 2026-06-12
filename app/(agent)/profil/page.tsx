@@ -47,7 +47,7 @@ export default function ProfilPage() {
               </div>
               <div className="space-y-1">
                 <p className="text-sm text-muted-foreground flex items-center gap-2">
-                  <MapPin size={14} /> Structure d'affectation
+                  <MapPin size={14} /> Structure d&apos;affectation
                 </p>
                 <p className="font-medium text-foreground">{displayUser.zone}</p>
               </div>

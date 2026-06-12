@@ -45,7 +45,7 @@ export function PaiementTable({ paiements }: PaiementTableProps) {
               <SelectValue placeholder="Date" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="aujourdhui">Aujourd'hui</SelectItem>
+              <SelectItem value="aujourdhui">Aujourd&apos;hui</SelectItem>
               <SelectItem value="hier">Hier</SelectItem>
               <SelectItem value="semaine">Cette semaine</SelectItem>
               <SelectItem value="mois">Ce mois</SelectItem>

@@ -66,7 +66,7 @@ export default function AdminCreateCommercantPage() {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-2">
-                  <label className="text-sm font-medium">Secteur d'activité <span className="text-destructive">*</span></label>
+                  <label className="text-sm font-medium">Secteur d&apos;activité <span className="text-destructive">*</span></label>
                   <div className="relative">
                     <Tag className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                     <select required className="flex h-10 w-full items-center justify-between rounded-md border border-input bg-background pl-9 pr-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50">
@@ -81,7 +81,7 @@ export default function AdminCreateCommercantPage() {
                 </div>
 
                 <div className="space-y-2">
-                  <label className="text-sm font-medium">Zone d'affectation <span className="text-destructive">*</span></label>
+                  <label className="text-sm font-medium">Zone d&apos;affectation <span className="text-destructive">*</span></label>
                   <div className="relative">
                     <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                     <select required className="flex h-10 w-full items-center justify-between rounded-md border border-input bg-background pl-9 pr-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50">

@@ -12,7 +12,7 @@ const defaultNavItems = [
 ];
 
 interface BottomNavProps {
-  navItems?: { label: string; href: string; icon: any }[];
+  navItems?: { label: string; href: string; icon: React.ElementType }[];
 }
 
 export function BottomNav({ navItems = defaultNavItems }: BottomNavProps) {

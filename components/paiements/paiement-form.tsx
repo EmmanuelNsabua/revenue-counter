@@ -20,17 +20,16 @@ import { useCommercants } from "@/hooks/use-commercants";
 import { useCreatePaiement } from "@/hooks/use-paiements";
 import { formatCurrency, cn } from "@/lib/utils";
 import { Commercant } from "@/types/commercant";
-import { ModePaiement } from "@/types/paiement";
+import { ModePaiement, Paiement } from "@/types/paiement";
 
 function FormContent() {
   const searchParams = useSearchParams();
   const defaultCommercantDoc = searchParams.get("commercantDoc") || "";
 
   const [isSuccess, setIsSuccess] = useState(false);
-  const [lastTxn, setLastTxn] = useState<any>(null);
+  const [lastTxn, setLastTxn] = useState<Paiement | null>(null);
   
   const [searchTerm, setSearchTerm] = useState(defaultCommercantDoc);
-  const [selectedCommercant, setSelectedCommercant] = useState<Commercant | null>(null);
   
   const [taxeId, setTaxeId] = useState<string>("");
   const [montant, setMontant] = useState<string>("");
@@ -40,18 +39,10 @@ function FormContent() {
   const { data: searchResults, isLoading: searchLoading } = useCommercants(searchTerm);
   const createMutation = useCreatePaiement();
 
-  // Effet pour auto-sélectionner si on trouve une correspondance exacte sur le numéro_document
-  useEffect(() => {
-    if (searchResults && searchTerm.length >= 4) {
-      const match = searchResults.find(
-        c => c.numero_document.toUpperCase() === searchTerm.toUpperCase()
-      );
-      if (match) setSelectedCommercant(match);
-      else setSelectedCommercant(null);
-    } else {
-      setSelectedCommercant(null);
-    }
-  }, [searchResults, searchTerm]);
+  // On dérive le commerçant sélectionné directement des résultats de recherche
+  const selectedCommercant = (searchResults && searchTerm.length >= 4) 
+    ? searchResults.find(c => c.numero_document.toUpperCase() === searchTerm.toUpperCase()) || null
+    : null;
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -143,7 +134,6 @@ function FormContent() {
             setTaxeId("");
             setMontant("");
             setSearchTerm("");
-            setSelectedCommercant(null);
           }} variant="outline" className="flex-1">
             Nouveau paiement
           </Button>
@@ -186,7 +176,7 @@ function FormContent() {
               </span>
             ) : searchTerm.length >= 3 && !searchLoading ? (
               <span className="text-sm text-destructive font-medium px-1">
-                Aucun commerçant trouvé pour "{searchTerm}"
+                Aucun commerçant trouvé pour &quot;{searchTerm}&quot;
               </span>
             ) : null}
           </div>

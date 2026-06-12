@@ -110,7 +110,7 @@ export default function AdminCommercantDetailsPage({ params }: { params: { id: s
                     </div>
                   </div>
                 ))}
-                <Button variant="ghost" className="w-full text-xs mt-2">Voir l'historique complet</Button>
+                <Button variant="ghost" className="w-full text-xs mt-2">Voir l&apos;historique complet</Button>
               </div>
             </CardContent>
           </Card>

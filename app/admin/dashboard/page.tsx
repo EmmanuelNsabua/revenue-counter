@@ -21,7 +21,7 @@ export default function AdminDashboardPage() {
     <div className="space-y-6 max-w-7xl pb-16 md:pb-0">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight">Vue d'ensemble</h1>
+          <h1 className="text-2xl font-bold tracking-tight">Vue d&apos;ensemble</h1>
           <p className="text-sm text-muted-foreground">Performance journalière et suivi des agents.</p>
         </div>
       </div>

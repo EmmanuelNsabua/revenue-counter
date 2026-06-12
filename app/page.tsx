@@ -49,14 +49,14 @@ export default function LoginPage() {
 
       const { access_token, agent: userData } = response.data;
       login(access_token, userData);
-    } catch (err: any) {
+    } catch (err: unknown) {
       if (axios.isAxiosError(err)) {
         if (err.response?.status === 401) {
           setError("Code Agent ou mot de passe incorrect.");
         } else if (err.response?.data?.error) {
-          setError(err.response.data.error);
+          setError(err.response.data.error as string);
         } else if (err.response?.data?.message) {
-          setError(err.response.data.message);
+          setError(err.response.data.message as string);
         } else {
           setError("Une erreur est survenue lors de la connexion. Veuillez réessayer.");
         }
@@ -128,7 +128,7 @@ export default function LoginPage() {
         </div>
 
         <div className="relative z-10 text-sm text-white/50 mt-12">
-          "Faciliter le quotidien des agents, une transaction à la fois."
+          &quot;Faciliter le quotidien des agents, une transaction à la fois.&quot;
         </div>
       </div>
 

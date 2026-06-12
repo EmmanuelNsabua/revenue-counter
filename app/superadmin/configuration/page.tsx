@@ -47,14 +47,14 @@ export default function SuperAdminConfigPage() {
             <CardTitle className="flex items-center gap-2 text-xl">
               <Smartphone className="text-primary" /> Application Terrain (Agents)
             </CardTitle>
-            <CardDescription>Comportement de l'application mobile utilisée pour le recouvrement.</CardDescription>
+            <CardDescription>Comportement de l&apos;application mobile utilisée pour le recouvrement.</CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-2">
                 <label className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">Mode hors-ligne autorisé (jours)</label>
                 <Input type="number" defaultValue={3} className="max-w-xs" />
-                <p className="text-xs text-muted-foreground mt-1">Délai avant blocage de l'app si non synchronisée.</p>
+                <p className="text-xs text-muted-foreground mt-1">Délai avant blocage de l&apos;app si non synchronisée.</p>
               </div>
               <div className="space-y-2">
                 <label className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">Limite encaissement sans sync (FC)</label>

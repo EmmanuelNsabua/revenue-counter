@@ -13,7 +13,7 @@ export default function DashboardPage() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
         <div>
           <h1 className="text-2xl font-bold tracking-tight">Tableau de bord</h1>
-          <p className="text-sm text-muted-foreground">Vue d'ensemble des recettes</p>
+          <p className="text-sm text-muted-foreground">Vue d&apos;ensemble des recettes</p>
         </div>
 
         <div className="flex flex-wrap items-center gap-3 w-full sm:w-auto">

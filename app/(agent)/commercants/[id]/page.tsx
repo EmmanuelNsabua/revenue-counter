@@ -9,8 +9,8 @@ import { RecentPaiements } from "@/components/dashboard/recent-paiements";
 import { useCommercant } from "@/hooks/use-commercants";
 import React from "react";
 
-export default function CommercantDetailPage({ params }: { params: any }) {
-  const { id } = React.use(params) as { id: string };
+export default function CommercantDetailPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = React.use(params);
   const { data: commercant, isLoading, isError } = useCommercant(id);
 
   if (isLoading) {
@@ -28,7 +28,7 @@ export default function CommercantDetailPage({ params }: { params: any }) {
         <AlertCircle className="w-12 h-12 text-destructive" />
         <div className="text-center">
           <h3 className="text-lg font-semibold">Profil introuvable</h3>
-          <p className="text-muted-foreground">Ce commerçant n'existe pas ou a été supprimé.</p>
+          <p className="text-muted-foreground">Ce commerçant n&apos;existe pas ou a été supprimé.</p>
         </div>
         <Link href="/commercants">
           <Button variant="outline">Retour à la liste</Button>

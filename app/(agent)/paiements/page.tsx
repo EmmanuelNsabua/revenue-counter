@@ -18,7 +18,7 @@ export default function PaiementsPage() {
         <AlertCircle className="w-12 h-12 text-destructive" />
         <div className="text-center">
           <h3 className="text-lg font-semibold">Erreur de chargement</h3>
-          <p className="text-muted-foreground">Impossible de récupérer l'historique des paiements.</p>
+          <p className="text-muted-foreground">Impossible de récupérer l&apos;historique des paiements.</p>
         </div>
       </div>
     );
