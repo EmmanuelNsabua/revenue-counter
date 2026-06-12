@@ -1,6 +1,6 @@
 "use client";
 
-import { CreditCard, AlertCircle } from "lucide-react";
+import { CreditCard, AlertCircle, ReceiptText } from "lucide-react";
 import {
   Table, TableBody, TableCell, TableHead,
   TableHeader, TableRow,
@@ -10,10 +10,19 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { useRouter } from "next/navigation";
 import { usePaiements } from "@/hooks/use-paiements";
 import { TableSkeleton } from "@/components/ui/skeletons";
-import { EmptyPaiements } from "@/components/ui/empty-state";
 import { formatCurrency, formatDateTime } from "@/lib/utils";
 
-export function RecentPaiements() {
+interface RecentPaiementsProps {
+  commercantId?: number | string;
+  title?: string;
+  description?: string;
+}
+
+export function RecentPaiements({ 
+  commercantId, 
+  title = "Transactions récentes", 
+  description = "Derniers paiements enregistrés" 
+}: RecentPaiementsProps) {
   const router = useRouter();
   const { data: paiements, isLoading, isError } = usePaiements();
 
@@ -24,30 +33,44 @@ export function RecentPaiements() {
           <AlertCircle className="h-10 w-10 text-destructive" />
           <div>
             <p className="text-sm font-semibold text-destructive">Historique indisponible</p>
-            <p className="text-xs text-destructive/80 max-w-[200px]">Impossible de charger vos dernières transactions.</p>
+            <p className="text-xs text-destructive/80 max-w-[200px]">Impossible de charger les transactions.</p>
           </div>
         </CardContent>
       </Card>
     );
   }
 
-  // On n'affiche que les 5 dernières transactions sur le dashboard
-  const recentTransactions = Array.isArray(paiements) ? paiements.slice(0, 5) : [];
+  // Filtrage par commerçant si ID fourni, sinon les 5 derniers globaux
+  let displayTransactions = Array.isArray(paiements) ? paiements : [];
+  
+  if (commercantId) {
+    displayTransactions = displayTransactions.filter(
+      tx => tx.commercant_id.toString() === commercantId.toString()
+    );
+  } else {
+    displayTransactions = displayTransactions.slice(0, 5);
+  }
 
   return (
     <Card className="border-border/50">
       <CardHeader className="flex flex-row items-center justify-between">
         <div>
-          <CardTitle className="text-lg">Transactions récentes</CardTitle>
-          <CardDescription>Derniers paiements enregistrés</CardDescription>
+          <CardTitle className="text-lg">{title}</CardTitle>
+          <CardDescription>{description}</CardDescription>
         </div>
         <CreditCard size={16} className="text-muted-foreground" />
       </CardHeader>
       <CardContent>
         {isLoading ? (
           <TableSkeleton rows={5} cols={4} />
-        ) : recentTransactions.length === 0 ? (
-          <EmptyPaiements />
+        ) : displayTransactions.length === 0 ? (
+          <div className="flex flex-col items-center justify-center py-12 text-center border-2 border-dashed border-border rounded-xl bg-muted/5">
+            <ReceiptText className="h-10 w-10 text-muted-foreground/40 mb-3" />
+            <p className="text-sm font-medium text-muted-foreground">Pas de transactions récentes</p>
+            <p className="text-xs text-muted-foreground/60 mt-1">
+              {commercantId ? "Ce commerçant n'a pas encore de paiements enregistrés." : "Aucune transaction n'a été trouvée."}
+            </p>
+          </div>
         ) : (
           <Table>
             <TableHeader>
@@ -59,7 +82,7 @@ export function RecentPaiements() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {recentTransactions.map((tx) => (
+              {displayTransactions.map((tx) => (
                 <TableRow
                   key={tx.id}
                   className="cursor-pointer hover:bg-muted/50 transition-colors"

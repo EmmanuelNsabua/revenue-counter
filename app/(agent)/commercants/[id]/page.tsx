@@ -93,7 +93,11 @@ export default function CommercantDetailPage({ params }: { params: any }) {
 
         {/* History Table */}
         <div className="md:col-span-2">
-          <RecentPaiements />
+          <RecentPaiements 
+            commercantId={commercant.id} 
+            title="Historique des paiements"
+            description={`Dernières transactions de ${commercant.nom}`}
+          />
         </div>
       </div>
     </div>
