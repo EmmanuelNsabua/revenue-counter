@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Lock, User, AlertCircle, CheckCircle2, Eye, EyeOff } from "lucide-react";
@@ -10,6 +9,7 @@ import { useAuth } from "@/providers/auth-provider";
 import { api } from "@/lib/api";
 import { AuthResponse } from "@/types/auth";
 import axios from "axios";
+import Logo from "@/components/ui/Logo";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -80,26 +80,15 @@ export default function LoginPage() {
     <div className="min-h-screen w-full flex bg-background">
       {/* Left Column - Branding */}
       <div 
-        className="hidden lg:flex lg:w-1/2 bg-primary relative flex-col justify-between p-12 overflow-hidden text-primary-foreground"
+        className="hidden lg:flex lg:w-1/2 bg-sidebar relative flex-col justify-between p-12 overflow-hidden text-primary-foreground"
         style={{
           backgroundImage: 'radial-gradient(rgba(255, 255, 255, 0.1) 1.5px, transparent 1.5px)',
           backgroundSize: '24px 24px'
         }}
       >
         <div className="relative z-10">
-          <div className="flex items-center gap-3 bg-white/10 w-fit px-4 py-2 rounded-full backdrop-blur-sm border border-white/20 mb-16">
-            <div className="w-8 h-8 relative rounded-full overflow-hidden bg-white flex-shrink-0">
-              <Image 
-                src="/assets/logo.png" 
-                alt="Logo Mairie de Lubumbashi" 
-                fill 
-                className="object-contain p-1"
-              />
-            </div>
-            <div className="flex flex-col">
-              <span className="font-bold text-sm leading-tight text-white">Revenue Counter</span>
-              <span className="text-[10px] uppercase tracking-wider text-white/70">Mairie de Lubumbashi</span>
-            </div>
+          <div className="bg-white/10 w-fit p-1 rounded-full backdrop-blur-sm border border-white/20 mb-16">
+            <Logo />
           </div>
 
           <h1 className="text-4xl xl:text-5xl font-bold leading-tight mb-6 text-white">
@@ -137,18 +126,9 @@ export default function LoginPage() {
         <div className="w-full max-w-md space-y-8">
           
           {/* Mobile Logo */}
-          <div className="flex lg:hidden items-center gap-3 mb-8">
-            <div className="w-10 h-10 relative rounded-full overflow-hidden bg-white ring-2 ring-primary/20">
-              <Image 
-                src="/assets/logo.png" 
-                alt="Logo Mairie de Lubumbashi" 
-                fill 
-                className="object-contain p-1"
-              />
-            </div>
-            <div>
-              <span className="font-bold text-lg block text-foreground">Revenue Counter</span>
-              <span className="text-xs text-muted-foreground uppercase tracking-wider">Mairie de Lubumbashi</span>
+          <div className="lg:hidden mb-8">
+            <div className="bg-white shadow-sm border border-border w-fit p-1 rounded-full">
+              <Logo />
             </div>
           </div>
 

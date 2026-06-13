@@ -51,7 +51,7 @@ export default function Topbar({
         {/* Mobile Logo */}
         <Link href="/dashboard" className="md:hidden flex items-center gap-2 sm:gap-3 min-w-0">
           <div className="relative flex-shrink-0 w-9 h-9 sm:w-10 sm:h-10 rounded-full overflow-hidden ring-2 ring-border">
-            <Image src="/assets/logo.png" alt="Logo" width={40} height={40} className="w-full h-full object-contain p-0.5 sm:p-1" />
+            <Image src="/assets/logo_rdc.webp" alt="Logo" fill className="w-full h-full object-contain p-0.5 sm:p-1" />
           </div>
           <div className="flex flex-col min-w-0">
             <span className="text-sm font-bold leading-tight truncate">Revenue Counter</span>

@@ -7,32 +7,57 @@ interface TableSkeletonProps {
 }
 export function TableSkeleton({ rows = 5, cols = 5 }: TableSkeletonProps) {
   return (
-    <div className="bg-card rounded-xl border border-border overflow-hidden">
-      <div className="overflow-x-auto">
-        <table className="w-full text-sm text-left">
-          <thead className="bg-muted/50 border-b border-border">
-            <tr>
-              {Array.from({ length: cols }).map((_, i) => (
-                <th key={i} className="px-6 py-4">
-                  <Skeleton className="h-3 w-20" />
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-border">
-            {Array.from({ length: rows }).map((_, rowIdx) => (
-              <tr key={rowIdx}>
-                {Array.from({ length: cols }).map((_, colIdx) => (
-                  <td key={colIdx} className="px-6 py-4">
-                    <Skeleton className={`h-4 ${colIdx === 0 ? "w-16" : colIdx === cols - 1 ? "w-12" : "w-28"}`} />
-                  </td>
+    <>
+      {/* Mobile Card Skeleton */}
+      <div className="md:hidden space-y-4">
+        {Array.from({ length: rows }).map((_, i) => (
+          <div key={i} className="p-4 border border-border/60 rounded-2xl bg-white space-y-4">
+            <div className="flex justify-between items-start">
+              <div className="space-y-2">
+                <Skeleton className="h-4 w-32" />
+                <Skeleton className="h-3 w-40" />
+              </div>
+              <Skeleton className="h-6 w-14 rounded-full" />
+            </div>
+            <div className="flex justify-between items-end pt-3 border-t border-border/40">
+              <div className="space-y-2">
+                <Skeleton className="h-3 w-28" />
+                <Skeleton className="h-3 w-20" />
+              </div>
+              <Skeleton className="h-6 w-20" />
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Desktop Table Skeleton */}
+      <div className="hidden md:block bg-card rounded-xl border border-border overflow-hidden">
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm text-left">
+            <thead className="bg-muted/50 border-b border-border">
+              <tr>
+                {Array.from({ length: cols }).map((_, i) => (
+                  <th key={i} className="px-6 py-4">
+                    <Skeleton className="h-3 w-20" />
+                  </th>
                 ))}
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody className="divide-y divide-border">
+              {Array.from({ length: rows }).map((_, rowIdx) => (
+                <tr key={rowIdx}>
+                  {Array.from({ length: cols }).map((_, colIdx) => (
+                    <td key={colIdx} className="px-6 py-4">
+                      <Skeleton className={`h-4 ${colIdx === 0 ? "w-16" : colIdx === cols - 1 ? "w-12" : "w-28"}`} />
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
-    </div>
+    </>
   );
 }
 

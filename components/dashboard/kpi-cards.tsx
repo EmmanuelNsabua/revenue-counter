@@ -45,7 +45,7 @@ export function KpiCards() {
   ];
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
+    <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4">
       {kpis.map((stat) => (
         <Card key={stat.label} className="border-border/50">
           <CardHeader className="flex flex-row items-center justify-between pb-2">

@@ -111,11 +111,11 @@ export default function PaiementDetailPage({ params }: { params: Promise<{ id: s
       </Card>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-md mx-auto">
-        <Button variant="outline" className="w-full gap-2 h-12 shadow-sm">
+        <Button variant="outline" size="lg" className="w-full shadow-sm">
           <Printer size={18} />
           Imprimer
         </Button>
-        <Button className="w-full gap-2 h-12 bg-[#25D366] hover:bg-[#1DA851] text-white shadow-sm">
+        <Button size="lg" className="w-full bg-[#25D366] hover:bg-[#1DA851] text-white shadow-sm">
           <WhatsAppIcon size={18} />
           WhatsApp
         </Button>
