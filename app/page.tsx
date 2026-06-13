@@ -30,6 +30,7 @@ export default function LoginPage() {
           router.push("/admin/dashboard");
           break;
         case "superadmin":
+        case "super_admin":
           router.push("/superadmin/dashboard");
           break;
       }
@@ -50,6 +51,7 @@ export default function LoginPage() {
       const { access_token, agent: userData } = response.data;
       login(access_token, userData);
     } catch (err: unknown) {
+      console.error("Login error details:", err);
       if (axios.isAxiosError(err)) {
         if (err.response?.status === 401) {
           setError("Code Agent ou mot de passe incorrect.");

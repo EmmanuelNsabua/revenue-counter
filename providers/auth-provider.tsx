@@ -66,8 +66,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setSession(token, user);
     setUser(user);
     
-    // Redirection basée sur le rôle (minuscules depuis le backend)
-    switch (user.role) {
+    console.log("Login success, redirecting for role:", user.role);
+
+    // Redirection basée sur le rôle (insensible à la casse)
+    const role = user.role.toLowerCase();
+    
+    switch (role) {
       case "agent":
         router.push("/dashboard");
         break;
@@ -75,9 +79,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         router.push("/admin/dashboard");
         break;
       case "superadmin":
+      case "super_admin":
         router.push("/superadmin/dashboard");
         break;
       default:
+        console.warn("Unknown role:", role);
         router.push("/");
     }
   };

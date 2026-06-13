@@ -5,7 +5,7 @@ import { getSession, clearSession } from "./auth";
  * CONFIGURATION AXIOS GLOBALE
  * Centralise les appels API vers le backend Laravel sur Render.
  */
-const API_BASE_URL = "https://revenue-counter-api.onrender.com/api";
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "https://revenue-counter-api.onrender.com/api";
 
 export const api = axios.create({
   baseURL: API_BASE_URL,
