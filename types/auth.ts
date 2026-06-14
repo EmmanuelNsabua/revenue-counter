@@ -5,6 +5,12 @@ export interface User {
   nom: string;
   code_agent: string;
   role: UserRole;
+  actif?: boolean;
+  zone_id?: number;
+  zone?: {
+    id: number;
+    nom: string;
+  };
 }
 
 export interface AuthResponse {

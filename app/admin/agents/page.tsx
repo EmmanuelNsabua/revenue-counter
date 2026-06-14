@@ -8,14 +8,13 @@ import { Search, UserPlus, Filter, MoreVertical } from "lucide-react";
 import {
   DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { mockAgents } from "@/mocks/admin";
+import { useAgents } from "@/hooks/use-agents";
+import { User } from "@/types/auth";
 import { TableSkeleton } from "@/components/ui/skeletons";
 import { EmptyAgents } from "@/components/ui/empty-state";
 
 export default function AdminAgentsPage() {
-  // isLoading simulé — sera remplacé par useQuery en Phase 4
-  const [isLoading] = useState(false);
-  const agents = mockAgents;
+  const { data: agents = [], isLoading } = useAgents();
 
   return (
     <div className="space-y-6 max-w-7xl pb-16 md:pb-0">
@@ -60,25 +59,25 @@ export default function AdminAgentsPage() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-border">
-                {agents.map((agent, i) => (
-                  <tr key={i} className="hover:bg-muted/30 transition-colors">
-                    <td className="px-6 py-4 font-medium">{agent.id}</td>
-                    <td className="px-6 py-4">{agent.name}</td>
-                    <td className="px-6 py-4">{agent.zone}</td>
+                {agents.map((agent: User) => (
+                  <tr key={agent.id} className="hover:bg-muted/30 transition-colors">
+                    <td className="px-6 py-4 font-medium">{agent.code_agent}</td>
+                    <td className="px-6 py-4">{agent.nom}</td>
+                    <td className="px-6 py-4">{agent.zone?.nom || "Non assigné"}</td>
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-2">
                         <div className="flex-1 h-2 bg-secondary rounded-full w-16">
                           <div
-                            className={`h-full rounded-full ${parseInt(agent.perf) > 80 ? "bg-primary" : parseInt(agent.perf) > 50 ? "bg-rdc-yellow" : "bg-rdc-red"}`}
-                            style={{ width: agent.perf }}
+                            className="h-full rounded-full bg-rdc-yellow"
+                            style={{ width: "50%" }}
                           />
                         </div>
-                        <span className="text-xs font-medium">{agent.perf}</span>
+                        <span className="text-xs font-medium">N/A</span>
                       </div>
                     </td>
                     <td className="px-6 py-4">
-                      <Badge variant="outline" className={agent.status === "Actif" ? "bg-primary/10 text-primary border-primary/20" : "bg-destructive/10 text-destructive border-destructive/20"}>
-                        {agent.status}
+                      <Badge variant="outline" className={agent.actif ? "bg-primary/10 text-primary border-primary/20" : "bg-destructive/10 text-destructive border-destructive/20"}>
+                        {agent.actif ? "Actif" : "Inactif"}
                       </Badge>
                     </td>
                     <td className="px-6 py-4 text-right">
@@ -89,8 +88,8 @@ export default function AdminAgentsPage() {
                         <DropdownMenuContent align="end">
                           <DropdownMenuItem>Voir le profil</DropdownMenuItem>
                           <DropdownMenuItem>Historique des collectes</DropdownMenuItem>
-                          <DropdownMenuItem className={agent.status === "Actif" ? "text-destructive" : "text-primary"}>
-                            {agent.status === "Actif" ? "Désactiver l'agent" : "Activer l'agent"}
+                          <DropdownMenuItem className={agent.actif ? "text-destructive" : "text-primary"}>
+                            {agent.actif ? "Désactiver l'agent" : "Activer l'agent"}
                           </DropdownMenuItem>
                         </DropdownMenuContent>
                       </DropdownMenu>

@@ -3,7 +3,14 @@ import { statsService } from "@/services/stats";
 
 export const useAgentStats = () => {
   return useQuery({
-    queryKey: ["stats"],
+    queryKey: ["stats", "agent"],
+    queryFn: statsService.getAgentStats,
+  });
+};
+
+export const useAdminStats = () => {
+  return useQuery({
+    queryKey: ["stats", "admin"],
     queryFn: statsService.getAgentStats,
   });
 };

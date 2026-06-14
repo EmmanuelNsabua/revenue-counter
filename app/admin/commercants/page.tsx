@@ -10,14 +10,15 @@ import Link from "next/link";
 import {
   DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { mockAdminCommercants } from "@/mocks/admin";
+
 import { TableSkeleton } from "@/components/ui/skeletons";
 import { EmptyCommercants } from "@/components/ui/empty-state";
 
+import { useCommercants } from "@/hooks/use-commercants";
+import { Commercant } from "@/types/commercant";
+
 export default function AdminCommercantsPage() {
-  // isLoading simulé — sera remplacé par useQuery en Phase 4
-  const [isLoading] = useState(false);
-  const commercants = mockAdminCommercants;
+  const { data: commercants = [], isLoading } = useCommercants();
 
   return (
     <div className="space-y-6 max-w-7xl pb-16 md:pb-0">
@@ -64,22 +65,22 @@ export default function AdminCommercantsPage() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-border">
-                {commercants.map((commercant, i) => (
-                  <tr key={i} className="hover:bg-muted/30 transition-colors">
+                {commercants.map((commercant: Commercant) => (
+                  <tr key={commercant.id} className="hover:bg-muted/30 transition-colors">
                     <td className="px-6 py-4 font-medium text-muted-foreground">{commercant.id}</td>
                     <td className="px-6 py-4 font-semibold">
                       <div className="flex items-center gap-2">
                         <div className="w-8 h-8 rounded bg-primary/10 flex items-center justify-center text-primary">
                           <Store size={14} />
                         </div>
-                        {commercant.name}
+                        {commercant.nom}
                       </div>
                     </td>
-                    <td className="px-6 py-4">{commercant.activity}</td>
-                    <td className="px-6 py-4">{commercant.zone}</td>
+                    <td className="px-6 py-4">{commercant.type_activite || "Non défini"}</td>
+                    <td className="px-6 py-4">{commercant.emplacement || "Non définie"}</td>
                     <td className="px-6 py-4">
-                      <Badge variant="outline" className={commercant.status === "Actif" ? "bg-primary/10 text-primary border-primary/20" : "bg-destructive/10 text-destructive border-destructive/20"}>
-                        {commercant.status}
+                      <Badge variant="outline" className={commercant.actif ? "bg-primary/10 text-primary border-primary/20" : "bg-destructive/10 text-destructive border-destructive/20"}>
+                        {commercant.actif ? "Actif" : "Inactif"}
                       </Badge>
                     </td>
                     <td className="px-6 py-4 text-right">
@@ -96,8 +97,8 @@ export default function AdminCommercantsPage() {
                           <DropdownMenuItem className="gap-2 cursor-pointer">
                             <Edit3 size={14} /> Modifier
                           </DropdownMenuItem>
-                          <DropdownMenuItem className={commercant.status === "Actif" ? "text-destructive" : "text-primary"}>
-                            {commercant.status === "Actif" ? "Désactiver" : "Activer"}
+                          <DropdownMenuItem className={commercant.actif ? "text-destructive" : "text-primary"}>
+                            {commercant.actif ? "Désactiver" : "Activer"}
                           </DropdownMenuItem>
                         </DropdownMenuContent>
                       </DropdownMenu>

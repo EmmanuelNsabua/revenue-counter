@@ -62,7 +62,7 @@ export default function Topbar({
         {/* Desktop Date */}
         <div className="hidden md:flex items-center gap-2 text-sm font-medium text-foreground">
           <Calendar size={16} className="text-muted-foreground" />
-          <span className="capitalize">{today}</span>
+          <span className="capitalize" suppressHydrationWarning>{today}</span>
         </div>
       </div>
 

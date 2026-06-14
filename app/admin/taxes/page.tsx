@@ -5,14 +5,16 @@ import { Button } from "@/components/ui/button";
 import { ActionButton } from "@/components/ui/action-button";
 import { Plus, Edit3, ShieldAlert } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import { mockAdminTaxes } from "@/mocks/admin";
+
 import { CardGridSkeleton } from "@/components/ui/skeletons";
 import { EmptyState } from "@/components/ui/empty-state";
 
+import { useTaxes } from "@/hooks/use-taxes";
+import { Taxe } from "@/types/paiement";
+import { formatCurrency } from "@/lib/utils";
+
 export default function AdminTaxesPage() {
-  // isLoading simulé — sera remplacé par useQuery en Phase 4
-  const [isLoading] = useState(false);
-  const taxes = mockAdminTaxes;
+  const { data: taxes = [], isLoading } = useTaxes();
 
   return (
     <div className="space-y-6 max-w-7xl pb-16 md:pb-0">
@@ -44,26 +46,26 @@ export default function AdminTaxesPage() {
         />
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {taxes.map((tax, i) => (
-            <div key={i} className="bg-card rounded-xl border border-border p-5 relative overflow-hidden group">
+          {taxes.map((tax: Taxe) => (
+            <div key={tax.id} className="bg-card rounded-xl border border-border p-5 relative overflow-hidden group">
               <div className="flex justify-between items-start mb-4">
-                <Badge variant="outline" className={tax.status === "Active" ? "bg-primary/10 text-primary border-primary/20" : "bg-rdc-yellow/10 text-rdc-yellow border-rdc-yellow/20"}>
-                  {tax.status}
+                <Badge variant="outline" className="bg-primary/10 text-primary border-primary/20">
+                  Active
                 </Badge>
                 <Button variant="ghost" size="icon" className="h-8 w-8 opacity-0 group-hover:opacity-100 transition-opacity">
                   <Edit3 size={16} className="text-muted-foreground" />
                 </Button>
               </div>
-              <h3 className="font-semibold text-lg mb-1">{tax.name}</h3>
-              <p className="text-xs text-muted-foreground mb-4 uppercase tracking-wider">{tax.id}</p>
+              <h3 className="font-semibold text-lg mb-1">{tax.libelle}</h3>
+              <p className="text-xs text-muted-foreground mb-4 uppercase tracking-wider">TAXE-{tax.id}</p>
               <div className="flex items-end justify-between mt-6">
                 <div>
                   <p className="text-xs text-muted-foreground mb-1">Montant par défaut</p>
-                  <p className="text-2xl font-bold text-foreground">{tax.amount}</p>
+                  <p className="text-2xl font-bold text-foreground">{formatCurrency(tax.montant)}</p>
                 </div>
                 <div className="text-right">
                   <p className="text-xs text-muted-foreground mb-1">Fréquence</p>
-                  <p className="text-sm font-medium">{tax.type}</p>
+                  <p className="text-sm font-medium capitalize">{tax.frequence}</p>
                 </div>
               </div>
             </div>

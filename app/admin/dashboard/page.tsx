@@ -3,18 +3,29 @@
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Users, TrendingUp, AlertCircle, Banknote, MapPin } from "lucide-react";
-import { mockAdminStats, mockAdminActivities, mockZonePerformance } from "@/mocks/admin";
+
 import { KpiSkeleton, ActivitySkeleton, ProgressSkeleton } from "@/components/ui/skeletons";
 import { EmptyAlertes } from "@/components/ui/empty-state";
+
+import { useAdminStats } from "@/hooks/use-stats";
+import { formatCurrency } from "@/lib/utils";
 
 const statIcons = [Banknote, Users, TrendingUp, AlertCircle];
 
 export default function AdminDashboardPage() {
-  // isLoading simulé — sera remplacé par useQuery en Phase 4
-  const [isLoading] = useState(false);
-  const stats = mockAdminStats;
-  const activities = mockAdminActivities;
-  const zonePerf = mockZonePerformance;
+  const { data: stats, isLoading } = useAdminStats();
+
+  const kpis = [
+    { label: "Recette du jour", value: stats ? formatCurrency(stats.somme_collectee) : "0", trend: "Aujourd'hui" },
+    { label: "Transactions", value: stats ? stats.nombre_transactions.toString() : "0", trend: "Aujourd'hui" },
+    { label: "Contribuables non réglés", value: stats ? stats.commercants_non_regles.toString() : "0", trend: "Aujourd'hui" },
+    { label: "Alertes", value: "0", trend: "Aujourd'hui" },
+  ];
+
+  // Les performances par zone ne sont pas encore dynamisées côté backend
+  const zonePerf: any[] = []; 
+  // On utilise les transactions récentes à la place des activités génériques
+  const activities = stats?.recent_transactions || [];
 
   return (
     <div className="space-y-6 max-w-7xl pb-16 md:pb-0">
@@ -29,7 +40,7 @@ export default function AdminDashboardPage() {
         <KpiSkeleton count={4} cols={4} />
       ) : (
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-          {stats.map((stat, i) => {
+          {kpis.map((stat, i) => {
             const Icon = statIcons[i];
             return (
               <Card key={i}>
@@ -89,20 +100,20 @@ export default function AdminDashboardPage() {
               <EmptyAlertes />
             ) : (
               <div className="space-y-4">
-                {activities.map((act, i) => (
+                {activities.map((act: any, i: number) => (
                   <div key={i} className="flex items-start gap-3 border-b border-border last:border-0 pb-3 last:pb-0">
-                    <div className={`p-1.5 rounded-full mt-0.5 ${act.status === "warning" ? "bg-rdc-yellow/20 text-rdc-yellow" : "bg-primary/20 text-primary"}`}>
-                      {act.status === "warning" ? <AlertCircle size={14} /> : <Banknote size={14} />}
+                    <div className="p-1.5 rounded-full mt-0.5 bg-primary/20 text-primary">
+                      <Banknote size={14} />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium">{act.agent}</p>
+                      <p className="text-sm font-medium">{act.commercant?.nom || `Commerçant #${act.commercant_id}`}</p>
                       <p className="text-xs text-muted-foreground flex items-center gap-1">
-                        <MapPin size={10} /> {act.zone}
+                        <MapPin size={10} /> {act.commercant?.emplacement || "Non définie"}
                       </p>
                     </div>
                     <div className="text-right">
-                      <p className="text-sm font-bold">{act.amount}</p>
-                      <p className="text-xs text-muted-foreground">{act.time}</p>
+                      <p className="text-sm font-bold">{formatCurrency(act.montant)}</p>
+                      <p className="text-xs text-muted-foreground">{new Date(act.created_at).toLocaleTimeString()}</p>
                     </div>
                   </div>
                 ))}

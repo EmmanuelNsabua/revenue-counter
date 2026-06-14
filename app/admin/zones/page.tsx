@@ -6,14 +6,13 @@ import { ActionButton } from "@/components/ui/action-button";
 import { Plus, Users, Map as MapIcon, ArrowRight } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { mockZones } from "@/mocks/admin";
+import { useZones } from "@/hooks/use-zones";
+import { Zone } from "@/services/zones";
 import { CardGridSkeleton } from "@/components/ui/skeletons";
 import { EmptyState } from "@/components/ui/empty-state";
 
 export default function AdminZonesPage() {
-  // isLoading simulé — sera remplacé par useQuery en Phase 4
-  const [isLoading] = useState(false);
-  const zones = mockZones;
+  const { data: zones = [], isLoading } = useZones();
 
   return (
     <div className="space-y-6 max-w-7xl pb-16 md:pb-0">
@@ -37,29 +36,29 @@ export default function AdminZonesPage() {
         />
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {zones.map((zone, i) => (
-            <Card key={i} className="overflow-hidden">
+          {zones.map((zone: Zone) => (
+            <Card key={zone.id} className="overflow-hidden">
               <div className="h-2 w-full bg-primary" />
               <CardHeader className="pb-2">
                 <CardTitle className="flex items-center gap-2 text-lg">
                   <MapIcon size={18} className="text-primary" />
-                  {zone.name}
+                  {zone.nom}
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-3 gap-4 my-6">
                   <div className="text-center">
-                    <p className="text-2xl font-bold text-foreground">{zone.agentsCount}</p>
+                    <p className="text-2xl font-bold text-foreground">{zone.agents_count || 0}</p>
                     <p className="text-xs text-muted-foreground flex items-center justify-center gap-1 mt-1">
                       <Users size={12} /> Agents
                     </p>
                   </div>
                   <div className="text-center border-l border-r border-border">
-                    <p className="text-2xl font-bold text-foreground">{zone.shopsCount}</p>
+                    <p className="text-2xl font-bold text-foreground">{zone.commercants_count || 0}</p>
                     <p className="text-xs text-muted-foreground mt-1">Commerçants</p>
                   </div>
                   <div className="text-center">
-                    <p className="text-2xl font-bold text-foreground">{zone.collectRate}</p>
+                    <p className="text-2xl font-bold text-foreground">N/A</p>
                     <p className="text-xs text-muted-foreground mt-1">Taux Recouv.</p>
                   </div>
                 </div>
@@ -71,14 +70,14 @@ export default function AdminZonesPage() {
                   </DialogTrigger>
                   <DialogContent className="sm:max-w-md">
                     <DialogHeader>
-                      <DialogTitle>Attributions - {zone.name}</DialogTitle>
+                      <DialogTitle>Attributions - {zone.nom}</DialogTitle>
                       <DialogDescription>Gérez les agents autorisés à recouvrer dans cette zone.</DialogDescription>
                     </DialogHeader>
                     <div className="space-y-4 py-4">
                       <div className="space-y-2">
                         <h4 className="text-sm font-semibold flex items-center justify-between">
                           Agents assignés (Actuels)
-                          <span className="bg-primary/10 text-primary px-2 py-0.5 rounded text-xs">{zone.agentsCount}</span>
+                          <span className="bg-primary/10 text-primary px-2 py-0.5 rounded text-xs">{zone.agents_count || 0}</span>
                         </h4>
                         <div className="border border-border rounded-lg divide-y divide-border">
                           <div className="flex items-center justify-between p-3 bg-muted/30">
@@ -87,8 +86,8 @@ export default function AdminZonesPage() {
                                 <Users size={14} />
                               </div>
                               <div>
-                                <p className="text-sm font-medium">Agent 001</p>
-                                <p className="text-xs text-muted-foreground">ID: AG-001</p>
+                                <p className="text-sm font-medium">--</p>
+                                <p className="text-xs text-muted-foreground">Données dynamiques non prêtes</p>
                               </div>
                             </div>
                             <Button variant="ghost" size="sm" className="text-destructive h-8 text-xs">Retirer</Button>
