@@ -10,7 +10,7 @@ import { CardGridSkeleton } from "@/components/ui/skeletons";
 import { EmptyState } from "@/components/ui/empty-state";
 
 import { useTaxes } from "@/hooks/use-taxes";
-import { Taxe } from "@/types/paiement";
+import { Taxe } from "@/types/taxe";
 import { formatCurrency } from "@/lib/utils";
 
 export default function AdminTaxesPage() {

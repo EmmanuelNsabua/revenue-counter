@@ -76,7 +76,7 @@ export default function AdminCommercantsPage() {
                         {commercant.nom}
                       </div>
                     </td>
-                    <td className="px-6 py-4">{commercant.type_activite || "Non défini"}</td>
+                    <td className="px-6 py-4">{commercant.activite || "Non défini"}</td>
                     <td className="px-6 py-4">{commercant.emplacement || "Non définie"}</td>
                     <td className="px-6 py-4">
                       <Badge variant="outline" className={commercant.actif ? "bg-primary/10 text-primary border-primary/20" : "bg-destructive/10 text-destructive border-destructive/20"}>

@@ -4,6 +4,7 @@ export interface AgentStats {
   somme_collectee: number;
   nombre_transactions: number;
   commercants_non_regles: number;
+  recent_transactions?: any[];
 }
 
 export const statsService = {
