@@ -1,10 +1,13 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ArrowLeft, Store, Tag, MapPin, Phone, History, CreditCard, AlertCircle } from "lucide-react";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function AdminCommercantDetailsPage({ params }: { params: { id: string } }) {
+  const router = useRouter();
   const commercantId = params.id || "COM-001";
   
   const mockHistorique = [
@@ -16,11 +19,14 @@ export default function AdminCommercantDetailsPage({ params }: { params: { id: s
   return (
     <div className="space-y-6 max-w-5xl mx-auto pb-16 md:pb-0">
       <div className="flex items-center gap-4 mb-6">
-        <Link href="/admin/commercants">
-          <Button variant="ghost" size="icon" className="rounded-full">
-            <ArrowLeft size={18} />
-          </Button>
-        </Link>
+        <Button 
+          variant="ghost" 
+          size="icon" 
+          className="rounded-full"
+          onClick={() => router.back()}
+        >
+          <ArrowLeft size={18} />
+        </Button>
         <div>
           <h1 className="text-2xl font-bold tracking-tight">Détails du Commerçant</h1>
           <p className="text-sm text-muted-foreground">Fiche complète et historique</p>

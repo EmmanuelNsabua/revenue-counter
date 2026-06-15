@@ -8,8 +8,10 @@ import { ArrowLeft, Printer, Loader2, AlertCircle, CheckCircle2 } from "lucide-r
 import { WhatsAppIcon } from "@/components/ui/whatsapp-icon";
 import Link from "next/link";
 import { formatCurrency, formatDateTime } from "@/lib/utils";
+import { useRouter } from "next/navigation";
 
 export default function PaiementDetailPage({ params }: { params: Promise<{ id: string }> }) {
+  const router = useRouter();
   const { id } = React.use(params);
   const { data: paiement, isLoading, isError } = usePaiement(id);
 
@@ -30,9 +32,7 @@ export default function PaiementDetailPage({ params }: { params: Promise<{ id: s
           <h3 className="text-lg font-semibold">Transaction introuvable</h3>
           <p className="text-muted-foreground">Le reçu demandé n&apos;existe pas ou vous n&apos;y avez pas accès.</p>
         </div>
-        <Link href="/paiements">
-          <Button variant="outline">Retour à l&apos;historique</Button>
-        </Link>
+        <Button variant="outline" onClick={() => router.back()}>Retour à l&apos;historique</Button>
       </div>
     );
   }
@@ -40,11 +40,14 @@ export default function PaiementDetailPage({ params }: { params: Promise<{ id: s
   return (
     <div className="space-y-6 max-w-3xl mx-auto pb-16 md:pb-0">
       <div className="flex items-center gap-4 mb-4">
-        <Link href="/paiements">
-          <Button variant="ghost" size="icon" className="h-8 w-8">
-            <ArrowLeft size={18} />
-          </Button>
-        </Link>
+        <Button 
+          variant="ghost" 
+          size="icon" 
+          className="h-8 w-8"
+          onClick={() => router.back()}
+        >
+          <ArrowLeft size={18} />
+        </Button>
         <h2 className="text-xl font-semibold tracking-tight">Reçu de paiement</h2>
       </div>
 

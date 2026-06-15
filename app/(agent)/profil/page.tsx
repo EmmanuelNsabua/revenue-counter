@@ -32,8 +32,8 @@ export default function ProfilPage() {
             <div>
               <CardTitle className="text-xl">{displayUser.nom}</CardTitle>
               <CardDescription className="flex items-center gap-1.5 mt-1">
-                <Shield size={14} className="text-primary" />
-                {displayUser.role} — Code Agent: {displayUser.code}
+                {/* <Shield size={14} className="text-primary" /> */}
+                {displayUser.role}
               </CardDescription>
             </div>
           </CardHeader>
@@ -43,7 +43,7 @@ export default function ProfilPage() {
                 <p className="text-sm text-muted-foreground flex items-center gap-2">
                   <Shield size={14} /> Identifiant Système
                 </p>
-                <p className="font-medium text-foreground">#{user?.id || "..."}</p>
+                <p className="font-medium text-foreground">#{user?.code_agent || "..."}</p>
               </div>
               <div className="space-y-1">
                 <p className="text-sm text-muted-foreground flex items-center gap-2">

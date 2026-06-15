@@ -8,8 +8,10 @@ import Link from "next/link";
 import { RecentPaiements } from "@/components/dashboard/recent-paiements";
 import { useCommercant } from "@/hooks/use-commercants";
 import React from "react";
+import { useRouter } from "next/navigation";
 
 export default function CommercantDetailPage({ params }: { params: Promise<{ id: string }> }) {
+  const router = useRouter();
   const { id } = React.use(params);
   const { data: commercant, isLoading, isError } = useCommercant(id);
 
@@ -30,9 +32,7 @@ export default function CommercantDetailPage({ params }: { params: Promise<{ id:
           <h3 className="text-lg font-semibold">Profil introuvable</h3>
           <p className="text-muted-foreground">Ce commerçant n&apos;existe pas ou a été supprimé.</p>
         </div>
-        <Link href="/commercants">
-          <Button variant="outline">Retour à la liste</Button>
-        </Link>
+        <Button variant="outline" onClick={() => router.back()}>Retour à la liste</Button>
       </div>
     );
   }
@@ -40,11 +40,14 @@ export default function CommercantDetailPage({ params }: { params: Promise<{ id:
   return (
     <div className="space-y-6 max-w-5xl pb-16 md:pb-0">
       <div className="flex items-center gap-4 mb-4">
-        <Link href="/commercants">
-          <Button variant="ghost" size="icon" className="h-8 w-8">
-            <ArrowLeft size={18} />
-          </Button>
-        </Link>
+        <Button 
+          variant="ghost" 
+          size="icon" 
+          className="h-8 w-8"
+          onClick={() => router.back()}
+        >
+          <ArrowLeft size={18} />
+        </Button>
         <h2 className="text-xl font-semibold tracking-tight">Détail du commerçant</h2>
       </div>
 

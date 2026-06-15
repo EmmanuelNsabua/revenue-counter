@@ -35,7 +35,7 @@ function FormContent() {
   const [modePaiement, setModePaiement] = useState<ModePaiement>("cash");
 
   const { data: taxes, isLoading: taxesLoading } = useTaxes();
-  const { data: searchResults, isLoading: searchLoading } = useCommercants(searchTerm);
+  const { data: searchResults, isLoading: searchLoading } = useCommercants({ search: searchTerm });
   const createMutation = useCreatePaiement();
 
   // On dérive le commerçant sélectionné directement des résultats de recherche
@@ -160,7 +160,7 @@ function FormContent() {
             <Input
               id="commercant"
               type="text"
-              placeholder="Ex: AT123456"
+              placeholder="Ex: CD-KEN-123456"
               className="pl-9 w-full uppercase"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}

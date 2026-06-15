@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Save, Store, MapPin, Tag, Phone, ArrowLeft, CheckCircle2 } from "lucide-react";
-import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
@@ -30,11 +29,14 @@ export default function AdminCreateCommercantPage() {
   return (
     <div className="space-y-6 max-w-3xl mx-auto pb-16 md:pb-0">
       <div className="flex items-center gap-4 mb-6">
-        <Link href="/admin/commercants">
-          <Button variant="ghost" size="icon" className="rounded-full">
-            <ArrowLeft size={18} />
-          </Button>
-        </Link>
+        <Button 
+          variant="ghost" 
+          size="icon" 
+          className="rounded-full"
+          onClick={() => router.back()}
+        >
+          <ArrowLeft size={18} />
+        </Button>
         <div>
           <h1 className="text-2xl font-bold tracking-tight">Nouveau Commerçant</h1>
           <p className="text-sm text-muted-foreground">Créer une nouvelle fiche dans le registre.</p>
@@ -104,9 +106,7 @@ export default function AdminCreateCommercantPage() {
             </div>
 
             <div className="pt-4 flex items-center justify-end gap-3 border-t border-border">
-              <Link href="/admin/commercants">
-                <Button type="button" variant="outline">Annuler</Button>
-              </Link>
+              <Button type="button" variant="outline" onClick={() => router.back()}>Annuler</Button>
               <Button type="submit" disabled={isSubmitting} className="gap-2">
                 <Save size={16} />
                 {isSubmitting ? "Enregistrement..." : "Créer le commerçant"}

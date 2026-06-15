@@ -1,10 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
 import { commercantsService } from "@/services/commercants";
 
-export const useCommercants = (search?: string) => {
+export const useCommercants = (filters?: { search?: string; zone?: string; status?: string }) => {
   return useQuery({
-    queryKey: ["commercants", search],
-    queryFn: () => commercantsService.getAll(search),
+    queryKey: ["commercants", filters],
+    queryFn: () => commercantsService.getAll(filters),
   });
 };
 

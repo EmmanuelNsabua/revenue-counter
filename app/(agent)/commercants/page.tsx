@@ -4,17 +4,44 @@ import { useState } from "react";
 import { CommercantFilters } from "@/components/commercants/commercant-filters";
 import { CommercantTable } from "@/components/commercants/commercant-table";
 import { Badge } from "@/components/ui/badge";
-import { Store, CheckCircle, XCircle, AlertCircle } from "lucide-react";
+import { ActionButton } from "@/components/ui/action-button";
+import { Store, CheckCircle, XCircle, AlertCircle, Download } from "lucide-react";
 import { useCommercants } from "@/hooks/use-commercants";
 import { TableSkeleton } from "@/components/ui/skeletons";
 import { EmptyCommercants } from "@/components/ui/empty-state";
+import { exportToExcel } from "@/lib/export";
 
 export default function CommerciantsPage() {
   const [search, setSearch] = useState("");
-  const { data: commercants, isLoading, isError } = useCommercants(search);
+  const [zone, setZone] = useState("toutes");
+  const [status, setStatus] = useState("tous");
+
+  const { data: commercants, isLoading, isError } = useCommercants({
+    search: search || undefined,
+    zone: zone !== "toutes" ? zone : undefined,
+    status: status !== "tous" ? status : undefined,
+  });
 
   const actifs = commercants?.filter((c) => c.actif).length || 0;
   const suspendus = commercants?.filter((c) => !c.actif).length || 0;
+
+  const handleExport = () => {
+    if (!commercants || commercants.length === 0) return;
+    
+    exportToExcel(
+      commercants,
+      "export_commercants",
+      {
+        id: "ID System",
+        nom: "Nom",
+        numero_document: "Code Commerçant",
+        emplacement: "Emplacement",
+        activite: "Secteur Activité",
+        telephone: "Téléphone",
+        actif: "Statut Actif"
+      }
+    );
+  };
 
   if (isError) {
     return (
@@ -36,6 +63,16 @@ export default function CommerciantsPage() {
           <p className="text-sm text-muted-foreground">Gestion des commerçants du marché Kenya</p>
         </div>
         <div className="flex gap-3 flex-wrap items-center">
+          <ActionButton 
+            variant="outline" 
+            className="gap-2 px-3 py-1.5 h-auto text-xs" 
+            toastMessage="Génération du fichier Excel (.xlsx)..."
+            onClick={handleExport}
+            disabled={isLoading || !commercants || commercants.length === 0}
+          >
+            <Download size={14} />
+            Exporter
+          </ActionButton>
           {!isLoading && commercants && (
             <>
               <Badge variant="outline" className="flex items-center gap-1.5 px-3 py-1.5 text-primary border-primary/20 bg-primary/5">
@@ -56,7 +93,14 @@ export default function CommerciantsPage() {
       </div>
 
       <div className="bg-card p-4 rounded-xl border border-border">
-        <CommercantFilters search={search} onSearchChange={setSearch} />
+        <CommercantFilters 
+          search={search} 
+          onSearchChange={setSearch}
+          zone={zone}
+          onZoneChange={setZone}
+          status={status}
+          onStatusChange={setStatus}
+        />
       </div>
 
       {isLoading ? (

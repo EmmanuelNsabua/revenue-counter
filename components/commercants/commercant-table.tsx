@@ -78,7 +78,7 @@ export function CommercantTable({ commercants }: CommercantTableProps) {
                     Détail
                   </Button>
                 </Link>
-                <Link href={`/paiements/nouveau?commercantId=${c.id}`} className="w-full">
+                <Link href={`/paiements/nouveau?commercantDoc=${c.numero_document}`} className="w-full">
                   <Button className="w-full gap-2">
                     <Plus size={16} />
                     Payer
@@ -136,7 +136,7 @@ export function CommercantTable({ commercants }: CommercantTableProps) {
                   </Badge>
                 </TableCell>
                 <TableCell className="text-right space-x-2">
-                  <Link href={`/paiements/nouveau?commercantId=${c.id}`}>
+                  <Link href={`/paiements/nouveau?commercantDoc=${c.numero_document}`}>
                     <Button size="sm" className="gap-1">
                       <Plus size={14} /> Payer
                     </Button>

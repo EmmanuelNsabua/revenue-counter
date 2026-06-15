@@ -13,11 +13,17 @@ interface CommercantResponse {
 
 export const commercantsService = {
   /**
-   * Récupère la liste des commerçants avec recherche optionnelle
+   * Récupère la liste des commerçants avec filtres optionnels
    */
-  getAll: async (search?: string) => {
+  getAll: async (params?: { search?: string; zone?: string; status?: string }) => {
+    // On nettoie mais on ne force plus la casse car le backend semble sensible à la casse
+    // notamment pour les codes commerçants (CD-KEN-...)
+    const cleanParams = {
+      ...params,
+      search: params?.search?.trim(),
+    };
     const response = await api.get<CommercantsResponse>("/commercants", {
-      params: search ? { search } : {},
+      params: cleanParams,
     });
     return response.data.data;
   },

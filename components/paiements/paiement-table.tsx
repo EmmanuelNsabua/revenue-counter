@@ -32,40 +32,6 @@ export function PaiementTable({ paiements }: PaiementTableProps) {
 
   return (
     <div className="space-y-4">
-      {/* Filtres */}
-      <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center bg-card p-4 rounded-xl border border-border">
-        <div className="relative w-full sm:max-w-xs">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-          <Input placeholder="Référence (ex: TXN-0091)" className="pl-9" />
-        </div>
-        <div className="grid grid-cols-2 gap-4 w-full sm:w-auto">
-          <Select defaultValue="aujourdhui">
-            <SelectTrigger className="w-full sm:w-[180px]">
-              <Calendar className="mr-2 h-4 w-4 text-muted-foreground" />
-              <SelectValue placeholder="Date" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="aujourdhui">Aujourd&apos;hui</SelectItem>
-              <SelectItem value="hier">Hier</SelectItem>
-              <SelectItem value="semaine">Cette semaine</SelectItem>
-              <SelectItem value="mois">Ce mois</SelectItem>
-            </SelectContent>
-          </Select>
-          <Select defaultValue="toutes">
-            <SelectTrigger className="w-full sm:w-[180px]">
-              <MapPin className="mr-2 h-4 w-4 text-muted-foreground" />
-              <SelectValue placeholder="Zone" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="toutes">Toutes les zones</SelectItem>
-              <SelectItem value="A">Allée A</SelectItem>
-              <SelectItem value="B">Allée B</SelectItem>
-              <SelectItem value="C">Allée C</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-      </div>
-
       {paiements.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-12 text-center bg-card rounded-xl border border-border">
           <ReceiptText className="h-12 w-12 text-muted-foreground mb-4" />

@@ -66,8 +66,8 @@ export default function AdminCommercantsPage() {
               </thead>
               <tbody className="divide-y divide-border">
                 {commercants.map((commercant: Commercant) => (
-                  <tr key={commercant.id} className="hover:bg-muted/30 transition-colors">
-                    <td className="px-6 py-4 font-medium text-muted-foreground">{commercant.id}</td>
+                  <tr key={commercant.numero_document} className="hover:bg-muted/30 transition-colors">
+                    <td className="px-6 py-4 font-medium text-muted-foreground">{commercant.numero_document}</td>
                     <td className="px-6 py-4 font-semibold">
                       <div className="flex items-center gap-2">
                         <div className="w-8 h-8 rounded bg-primary/10 flex items-center justify-center text-primary">
@@ -89,7 +89,7 @@ export default function AdminCommercantsPage() {
                           <MoreVertical size={16} />
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
-                          <Link href={`/admin/commercants/${commercant.id}`}>
+                          <Link href={`/admin/commercants/${commercant.numero_document}`}>
                             <DropdownMenuItem className="gap-2 cursor-pointer">
                               <Eye size={14} /> Voir les détails
                             </DropdownMenuItem>

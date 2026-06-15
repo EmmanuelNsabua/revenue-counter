@@ -11,9 +11,20 @@ import {
 interface CommercantFiltersProps {
   search: string;
   onSearchChange: (value: string) => void;
+  zone: string;
+  onZoneChange: (value: string) => void;
+  status: string;
+  onStatusChange: (value: string) => void;
 }
 
-export function CommercantFilters({ search, onSearchChange }: CommercantFiltersProps) {
+export function CommercantFilters({ 
+  search, 
+  onSearchChange,
+  zone,
+  onZoneChange,
+  status,
+  onStatusChange
+}: CommercantFiltersProps) {
   return (
     <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
       <div className="relative w-full sm:max-w-sm">
@@ -27,7 +38,7 @@ export function CommercantFilters({ search, onSearchChange }: CommercantFiltersP
         />
       </div>
       <div className="grid grid-cols-2 gap-4 w-full sm:w-auto">
-        <Select defaultValue="tous">
+        <Select value={status} onValueChange={onStatusChange}>
           <SelectTrigger className="w-full sm:w-[180px]">
             <div className="flex items-center gap-2">
               <Activity className="h-4 w-4 text-muted-foreground" />
@@ -36,11 +47,11 @@ export function CommercantFilters({ search, onSearchChange }: CommercantFiltersP
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="tous">Tous les statuts</SelectItem>
-            <SelectItem value="Actif">Actif</SelectItem>
-            <SelectItem value="Suspendu">Suspendu</SelectItem>
+            <SelectItem value="actif">Actif</SelectItem>
+            <SelectItem value="suspendu">Suspendu</SelectItem>
           </SelectContent>
         </Select>
-        <Select defaultValue="toutes">
+        <Select value={zone} onValueChange={onZoneChange}>
           <SelectTrigger className="w-full sm:w-[180px]">
             <div className="flex items-center gap-2">
               <MapPin className="h-4 w-4 text-muted-foreground" />
