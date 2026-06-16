@@ -7,14 +7,12 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Search, Filter, Store, Eye, ShieldAlert } from "lucide-react";
 import Link from "next/link";
-import { mockSuperAdminCommercants } from "@/mocks/superadmin";
+import { useCommercants } from "@/hooks/use-commercants";
 import { TableSkeleton } from "@/components/ui/skeletons";
 import { EmptyCommercants } from "@/components/ui/empty-state";
 
 export default function SuperAdminCommercantsPage() {
-  // isLoading simulé — sera remplacé par useQuery en Phase 4
-  const [isLoading] = useState(false);
-  const commercants = mockSuperAdminCommercants;
+  const { data: commercants = [], isLoading } = useCommercants();
 
   return (
     <div className="space-y-6 max-w-7xl pb-16 md:pb-0">
@@ -50,29 +48,29 @@ export default function SuperAdminCommercantsPage() {
             <table className="w-full text-sm text-left">
               <thead className="bg-primary/5 text-foreground text-xs uppercase font-bold tracking-wider border-b border-border">
                 <tr>
-                  <th className="px-6 py-5">ID Commerçant</th>
+                  <th className="px-6 py-5">Code</th>
                   <th className="px-6 py-5">Nom</th>
-                  <th className="px-6 py-5">Structure</th>
+                  <th className="px-6 py-5">Activité</th>
                   <th className="px-6 py-5">Zone locale</th>
                   <th className="px-6 py-5">Statut</th>
                   <th className="px-6 py-5 text-right">Actions</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-border">
-                {commercants.map((commercant, i) => (
-                  <tr key={i} className="hover:bg-muted/50 transition-colors">
-                    <td className="px-6 py-5 font-bold text-muted-foreground">{commercant.id}</td>
+                {commercants.map((commercant) => (
+                  <tr key={commercant.id} className="hover:bg-muted/50 transition-colors">
+                    <td className="px-6 py-5 font-bold text-muted-foreground">{commercant.code_qr || commercant.id}</td>
                     <td className="px-6 py-5 font-bold text-foreground">
                       <div className="flex items-center gap-2">
                         <Store size={14} className="text-primary" />
-                        {commercant.name}
+                        {commercant.nom}
                       </div>
                     </td>
-                    <td className="px-6 py-5">{commercant.structure}</td>
-                    <td className="px-6 py-5 text-muted-foreground">{commercant.zone}</td>
+                    <td className="px-6 py-5">{commercant.activite}</td>
+                    <td className="px-6 py-5 text-muted-foreground">{commercant.adresse}</td>
                     <td className="px-6 py-5">
-                      <Badge variant={commercant.status === "Actif" ? "default" : "destructive"}>
-                        {commercant.status}
+                      <Badge variant="default">
+                        Actif
                       </Badge>
                     </td>
                     <td className="px-6 py-5 text-right">

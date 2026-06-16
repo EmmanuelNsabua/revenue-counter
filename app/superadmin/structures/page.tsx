@@ -5,14 +5,12 @@ import { ActionButton } from "@/components/ui/action-button";
 import { Plus, Building2, MapPin, ExternalLink } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { mockStructures } from "@/mocks/superadmin";
+import { useZones } from "@/hooks/use-zones";
 import { CardGridSkeleton } from "@/components/ui/skeletons";
 import { EmptyState } from "@/components/ui/empty-state";
 
 export default function SuperAdminStructuresPage() {
-  // isLoading simulé — sera remplacé par useQuery en Phase 4
-  const [isLoading] = useState(false);
-  const structures = mockStructures;
+  const { data: zones = [], isLoading } = useZones();
 
   return (
     <div className="space-y-6 max-w-7xl pb-16 md:pb-0">
@@ -29,7 +27,7 @@ export default function SuperAdminStructuresPage() {
 
       {isLoading ? (
         <CardGridSkeleton count={3} cols={3} />
-      ) : structures.length === 0 ? (
+      ) : zones.length === 0 ? (
         <EmptyState
           icon={Building2}
           title="Aucune structure enregistrée"
@@ -37,21 +35,21 @@ export default function SuperAdminStructuresPage() {
         />
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {structures.map((struct, i) => (
-            <Card key={i} className="flex flex-col">
+          {zones.map((zone) => (
+            <Card key={zone.id} className="flex flex-col">
               <CardHeader className="pb-4">
                 <div className="flex justify-between items-start mb-2">
-                  <Badge variant={struct.status === "Actif" ? "default" : "destructive"} className="uppercase text-[10px] tracking-wider">
-                    {struct.status}
+                  <Badge variant="default" className="uppercase text-[10px] tracking-wider">
+                    Actif
                   </Badge>
-                  <span className="text-xs font-bold text-muted-foreground">{struct.id}</span>
+                  <span className="text-xs font-bold text-muted-foreground">ID-{zone.id}</span>
                 </div>
                 <CardTitle className="text-xl font-bold flex items-start gap-2">
                   <Building2 size={24} className="text-primary flex-shrink-0 mt-0.5" />
-                  {struct.name}
+                  {zone.nom}
                 </CardTitle>
                 <CardDescription className="flex items-center gap-1 mt-1 text-sm">
-                  <MapPin size={14} /> {struct.location}
+                  <MapPin size={14} /> Localisation
                 </CardDescription>
               </CardHeader>
               <CardContent className="flex-1 flex flex-col justify-end">
@@ -62,10 +60,10 @@ export default function SuperAdminStructuresPage() {
                   </div>
                   <div>
                     <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">Agents</p>
-                    <p className="text-2xl font-black text-foreground">{struct.agents}</p>
+                    <p className="text-2xl font-black text-foreground">{zone.agents_count || 0}</p>
                   </div>
                 </div>
-                <ActionButton variant="outline" className="w-full gap-2" toastMessage="Accès aux paramètres locaux...">
+                <ActionButton variant="outline" className="w-full gap-2" toastMessage={`Gérer la structure ${zone.nom}`}>
                   Gérer la structure <ExternalLink size={14} />
                 </ActionButton>
               </CardContent>

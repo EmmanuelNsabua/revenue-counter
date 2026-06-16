@@ -4,18 +4,18 @@ import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Globe, Building2, TrendingUp, ShieldAlert, Users } from "lucide-react";
 import { ActionButton } from "@/components/ui/action-button";
-import { mockSuperAdminStats, mockStructurePerformance, mockAuditLogs } from "@/mocks/superadmin";
+import { useSuperAdminStats } from "@/hooks/use-superadmin";
 import { KpiSkeleton, ProgressSkeleton, ActivitySkeleton } from "@/components/ui/skeletons";
 import { EmptyAlertes } from "@/components/ui/empty-state";
 
 const statIcons = [Globe, Building2, Users, ShieldAlert];
 
 export default function SuperAdminDashboardPage() {
-  // isLoading simulé — sera remplacé par useQuery en Phase 4
-  const [isLoading] = useState(false);
-  const stats = mockSuperAdminStats;
-  const structures = mockStructurePerformance;
-  const auditLogs = mockAuditLogs;
+  const { data, isLoading } = useSuperAdminStats();
+
+  const stats = data?.stats || [];
+  const structures = data?.structures || [];
+  const auditLogs = data?.auditLogs || [];
 
   return (
     <div className="space-y-8 max-w-7xl pb-16 md:pb-0">

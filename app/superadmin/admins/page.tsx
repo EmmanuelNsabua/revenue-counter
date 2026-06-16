@@ -8,14 +8,15 @@ import { Search, UserPlus, Shield, MoreVertical } from "lucide-react";
 import {
   DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { mockAdmins } from "@/mocks/superadmin";
+import { useAgents } from "@/hooks/use-agents";
 import { TableSkeleton } from "@/components/ui/skeletons";
 import { EmptyAgents } from "@/components/ui/empty-state";
 
 export default function SuperAdminAdminsPage() {
-  // isLoading simulé — sera remplacé par useQuery en Phase 4
-  const [isLoading] = useState(false);
-  const admins = mockAdmins;
+  const { data: allAgents = [], isLoading } = useAgents();
+  
+  // Filtrer uniquement les administrateurs
+  const admins = allAgents.filter(agent => agent.role === 'admin');
 
   return (
     <div className="space-y-6 max-w-7xl pb-16 md:pb-0">
@@ -56,30 +57,30 @@ export default function SuperAdminAdminsPage() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-border">
-                {admins.map((admin, i) => (
-                  <tr key={i} className="hover:bg-muted/50 transition-colors">
-                    <td className="px-6 py-5 font-bold text-muted-foreground">{admin.id}</td>
+                {admins.map((admin) => (
+                  <tr key={admin.id} className="hover:bg-muted/50 transition-colors">
+                    <td className="px-6 py-5 font-bold text-muted-foreground">{admin.code_agent}</td>
                     <td className="px-6 py-5 font-bold text-foreground flex items-center gap-2">
                       <Shield size={14} className="text-primary" />
-                      {admin.name}
+                      {admin.nom}
                     </td>
-                    <td className="px-6 py-5">{admin.structure}</td>
-                    <td className="px-6 py-5 text-muted-foreground">{admin.lastLogin}</td>
+                    <td className="px-6 py-5">{admin.zone?.nom || "Non assigné"}</td>
+                    <td className="px-6 py-5 text-muted-foreground">-</td>
                     <td className="px-6 py-5">
-                      <Badge variant={admin.status === "Actif" ? "default" : "destructive"}>
-                        {admin.status}
+                      <Badge variant={admin.actif ? "default" : "destructive"}>
+                        {admin.actif ? "Actif" : "Inactif"}
                       </Badge>
                     </td>
                     <td className="px-6 py-5 text-right">
                       <DropdownMenu>
-                        <DropdownMenuTrigger className="flex h-8 w-8 items-center justify-center rounded-md hover:bg-muted text-muted-foreground transition-colors outline-none">
+                        <DropdownMenuTrigger className="flex h-8 w-8 items-center justify-center rounded-md hover:bg-muted text-muted-foreground transition-colors outline-none ml-auto">
                           <MoreVertical size={16} />
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end" className="w-48">
                           <DropdownMenuItem>Modifier les droits</DropdownMenuItem>
                           <DropdownMenuItem>Réinitialiser le mot de passe</DropdownMenuItem>
-                          <DropdownMenuItem className={admin.status === "Actif" ? "text-destructive" : "text-primary"}>
-                            {admin.status === "Actif" ? "Suspendre l'accès" : "Réactiver l'accès"}
+                          <DropdownMenuItem className={admin.actif ? "text-destructive" : "text-primary"}>
+                            {admin.actif ? "Suspendre l'accès" : "Réactiver l'accès"}
                           </DropdownMenuItem>
                         </DropdownMenuContent>
                       </DropdownMenu>

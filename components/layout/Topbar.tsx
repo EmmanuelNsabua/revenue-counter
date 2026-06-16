@@ -1,7 +1,7 @@
 "use client";
 
 import { Bell, Search, User, Calendar, LogOut, Settings, UserCircle } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Input } from "@/components/ui/input";
@@ -26,16 +26,21 @@ export default function Topbar({
   profilHref = "/profil",
 }: TopbarProps) {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [currentDate, setCurrentDate] = useState("");
   const { user, logout } = useAuth();
   const { data: notifications = [], markAsRead, markAllAsRead } = useNotifications();
   const unreadCount = notifications.filter(n => !n.read_at).length;
 
-  const today = new Date().toLocaleDateString("fr-CD", {
-    weekday: "long",
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
+  useEffect(() => {
+    // Calcul de la date exacte côté client pour éviter les décalages de build/serveur
+    const today = new Date().toLocaleDateString("fr-CD", {
+      weekday: "long",
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+    setCurrentDate(today);
+  }, []);
 
   const displayUser = {
     name: user?.nom || "Utilisateur",
@@ -62,7 +67,7 @@ export default function Topbar({
         {/* Desktop Date */}
         <div className="hidden md:flex items-center gap-2 text-sm font-medium text-foreground">
           <Calendar size={16} className="text-muted-foreground" />
-          <span className="capitalize" suppressHydrationWarning>{today}</span>
+          <span className="capitalize">{currentDate || "Chargement..."}</span>
         </div>
       </div>
 
