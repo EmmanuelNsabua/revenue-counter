@@ -122,8 +122,13 @@
 }
 
 @media print {
+  @page {
+    margin: 0;
+    size: auto;
+  }
   body {
     background-color: white !important;
+    margin: 1cm !important;
   }
   .print\:hidden {
     display: none !important;
@@ -131,8 +136,16 @@
   main {
     margin: 0 !important;
     padding: 0 !important;
+    overflow: visible !important;
+    display: block !important;
   }
   .max-w-3xl {
     max-width: 100% !important;
+  }
+  /* Centrage du reçu à l'impression */
+  .max-w-md {
+    margin-left: auto !important;
+    margin-right: auto !important;
+    border: 1px solid #eee !important;
   }
 }
