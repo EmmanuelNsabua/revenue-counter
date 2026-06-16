@@ -32,9 +32,9 @@ export function CommercantFilters({
         <Input 
           autoFocus 
           placeholder="Rechercher par nom, code ou emplacement..." 
-          className="pl-9" 
+          className="pl-9 uppercase" 
           value={search}
-          onChange={(e) => onSearchChange(e.target.value)}
+          onChange={(e) => onSearchChange(e.target.value.toUpperCase())}
         />
       </div>
       <div className="grid grid-cols-2 gap-4 w-full sm:w-auto">

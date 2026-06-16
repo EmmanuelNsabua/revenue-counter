@@ -16,21 +16,8 @@ export const paiementsService = {
    * Récupère l'historique des paiements avec filtres optionnels
    */
   getAll: async (params?: { search?: string; mode_paiement?: string }) => {
-    let searchTerm = params?.search?.trim() || "";
-    
-    // Intelligence de recherche : Si on cherche "TXN-09" ou "txn-9", 
-    // on extrait uniquement le chiffre pour que le backend puisse filtrer par ID.
-    if (searchTerm.toLowerCase().startsWith("txn-")) {
-      searchTerm = searchTerm.replace(/txn-/i, "");
-    }
-
-    const finalParams = {
-      ...params,
-      search: searchTerm,
-    };
-    
     const response = await api.get<PaiementsResponse>("/paiements", {
-      params: finalParams,
+      params,
     });
     return response.data.data;
   },

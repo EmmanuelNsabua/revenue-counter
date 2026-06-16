@@ -17,7 +17,7 @@ export default function CommerciantsPage() {
   const [status, setStatus] = useState("tous");
 
   const { data: commercants, isLoading, isError } = useCommercants({
-    search: search || undefined,
+    search: search ? search.toUpperCase().trim() : undefined,
     zone: zone !== "toutes" ? zone : undefined,
     status: status !== "tous" ? status : undefined,
   });
