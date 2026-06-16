@@ -107,7 +107,7 @@ export default function PaiementsPage() {
           />
         </div>
         <div className="w-full sm:w-auto">
-          <Select value={modePaiement} onValueChange={setModePaiement}>
+          <Select value={modePaiement} onValueChange={(val) => setModePaiement(val || "tous")}>
             <SelectTrigger className="w-full sm:w-[200px]">
               <div className="flex items-center gap-2">
                 <Filter className="h-4 w-4 text-muted-foreground" />

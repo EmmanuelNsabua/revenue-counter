@@ -38,7 +38,7 @@ export function CommercantFilters({
         />
       </div>
       <div className="grid grid-cols-2 gap-4 w-full sm:w-auto">
-        <Select value={status} onValueChange={onStatusChange}>
+        <Select value={status} onValueChange={(val) => onStatusChange(val || "tous")}>
           <SelectTrigger className="w-full sm:w-[180px]">
             <div className="flex items-center gap-2">
               <Activity className="h-4 w-4 text-muted-foreground" />
@@ -51,7 +51,7 @@ export function CommercantFilters({
             <SelectItem value="suspendu">Suspendu</SelectItem>
           </SelectContent>
         </Select>
-        <Select value={zone} onValueChange={onZoneChange}>
+        <Select value={zone} onValueChange={(val) => onZoneChange(val || "toutes")}>
           <SelectTrigger className="w-full sm:w-[180px]">
             <div className="flex items-center gap-2">
               <MapPin className="h-4 w-4 text-muted-foreground" />
