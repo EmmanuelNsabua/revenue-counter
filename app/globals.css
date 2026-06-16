@@ -120,3 +120,19 @@
     @apply font-sans;
   }
 }
+
+@media print {
+  body {
+    background-color: white !important;
+  }
+  .print\:hidden {
+    display: none !important;
+  }
+  main {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  .max-w-3xl {
+    max-width: 100% !important;
+  }
+}
