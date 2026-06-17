@@ -5,10 +5,12 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { ArrowLeft, Store, Tag, MapPin, Phone, Building2, ShieldAlert, FileText } from "lucide-react";
 import { useRouter } from "next/navigation";
+import React from "react";
 
-export default function SuperAdminCommercantDetailsPage({ params }: { params: { id: string } }) {
+export default function SuperAdminCommercantDetailsPage({ params }: { params: Promise<{ id: string }> }) {
   const router = useRouter();
-  const commercantId = params.id || "COM-001";
+  const { id } = React.use(params);
+  const commercantId = id || "COM-001";
   
   const auditLogs = [
     { date: "Hier à 14:20", action: "Création Fiche", by: "Admin 001", details: "RAS" },
