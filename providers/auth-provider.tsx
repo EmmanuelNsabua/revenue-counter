@@ -2,7 +2,7 @@
 
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { User } from "@/types/auth";
-import { getSession, setSession, clearSession } from "@/lib/auth";
+import { getSession, setSession, clearSession, updateUserSession } from "@/lib/auth";
 import { useRouter } from "next/navigation";
 import { useQueryClient } from "@tanstack/react-query";
 import { api } from "@/lib/api";
@@ -13,6 +13,7 @@ interface AuthContextType {
   isLoading: boolean;
   login: (token: string, user: User) => void;
   logout: () => void;
+  setUser: React.Dispatch<React.SetStateAction<User | null>>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -99,6 +100,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     router.push("/");
   };
 
+  const handleSetUser = (value: React.SetStateAction<User | null>) => {
+    setUser((prevUser) => {
+      const resolvedUser = typeof value === "function" ? (value as Function)(prevUser) : value;
+      if (resolvedUser) {
+        updateUserSession(resolvedUser);
+      }
+      return resolvedUser;
+    });
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -107,6 +118,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         isLoading,
         login,
         logout,
+        setUser: handleSetUser,
       }}
     >
       {children}

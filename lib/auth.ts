@@ -24,6 +24,17 @@ export const setSession = (token: string, user: User) => {
 };
 
 /**
+ * UPDATE USER SESSION
+ * Met à jour uniquement l'utilisateur dans le localStorage (utile pour la modification du profil).
+ */
+export const updateUserSession = (user: User) => {
+  if (typeof window !== "undefined") {
+    localStorage.setItem(USER_KEY, JSON.stringify(user));
+  }
+};
+
+
+/**
  * GET SESSION
  * Récupère les informations de session stockées localement.
  */
