@@ -25,6 +25,12 @@ export const metadata: Metadata = {
   description:
     "Application de gestion de recouvrement des taxes du marché de la Kenya, Lubumbashi, RDC.",
   keywords: ["taxes", "recouvrement", "Lubumbashi", "marché Kenya", "RDC"],
+  manifest: "/manifest.json",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "Collecte Mairie",
+  },
 };
 
 export default function RootLayout({
