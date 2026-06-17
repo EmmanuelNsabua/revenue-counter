@@ -57,7 +57,7 @@ export default function AssistancePage() {
               <CardDescription>Solutions rapides aux problèmes courants rencontrés sur le terrain.</CardDescription>
             </CardHeader>
             <CardContent>
-              <Accordion type="single" collapsible className="w-full">
+              <Accordion openMultiple={false} className="w-full">
                 <AccordionItem value="item-1">
                   <AccordionTrigger className="text-left font-semibold">Comment enregistrer un paiement ?</AccordionTrigger>
                   <AccordionContent className="text-muted-foreground leading-relaxed">
