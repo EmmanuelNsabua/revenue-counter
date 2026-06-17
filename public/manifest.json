@@ -1,4 +1,6 @@
 {
+  "id": "/dashboard",
+  "scope": "/",
   "name": "Système de Collecte de Taxes - RDC",
   "short_name": "Collecte Mairie",
   "description": "Application mobile de collecte des taxes municipales",
@@ -9,14 +11,14 @@
   "orientation": "portrait",
   "icons": [
     {
-      "src": "/icons/icon-192x192.webp",
+      "src": "/icons/icon-192x192.png",
       "sizes": "192x192",
-      "type": "image/webp"
+      "type": "image/png"
     },
     {
-      "src": "/icons/icon-512x512.webp",
+      "src": "/icons/icon-512x512.png",
       "sizes": "512x512",
-      "type": "image/webp"
+      "type": "image/png"
     }
   ]
 }

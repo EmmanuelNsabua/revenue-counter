@@ -1,16 +1,16 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useAuth } from "@/providers/auth-provider";
 import { useUpdateProfile, useUpdatePassword } from "@/hooks/use-profile";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { ActionButton } from "@/components/ui/action-button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Switch } from "@/components/ui/switch";
 import { User, Shield, Bell, KeyRound } from "lucide-react";
+import { toast } from "sonner";
 
 export default function ParametresPage() {
   const { user } = useAuth();
@@ -25,6 +25,24 @@ export default function ParametresPage() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const updatePassword = useUpdatePassword();
 
+  // System preferences state
+  const [pushNotifications, setPushNotifications] = useState(true);
+  const [emailReports, setEmailReports] = useState(false);
+  const [lang, setLang] = useState("fr");
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const savedPush = localStorage.getItem("pref_push_notifications");
+      if (savedPush !== null) setPushNotifications(JSON.parse(savedPush));
+
+      const savedEmail = localStorage.getItem("pref_email_reports");
+      if (savedEmail !== null) setEmailReports(JSON.parse(savedEmail));
+
+      const savedLang = localStorage.getItem("pref_lang");
+      if (savedLang !== null) setLang(savedLang);
+    }
+  }, []);
+
   const handleUpdateProfile = (e: React.FormEvent) => {
     e.preventDefault();
     if (!nom.trim()) return;
@@ -34,7 +52,6 @@ export default function ParametresPage() {
   const handleUpdatePassword = (e: React.FormEvent) => {
     e.preventDefault();
     if (newPassword !== confirmPassword) {
-      // handled by backend but good to prevent submit
       return;
     }
     updatePassword.mutate({
@@ -50,34 +67,57 @@ export default function ParametresPage() {
     });
   };
 
+  const handlePushToggle = (checked: boolean) => {
+    setPushNotifications(checked);
+    localStorage.setItem("pref_push_notifications", JSON.stringify(checked));
+    toast.success("Préférence de notification push mise à jour");
+  };
+
+  const handleEmailToggle = (checked: boolean) => {
+    setEmailReports(checked);
+    localStorage.setItem("pref_email_reports", JSON.stringify(checked));
+    toast.success("Préférence de rapport par email mise à jour");
+  };
+
+  const handleLangChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const val = e.target.value;
+    setLang(val);
+    localStorage.setItem("pref_lang", val);
+    if (val === "sw") {
+      toast.info("La langue Swahili sera bientôt disponible");
+    } else {
+      toast.success("Langue de l'interface mise à jour en Français");
+    }
+  };
+
   if (!user) return null;
 
   return (
     <div className="space-y-6 max-w-4xl mx-auto pb-16 md:pb-0">
       <div>
-        <h1 className="text-3xl font-black tracking-tight uppercase">Paramètres</h1>
+        <h1 className="text-2xl font-bold tracking-tight">Paramètres</h1>
         <p className="text-sm text-muted-foreground mt-1">Gérez votre compte et vos préférences système.</p>
       </div>
 
       <Tabs defaultValue="compte" className="w-full">
-        <TabsList className="w-full justify-start border-b rounded-none h-auto p-0 bg-transparent mb-6">
+        <TabsList className="w-full justify-start border-b rounded-none h-auto p-0 bg-transparent mb-6 flex overflow-x-auto flex-nowrap scrollbar-none">
           <TabsTrigger 
             value="compte" 
-            className="data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none border-b-2 border-transparent rounded-none px-6 py-3 font-semibold"
+            className="data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none border-b-2 border-transparent rounded-none px-6 py-3 font-semibold flex-shrink-0"
           >
             <User size={16} className="mr-2" />
             Mon Compte
           </TabsTrigger>
           <TabsTrigger 
             value="securite" 
-            className="data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none border-b-2 border-transparent rounded-none px-6 py-3 font-semibold"
+            className="data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none border-b-2 border-transparent rounded-none px-6 py-3 font-semibold flex-shrink-0"
           >
             <Shield size={16} className="mr-2" />
             Sécurité
           </TabsTrigger>
           <TabsTrigger 
             value="preferences" 
-            className="data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none border-b-2 border-transparent rounded-none px-6 py-3 font-semibold"
+            className="data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none border-b-2 border-transparent rounded-none px-6 py-3 font-semibold flex-shrink-0"
           >
             <Bell size={16} className="mr-2" />
             Préférences
@@ -206,7 +246,7 @@ export default function ParametresPage() {
                     Recevoir des alertes sur cet appareil.
                   </p>
                 </div>
-                <Switch defaultChecked />
+                <Switch checked={pushNotifications} onCheckedChange={handlePushToggle} />
               </div>
               <div className="flex items-center justify-between max-w-md">
                 <div className="space-y-0.5">
@@ -215,17 +255,22 @@ export default function ParametresPage() {
                     Récapitulatif journalier des recouvrements.
                   </p>
                 </div>
-                <Switch />
+                <Switch checked={emailReports} onCheckedChange={handleEmailToggle} />
               </div>
               
               <div className="pt-4 border-t max-w-md">
                 <div className="grid gap-2">
-                  <Label>Langue de l&apos;interface</Label>
-                  <select disabled className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background disabled:cursor-not-allowed disabled:opacity-50">
-                    <option>Français (RDC)</option>
-                    <option>Swahili</option>
+                  <Label htmlFor="langue">Langue de l&apos;interface</Label>
+                  <select 
+                    id="langue"
+                    value={lang} 
+                    onChange={handleLangChange}
+                    className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background outline-none focus:border-primary"
+                  >
+                    <option value="fr">Français (RDC)</option>
+                    <option value="sw">Swahili</option>
                   </select>
-                  <p className="text-xs text-muted-foreground">La modification de langue n&apos;est pas encore supportée.</p>
+                  <p className="text-xs text-muted-foreground">Certains éléments textuels peuvent rester en français pendant le déploiement de la traduction.</p>
                 </div>
               </div>
             </CardContent>
