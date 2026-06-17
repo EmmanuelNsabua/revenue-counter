@@ -59,7 +59,7 @@ export default function SuperAdminCommercantsPage() {
               <tbody className="divide-y divide-border">
                 {commercants.map((commercant) => (
                   <tr key={commercant.id} className="hover:bg-muted/50 transition-colors">
-                    <td className="px-6 py-5 font-bold text-muted-foreground">{commercant.code_qr || commercant.id}</td>
+                    <td className="px-6 py-5 font-bold text-muted-foreground">{commercant.numero_document}</td>
                     <td className="px-6 py-5 font-bold text-foreground">
                       <div className="flex items-center gap-2">
                         <Store size={14} className="text-primary" />
@@ -67,10 +67,10 @@ export default function SuperAdminCommercantsPage() {
                       </div>
                     </td>
                     <td className="px-6 py-5">{commercant.activite}</td>
-                    <td className="px-6 py-5 text-muted-foreground">{commercant.adresse}</td>
+                    <td className="px-6 py-5 text-muted-foreground">{commercant.emplacement}</td>
                     <td className="px-6 py-5">
-                      <Badge variant="default">
-                        Actif
+                      <Badge variant={commercant.actif ? "default" : "destructive"}>
+                        {commercant.actif ? "Actif" : "Suspendu"}
                       </Badge>
                     </td>
                     <td className="px-6 py-5 text-right">
