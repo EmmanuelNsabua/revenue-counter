@@ -11,8 +11,8 @@ export default function Logo({ collapsed = false }: LogoProps) {
       {/* 1. Bloc-Armoiries */}
       <div className="relative flex-shrink-0 w-11 h-11 rounded-full bg-white shadow-sm flex items-center justify-center p-1 ring-1 ring-border/50 group-hover:ring-primary/30 transition-all overflow-hidden">
         <Image
-          src="/assets/logo_rdc.webp"
-          alt="Armoiries RDC"
+          src="/assets/logo-mairie-lubumbashi.png"
+          alt="Mairie de Lubumbashi"
           width={40}
           height={40}
           className="object-contain"
