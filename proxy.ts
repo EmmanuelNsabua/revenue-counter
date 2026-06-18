@@ -6,7 +6,7 @@ import type { NextRequest } from "next/server";
  * Sécurise l'accès aux pages selon l'état d'authentification et le rôle.
  * S'exécute côté serveur (Edge Runtime) avant chaque requête.
  */
-export function middleware(request: NextRequest) {
+export default function proxy(request: NextRequest) {
   const token = request.cookies.get("revenue_token")?.value;
   const role = request.cookies.get("revenue_role")?.value;
   const { pathname } = request.nextUrl;
