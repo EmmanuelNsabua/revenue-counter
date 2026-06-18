@@ -21,14 +21,7 @@ export default function Logo({ collapsed = false }: LogoProps) {
       </div>
       {!collapsed && (
         <>
-          {/* 2. Ligne d'État (Tricolore) */}
-          <div className="flex flex-col w-[3px] h-10 rounded-full overflow-hidden self-center flex-shrink-0">
-            <div className="h-1/3 w-full bg-[#007FFF]" />
-            <div className="h-1/3 w-full bg-[#F7D618]" />
-            <div className="h-1/3 w-full bg-[#CE1021]" />
-          </div>
-
-          {/* 3. Intitulé Officiel */}
+          {/* 2. Intitulé Officiel */}
           <div className="min-w-0 overflow-hidden flex flex-col justify-center">
             <p className="text-sidebar-foreground font-black text-[11px] tracking-tighter leading-none uppercase truncate font-sans">
               MAIRIE DE LUBUMBASHI

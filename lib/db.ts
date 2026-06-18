@@ -1,27 +1,37 @@
-import Dexie, { type Table } from "dexie";
-import { Commercant } from "@/types/commercant";
+import Dexie, { type EntityTable } from 'dexie';
 
-export interface OfflinePaiement {
+export interface Commercant {
+  id: number;
+  code_commercant: string;
+  nom: string;
+  prenom?: string;
+  activite?: string;
+  // Other fields can be added as needed
+}
+
+export interface PaiementOffline {
   id?: number;
   montant: number;
   taxe_id: number;
   code_commercant: string;
   date_creation: string;
-  synced: 0 | 1;
-  mode_paiement?: string;
+  synced: number; // 0 for not synced, 1 for synced
 }
 
-export class MairieTaxesDatabase extends Dexie {
-  commercants!: Table<Commercant, number>;
-  paiements_offline!: Table<OfflinePaiement, number>;
+const db = new Dexie('MairieTaxesDB') as Dexie & {
+  commercants: EntityTable<
+    Commercant,
+    'id' // primary key "id"
+  >;
+  paiements_offline: EntityTable<
+    PaiementOffline,
+    'id' // primary key "id"
+  >;
+};
 
-  constructor() {
-    super("MairieTaxesDB");
-    this.version(1).stores({
-      commercants: "id, numero_document, nom",
-      paiements_offline: "++id, taxe_id, code_commercant, synced",
-    });
-  }
-}
+db.version(1).stores({
+  commercants: 'id, code_commercant', // Primary key and indexed props
+  paiements_offline: '++id, code_commercant, synced, date_creation' // Primary key and indexed props
+});
 
-export const db = new MairieTaxesDatabase();
+export { db };
