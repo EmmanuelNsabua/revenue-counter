@@ -92,7 +92,7 @@ export default function LoginPage() {
         <div className="relative z-10">
           <BlurFade delay={0.1}>
             <div className="bg-white/10 w-fit p-1 rounded-full backdrop-blur-sm border border-white/20 mb-16">
-              <Logo />
+              <Logo className="mr-3" />
             </div>
           </BlurFade>
 

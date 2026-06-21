@@ -3,11 +3,12 @@ import Link from "next/link";
 
 interface LogoProps {
   collapsed?: boolean;
+  className?: string;
 }
 
-export default function Logo({ collapsed = false }: LogoProps) {
+export default function Logo({ collapsed = false, className }: LogoProps) {
   return (
-    <Link href="/dashboard" className="flex items-center gap-3 min-w-0 group">
+    <Link href="/dashboard" className={`flex items-center gap-3 min-w-0 group ${className || ""}`}>
       {/* 1. Bloc-Armoiries */}
       <div className="relative flex-shrink-0 w-11 h-11 rounded-full bg-white shadow-sm flex items-center justify-center p-1 ring-1 ring-border/50 group-hover:ring-primary/30 transition-all overflow-hidden">
         <Image
