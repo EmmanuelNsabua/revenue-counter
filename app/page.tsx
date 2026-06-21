@@ -73,14 +73,14 @@ export default function LoginPage() {
 
   if (authLoading) {
     return (
-      <div className="min-h-screen w-full flex items-center justify-center bg-background">
+      <div className="force-light min-h-screen w-full flex items-center justify-center bg-background">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen w-full flex bg-background">
+    <div className="force-light min-h-screen w-full flex bg-background">
       {/* Left Column - Branding */}
       <div 
         className="hidden lg:flex lg:w-1/2 bg-sidebar relative flex-col justify-between p-12 overflow-hidden text-primary-foreground"
