@@ -73,17 +73,17 @@ export default function LoginPage() {
 
   if (authLoading) {
     return (
-      <div className="force-light min-h-screen w-full flex items-center justify-center bg-background">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+      <div className="min-h-screen w-full flex items-center justify-center bg-[#F8FAFC]">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#CE1021]"></div>
       </div>
     );
   }
 
   return (
-    <div className="force-light min-h-screen w-full flex bg-background">
+    <div className="min-h-screen w-full flex bg-[#F8FAFC]">
       {/* Left Column - Branding */}
       <div 
-        className="hidden lg:flex lg:w-1/2 bg-sidebar relative flex-col justify-between p-12 overflow-hidden text-primary-foreground"
+        className="hidden lg:flex lg:w-1/2 bg-[#1c4294] relative flex-col justify-between p-12 overflow-hidden text-white"
         style={{
           backgroundImage: 'radial-gradient(rgba(255, 255, 255, 0.1) 1.5px, transparent 1.5px)',
           backgroundSize: '24px 24px'
@@ -92,14 +92,14 @@ export default function LoginPage() {
         <div className="relative z-10">
           <BlurFade delay={0.1}>
             <div className="bg-white/10 w-fit p-1 rounded-full backdrop-blur-sm border border-white/20 mb-16">
-              <Logo className="mr-3 " />
+              <Logo />
             </div>
           </BlurFade>
 
           <BlurFade delay={0.2}>
             <h1 className="text-4xl xl:text-5xl font-bold leading-tight mb-6 text-white">
               Le Gouvernement <br />
-              <span className="text-rdc-yellow">au service du peuple.</span>
+              <span className="text-[#F7D618]">au service du peuple.</span>
             </h1>
           </BlurFade>
           
@@ -112,19 +112,19 @@ export default function LoginPage() {
           <div className="space-y-4">
             <BlurFade delay={0.4}>
               <div className="flex items-center gap-3 text-white/90">
-                <CheckCircle2 size={20} className="text-rdc-yellow" />
+                <CheckCircle2 size={20} className="text-[#F7D618]" />
                 <span>Synchronisation en temps réel</span>
               </div>
             </BlurFade>
             <BlurFade delay={0.5}>
               <div className="flex items-center gap-3 text-white/90">
-                <CheckCircle2 size={20} className="text-rdc-yellow" />
+                <CheckCircle2 size={20} className="text-[#F7D618]" />
                 <span>Suivi détaillé des recouvrements</span>
               </div>
             </BlurFade>
             <BlurFade delay={0.6}>
               <div className="flex items-center gap-3 text-white/90">
-                <CheckCircle2 size={20} className="text-rdc-yellow" />
+                <CheckCircle2 size={20} className="text-[#F7D618]" />
                 <span>Interface adaptée à chaque rôle</span>
               </div>
             </BlurFade>
@@ -139,28 +139,28 @@ export default function LoginPage() {
       </div>
 
       {/* Right Column - Login Form */}
-      <div className="w-full lg:w-1/2 flex items-center justify-center p-6 sm:p-12 bg-card/50">
+      <div className="w-full lg:w-1/2 flex items-center justify-center p-6 sm:p-12 bg-white/50">
         <div className="w-full max-w-md space-y-8">
           
           {/* Mobile Logo */}
           <div className="lg:hidden mb-8">
             <BlurFade delay={0.1}>
-              <div className="bg-white shadow-sm border border-border w-fit p-1 pr-4 rounded-full">
-                <Logo className="[&_p]:!text-black" />
+              <div className="bg-white shadow-sm border border-slate-200 w-fit p-1 rounded-full">
+                <Logo />
               </div>
             </BlurFade>
           </div>
 
           <BlurFade delay={0.2}>
             <div>
-              <h2 className="text-3xl font-bold tracking-tight text-foreground mb-2">Connexion</h2>
-              <p className="text-muted-foreground">Veuillez saisir vos accès pour continuer.</p>
+              <h2 className="text-3xl font-bold tracking-tight text-slate-900 mb-2">Connexion</h2>
+              <p className="text-slate-500">Veuillez saisir vos accès pour continuer.</p>
             </div>
           </BlurFade>
 
           {error && (
             <BlurFade delay={0.3}>
-              <div className="flex items-center gap-2 p-3 rounded-md bg-destructive/10 text-destructive text-sm border border-destructive/20">
+              <div className="flex items-center gap-2 p-3 rounded-md bg-red-500/10 text-red-600 text-sm border border-red-500/20">
                 <AlertCircle className="h-4 w-4 flex-shrink-0" />
                 <p>{error}</p>
               </div>
@@ -170,18 +170,18 @@ export default function LoginPage() {
           <BlurFade delay={0.4}>
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="space-y-2">
-                <label htmlFor="matricule" className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                <label htmlFor="matricule" className="text-xs font-semibold uppercase tracking-wider text-slate-500">
                   Code Agent
                 </label>
                 <div className="relative">
-                  <User className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                  <User className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-500" />
                   <Input
                     id="matricule"
                     type="text"
                     placeholder="ATXXXXXX"
                     value={matricule}
                     onChange={(e) => setMatricule(e.target.value)}
-                    className="pl-10 h-12 bg-background border-input"
+                    className="pl-10 h-12 bg-white border-slate-200 text-slate-900 placeholder:text-slate-400"
                     maxLength={8}
                     required
                   />
@@ -190,25 +190,25 @@ export default function LoginPage() {
 
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
-                  <label htmlFor="password" className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                  <label htmlFor="password" className="text-xs font-semibold uppercase tracking-wider text-slate-500">
                     Mot de passe
                   </label>
                 </div>
                 <div className="relative">
-                  <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                  <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-500" />
                   <Input
                     id="password"
                     type={showPassword ? "text" : "password"}
                     placeholder="••••••••"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="pl-10 pr-10 h-12 bg-background border-input"
+                    className="pl-10 pr-10 h-12 bg-white border-slate-200 text-slate-900 placeholder:text-slate-400"
                     required
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-900 transition-colors cursor-pointer"
                   >
                     {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                   </button>
@@ -217,7 +217,7 @@ export default function LoginPage() {
 
               <RippleButton 
                 type="submit" 
-                className="w-full h-12 text-base font-semibold"
+                className="w-full h-12 text-base font-semibold bg-[#CE1021] hover:bg-[#A30C1A] text-white border-none"
                 disabled={isLoading}
                 rippleColor="#ffffff"
               >
