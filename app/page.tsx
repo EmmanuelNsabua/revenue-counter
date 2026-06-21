@@ -92,7 +92,7 @@ export default function LoginPage() {
         <div className="relative z-10">
           <BlurFade delay={0.1}>
             <div className="bg-white/10 w-fit p-1 rounded-full backdrop-blur-sm border border-white/20 mb-16">
-              <Logo className="mr-3" />
+              <Logo className="mr-3 " />
             </div>
           </BlurFade>
 
@@ -145,8 +145,8 @@ export default function LoginPage() {
           {/* Mobile Logo */}
           <div className="lg:hidden mb-8">
             <BlurFade delay={0.1}>
-              <div className="bg-white shadow-sm border border-border w-fit p-1 rounded-full">
-                <Logo />
+              <div className="bg-white shadow-sm border border-border w-fit p-1 pr-4 rounded-full">
+                <Logo className="[&_p]:!text-black" />
               </div>
             </BlurFade>
           </div>
