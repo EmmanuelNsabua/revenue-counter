@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { KpiCards } from "@/components/dashboard/kpi-cards";
 import { RecentPaiements } from "@/components/dashboard/recent-paiements";
-import { Button } from "@/components/ui/button";
+import { RippleButton } from "@/components/magicui/ripple-button";
+import { BlurFade } from "@/components/magicui/blur-fade";
 import { Plus, Store } from "lucide-react";
 import Link from "next/link";
 
@@ -10,33 +11,40 @@ export const metadata: Metadata = { title: "Tableau de bord" };
 export default function DashboardPage() {
   return (
     <div className="space-y-6 max-w-7xl pb-16 md:pb-0">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
-        <div>
-          <h1 className="text-2xl font-bold tracking-tight">Tableau de bord</h1>
-          <p className="text-sm text-muted-foreground">Vue d&apos;ensemble des recettes</p>
-        </div>
+      <BlurFade delay={0.1}>
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+          <div>
+            <h1 className="text-2xl font-bold tracking-tight">Tableau de bord</h1>
+            <p className="text-sm text-muted-foreground">Vue d&apos;ensemble des recettes</p>
+          </div>
 
-        <div className="flex flex-wrap items-center gap-3 w-full sm:w-auto">
-          <Link href="/commercants" className="flex-1 sm:flex-none">
-            <Button variant="outline" className="w-full gap-2">
-              <Store size={16} />
-              Voir commerçants
-            </Button>
-          </Link>
-          <Link href="/paiements/nouveau" className="flex-1 sm:flex-none">
-            <Button className="w-full gap-2">
-              <Plus size={16} />
-              Nouveau paiement
-            </Button>
-          </Link>
+          <div className="flex flex-wrap items-center gap-3 w-full sm:w-auto">
+            <Link href="/commercants" className="flex-1 sm:flex-none">
+              <RippleButton variant="outline" className="w-full gap-2">
+                <Store size={16} />
+                Voir commerçants
+              </RippleButton>
+            </Link>
+            <Link href="/paiements/nouveau" className="flex-1 sm:flex-none">
+              <RippleButton className="w-full gap-2">
+                <Plus size={16} />
+                Nouveau paiement
+              </RippleButton>
+            </Link>
+          </div>
         </div>
-      </div>
+      </BlurFade>
 
-      <KpiCards />
+      <BlurFade delay={0.2}>
+        <KpiCards />
+      </BlurFade>
       
-      <div className="mt-8">
-        <RecentPaiements />
-      </div>
+      <BlurFade delay={0.3}>
+        <div className="mt-8">
+          <RecentPaiements />
+        </div>
+      </BlurFade>
     </div>
   );
 }
+

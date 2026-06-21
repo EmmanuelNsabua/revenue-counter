@@ -7,6 +7,7 @@ import Image from "next/image";
 import { Input } from "@/components/ui/input";
 import { useAuth } from "@/providers/auth-provider";
 import { useNotifications } from "@/hooks/use-notifications";
+import { AnimatedThemeToggler } from "@/components/magicui/animated-theme-toggler";
 
 import {
   DropdownMenu,
@@ -82,6 +83,9 @@ export default function Topbar({
         >
           <Search size={20} className="pointer-events-none" />
         </button>
+
+        {/* Theme Toggle */}
+        <AnimatedThemeToggler variant="circle" />
 
         {/* Notifications */}
         <DropdownMenu>

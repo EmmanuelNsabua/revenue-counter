@@ -1,10 +1,10 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
+import { RippleButton } from "@/components/magicui/ripple-button";
 import { toast } from "sonner";
 import React from "react";
 
-interface ActionButtonProps extends React.ComponentProps<typeof Button> {
+interface ActionButtonProps extends React.ComponentProps<typeof RippleButton> {
   toastMessage?: string;
   toastDescription?: string;
   children?: React.ReactNode;
@@ -12,7 +12,7 @@ interface ActionButtonProps extends React.ComponentProps<typeof Button> {
 
 export function ActionButton({ toastMessage, toastDescription, onClick, ...props }: ActionButtonProps) {
   return (
-    <Button 
+    <RippleButton 
       onClick={(e) => {
         if (toastMessage) {
           toast(toastMessage, { description: toastDescription });
@@ -25,3 +25,4 @@ export function ActionButton({ toastMessage, toastDescription, onClick, ...props
     />
   );
 }
+

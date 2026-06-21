@@ -7,6 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { KpiSkeleton } from "@/components/ui/skeletons";
 import { useAgentStats } from "@/hooks/use-stats";
 import { formatCurrency } from "@/lib/utils";
+import { NumberTicker } from "@/components/magicui/number-ticker";
 
 export function KpiCards() {
   const { data: stats, isLoading, isError } = useAgentStats();
@@ -26,19 +27,20 @@ export function KpiCards() {
   const kpis = [
     {
       label: "Recette du jour",
-      value: formatCurrency(stats.somme_collectee),
+      numericValue: stats.somme_collectee,
+      formatter: formatCurrency,
       icon: TrendingUp,
       color: "text-primary bg-primary/10",
     },
     {
       label: "Transactions (Aujourd'hui)",
-      value: stats.nombre_transactions.toString(),
+      numericValue: stats.nombre_transactions,
       icon: CreditCard,
       color: "text-yellow-700 bg-rdc-yellow/20",
     },
     {
       label: "Contribuables non réglés",
-      value: stats.commercants_non_regles.toString(),
+      numericValue: stats.commercants_non_regles,
       icon: AlertCircle,
       color: "text-rdc-red bg-rdc-red/10",
     },
@@ -55,7 +57,7 @@ export function KpiCards() {
           </CardHeader>
           <CardContent>
             <CardTitle className="text-xl sm:text-2xl font-bold mb-1 truncate">
-              {stat.value}
+              <NumberTicker value={stat.numericValue} formatter={stat.formatter} />
             </CardTitle>
             <p className="text-xs text-muted-foreground leading-tight">
               {stat.label}
@@ -66,3 +68,4 @@ export function KpiCards() {
     </div>
   );
 }
+

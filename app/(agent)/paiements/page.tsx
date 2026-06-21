@@ -19,6 +19,7 @@ import { TableSkeleton } from "@/components/ui/skeletons";
 import { EmptyPaiements } from "@/components/ui/empty-state";
 import { exportToExcel } from "@/lib/export";
 import { formatDateTime } from "@/lib/utils";
+import { BlurFade } from "@/components/magicui/blur-fade";
 
 export default function PaiementsPage() {
   const [search, setSearch] = useState("");
@@ -69,69 +70,75 @@ export default function PaiementsPage() {
 
   return (
     <div className="space-y-6 max-w-7xl pb-16 md:pb-0">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
-        <div>
-          <h1 className="text-2xl font-bold tracking-tight">Paiements</h1>
-          <p className="text-sm text-muted-foreground">Historique de vos collectes</p>
-        </div>
+      <BlurFade delay={0.1}>
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+          <div>
+            <h1 className="text-2xl font-bold tracking-tight">Paiements</h1>
+            <p className="text-sm text-muted-foreground">Historique de vos collectes</p>
+          </div>
 
-        <div className="flex flex-wrap gap-3">
-          <ActionButton 
-            variant="outline" 
-            className="gap-2 flex-1 sm:flex-none" 
-            toastMessage="Génération du fichier Excel (.xlsx)..."
-            onClick={handleExport}
-            disabled={isLoading || !paiements || paiements.length === 0}
-          >
-            <Download size={16} />
-            Exporter
-          </ActionButton>
-          <Link href="/paiements/nouveau" className="flex-1 sm:flex-none">
-            <Button className="w-full gap-2">
-              <Plus size={16} />
-              Nouveau paiement
-            </Button>
-          </Link>
+          <div className="flex flex-wrap gap-3">
+            <ActionButton 
+              variant="outline" 
+              className="gap-2 flex-1 sm:flex-none" 
+              toastMessage="Génération du fichier Excel (.xlsx)..."
+              onClick={handleExport}
+              disabled={isLoading || !paiements || paiements.length === 0}
+            >
+              <Download size={16} />
+              Exporter
+            </ActionButton>
+            <Link href="/paiements/nouveau" className="flex-1 sm:flex-none">
+              <Button className="w-full gap-2">
+                <Plus size={16} />
+                Nouveau paiement
+              </Button>
+            </Link>
+          </div>
         </div>
-      </div>
+      </BlurFade>
 
-      {/* Barre de Filtres */}
-      <div className="bg-card p-4 rounded-xl border border-border flex flex-col sm:flex-row gap-4 items-start sm:items-center">
-        <div className="relative w-full sm:max-w-sm">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-          <Input 
-            placeholder="Rechercher par commerçant ou TXN..." 
-            className="pl-9" 
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-          />
+      <BlurFade delay={0.2}>
+        {/* Barre de Filtres */}
+        <div className="bg-card p-4 rounded-xl border border-border flex flex-col sm:flex-row gap-4 items-start sm:items-center">
+          <div className="relative w-full sm:max-w-sm">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <Input 
+              placeholder="Rechercher par commerçant ou TXN..." 
+              className="pl-9" 
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+          </div>
+          <div className="w-full sm:w-auto">
+            <Select value={modePaiement} onValueChange={(val) => setModePaiement(val || "tous")}>
+              <SelectTrigger className="w-full sm:w-[200px]">
+                <div className="flex items-center gap-2">
+                  <Filter className="h-4 w-4 text-muted-foreground" />
+                  <SelectValue placeholder="Mode de paiement" />
+                </div>
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="tous">Tous les modes</SelectItem>
+                <SelectItem value="cash">Espèces (Cash)</SelectItem>
+                <SelectItem value="mpesa">M-Pesa</SelectItem>
+                <SelectItem value="airtel">Airtel Money</SelectItem>
+                <SelectItem value="orange">Orange Money</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
         </div>
-        <div className="w-full sm:w-auto">
-          <Select value={modePaiement} onValueChange={(val) => setModePaiement(val || "tous")}>
-            <SelectTrigger className="w-full sm:w-[200px]">
-              <div className="flex items-center gap-2">
-                <Filter className="h-4 w-4 text-muted-foreground" />
-                <SelectValue placeholder="Mode de paiement" />
-              </div>
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="tous">Tous les modes</SelectItem>
-              <SelectItem value="cash">Espèces (Cash)</SelectItem>
-              <SelectItem value="mpesa">M-Pesa</SelectItem>
-              <SelectItem value="airtel">Airtel Money</SelectItem>
-              <SelectItem value="orange">Orange Money</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-      </div>
+      </BlurFade>
 
-      {isLoading ? (
-        <TableSkeleton rows={5} cols={6} />
-      ) : !paiements || paiements.length === 0 ? (
-        <EmptyPaiements />
-      ) : (
-        <PaiementTable paiements={paiements} />
-      )}
+      <BlurFade delay={0.3}>
+        {isLoading ? (
+          <TableSkeleton rows={5} cols={6} />
+        ) : !paiements || paiements.length === 0 ? (
+          <EmptyPaiements />
+        ) : (
+          <PaiementTable paiements={paiements} />
+        )}
+      </BlurFade>
     </div>
   );
 }

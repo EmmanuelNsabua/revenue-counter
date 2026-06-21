@@ -10,6 +10,7 @@ import { useCommercants } from "@/hooks/use-commercants";
 import { TableSkeleton } from "@/components/ui/skeletons";
 import { EmptyCommercants } from "@/components/ui/empty-state";
 import { exportToExcel } from "@/lib/export";
+import { BlurFade } from "@/components/magicui/blur-fade";
 
 export default function CommerciantsPage() {
   const [search, setSearch] = useState("");
@@ -57,59 +58,65 @@ export default function CommerciantsPage() {
 
   return (
     <div className="space-y-6 max-w-7xl pb-16 md:pb-0">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-2 sm:mb-6">
-        <div>
-          <h1 className="text-2xl font-bold tracking-tight">Commerçants</h1>
-          <p className="text-sm text-muted-foreground">Gestion des commerçants du marché Kenya</p>
+      <BlurFade delay={0.1}>
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-2 sm:mb-6">
+          <div>
+            <h1 className="text-2xl font-bold tracking-tight">Commerçants</h1>
+            <p className="text-sm text-muted-foreground">Gestion des commerçants du marché Kenya</p>
+          </div>
+          <div className="flex gap-3 flex-wrap items-center">
+            <ActionButton 
+              variant="outline" 
+              className="gap-2 px-3 py-1.5 h-auto text-xs" 
+              toastMessage="Génération du fichier Excel (.xlsx)..."
+              onClick={handleExport}
+              disabled={isLoading || !commercants || commercants.length === 0}
+            >
+              <Download size={14} />
+              Exporter
+            </ActionButton>
+            {!isLoading && commercants && (
+              <>
+                <Badge variant="outline" className="flex items-center gap-1.5 px-3 py-1.5 text-primary border-primary/20 bg-primary/5">
+                  <Store size={14} />
+                  {commercants.length} commerçants
+                </Badge>
+                <Badge variant="outline" className="flex items-center gap-1.5 px-3 py-1.5 text-green-700 border-green-200 bg-green-50">
+                  <CheckCircle size={14} />
+                  {actifs} actifs
+                </Badge>
+                <Badge variant="outline" className="flex items-center gap-1.5 px-3 py-1.5 text-destructive border-destructive/20 bg-destructive/5">
+                  <XCircle size={14} />
+                  {suspendus} suspendus
+                </Badge>
+              </>
+            )}
+          </div>
         </div>
-        <div className="flex gap-3 flex-wrap items-center">
-          <ActionButton 
-            variant="outline" 
-            className="gap-2 px-3 py-1.5 h-auto text-xs" 
-            toastMessage="Génération du fichier Excel (.xlsx)..."
-            onClick={handleExport}
-            disabled={isLoading || !commercants || commercants.length === 0}
-          >
-            <Download size={14} />
-            Exporter
-          </ActionButton>
-          {!isLoading && commercants && (
-            <>
-              <Badge variant="outline" className="flex items-center gap-1.5 px-3 py-1.5 text-primary border-primary/20 bg-primary/5">
-                <Store size={14} />
-                {commercants.length} commerçants
-              </Badge>
-              <Badge variant="outline" className="flex items-center gap-1.5 px-3 py-1.5 text-green-700 border-green-200 bg-green-50">
-                <CheckCircle size={14} />
-                {actifs} actifs
-              </Badge>
-              <Badge variant="outline" className="flex items-center gap-1.5 px-3 py-1.5 text-destructive border-destructive/20 bg-destructive/5">
-                <XCircle size={14} />
-                {suspendus} suspendus
-              </Badge>
-            </>
-          )}
+      </BlurFade>
+
+      <BlurFade delay={0.2}>
+        <div className="bg-card p-4 rounded-xl border border-border">
+          <CommercantFilters 
+            search={search} 
+            onSearchChange={setSearch}
+            zone={zone}
+            onZoneChange={setZone}
+            status={status}
+            onStatusChange={setStatus}
+          />
         </div>
-      </div>
+      </BlurFade>
 
-      <div className="bg-card p-4 rounded-xl border border-border">
-        <CommercantFilters 
-          search={search} 
-          onSearchChange={setSearch}
-          zone={zone}
-          onZoneChange={setZone}
-          status={status}
-          onStatusChange={setStatus}
-        />
-      </div>
-
-      {isLoading ? (
-        <TableSkeleton rows={5} cols={6} />
-      ) : !commercants || commercants.length === 0 ? (
-        <EmptyCommercants />
-      ) : (
-        <CommercantTable commercants={commercants} />
-      )}
+      <BlurFade delay={0.3}>
+        {isLoading ? (
+          <TableSkeleton rows={5} cols={6} />
+        ) : !commercants || commercants.length === 0 ? (
+          <EmptyCommercants />
+        ) : (
+          <CommercantTable commercants={commercants} />
+        )}
+      </BlurFade>
     </div>
   );
 }
