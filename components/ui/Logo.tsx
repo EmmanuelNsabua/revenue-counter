@@ -24,10 +24,10 @@ export default function Logo({ collapsed = false, className }: LogoProps) {
         <>
           {/* 2. Intitulé Officiel */}
           <div className="min-w-0 overflow-hidden flex flex-col justify-center">
-            <p className="text-sidebar-foreground font-black text-[11px] tracking-tighter leading-none uppercase truncate font-sans">
+            <p className="text-current font-black text-[11px] tracking-tighter leading-none uppercase truncate font-sans">
               MAIRIE DE LUBUMBASHI
             </p>
-            <p className="text-sidebar-foreground/70 font-medium text-[10px] leading-tight mt-1 truncate uppercase">
+            <p className="text-current opacity-70 font-medium text-[10px] leading-tight mt-1 truncate uppercase">
               REVENUE COUNTER
             </p>
           </div>
