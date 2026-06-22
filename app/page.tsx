@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Input } from "@/components/ui/input";
-import { Lock, User, AlertCircle, CheckCircle2, Eye, EyeOff } from "lucide-react";
+import { Lock, User, AlertCircle, CheckCircle2, Eye, EyeOff, Loader2 } from "lucide-react";
 import { useAuth } from "@/providers/auth-provider";
 import { api } from "@/lib/api";
 import { AuthResponse } from "@/types/auth";
@@ -221,7 +221,14 @@ export default function LoginPage() {
                 disabled={isLoading}
                 rippleColor="#ffffff"
               >
-                {isLoading ? "Vérification..." : "Connexion"}
+                {isLoading ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Traitement en cours...
+                  </>
+                ) : (
+                  "Connexion"
+                )}
               </RippleButton>
             </form>
           </BlurFade>

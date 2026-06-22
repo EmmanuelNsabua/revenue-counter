@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Save, Store, MapPin, Tag, Phone, ArrowLeft, CheckCircle2 } from "lucide-react";
+import { Save, Store, MapPin, Tag, Phone, ArrowLeft, CheckCircle2, Loader2 } from "lucide-react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
@@ -108,8 +108,17 @@ export default function AdminCreateCommercantPage() {
             <div className="pt-4 flex items-center justify-end gap-3 border-t border-border">
               <Button type="button" variant="outline" onClick={() => router.back()}>Annuler</Button>
               <Button type="submit" disabled={isSubmitting} className="gap-2">
-                <Save size={16} />
-                {isSubmitting ? "Enregistrement..." : "Créer le commerçant"}
+                {isSubmitting ? (
+                  <>
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                    Traitement en cours...
+                  </>
+                ) : (
+                  <>
+                    <Save size={16} />
+                    Créer le commerçant
+                  </>
+                )}
               </Button>
             </div>
           </form>

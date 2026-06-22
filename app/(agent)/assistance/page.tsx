@@ -13,7 +13,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { useSendSupportMessage } from "@/hooks/use-support";
-import { LifeBuoy, Send, Phone, Mail, MapPin, Info } from "lucide-react";
+import { LifeBuoy, Send, Phone, Mail, MapPin, Info, Loader2 } from "lucide-react";
 import { BlurFade } from "@/components/magicui/blur-fade";
 import { RippleButton } from "@/components/magicui/ripple-button";
 
@@ -126,8 +126,17 @@ export default function AssistancePage() {
                     disabled={sendSupport.isPending || !subject.trim() || !message.trim()}
                     className="gap-2 flex items-center"
                   >
-                    <Send size={16} className="mr-2" />
-                    {sendSupport.isPending ? "Envoi en cours..." : "Envoyer le message"}
+                    {sendSupport.isPending ? (
+                      <>
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        Traitement en cours...
+                      </>
+                    ) : (
+                      <>
+                        <Send size={16} className="mr-2" />
+                        Envoyer le message
+                      </>
+                    )}
                   </RippleButton>
                 </form>
               </CardContent>

@@ -167,13 +167,18 @@ export default function ParametresPage() {
                       className="max-w-md bg-muted"
                     />
                   </div>
-                  <RippleButton 
+                  <Button 
                     type="submit" 
                     disabled={updateProfile.isPending || nom === user.nom || !nom.trim()}
                     className="mt-4"
                   >
-                    {updateProfile.isPending ? "Enregistrement..." : "Enregistrer les modifications"}
-                  </RippleButton>
+                    {updateProfile.isPending ? (
+                      <>
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        Traitement en cours...
+                      </>
+                    ) : "Enregistrer les modifications"}
+                  </Button>
                 </form>
               </CardContent>
             </Card>
