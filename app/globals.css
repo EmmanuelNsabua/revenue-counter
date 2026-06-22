@@ -129,25 +129,26 @@
   --sidebar-ring: #F7D618;
 }
 .dark {
-  --background: #070611;
+  --background: #1E1E1E;
   --foreground: #E2E8F0;
-  --card: #0a0816;
+  --card: #232221;
   --card-foreground: #E2E8F0;
-  --popover: #0a0816;
+  --popover: #232221;
   --popover-foreground: #E2E8F0;
   --primary: #CE1021;
   --primary-foreground: #FFFFFF;
   --secondary: #F7D618;
   --secondary-foreground: #000000;
-  --muted: #151226;
+  --muted: #2d2c2a;
   --muted-foreground: #8B949E;
-  --accent: #1c1836;
+  --accent: #2d2c2a;
   --accent-foreground: #F85149;
   --destructive: #DA3633;
   --destructive-foreground: #FFFFFF;
-  --border: #231d45;
-  --input: #1c1836;
+  --border: #383634;
+  --input: #383634;
   --ring: #CE1021;
+  
   /* Sidebar stays blue in dark mode for brand consistency */
   --sidebar: #0D1F4A;
   --sidebar-foreground: #FFFFFF;
