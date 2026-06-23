@@ -181,7 +181,7 @@ export default function LoginPage() {
                     placeholder="ATXXXXXX"
                     value={matricule}
                     onChange={(e) => setMatricule(e.target.value)}
-                    className="pl-10 h-12 bg-white border-slate-200 text-slate-900 placeholder:text-slate-400"
+                    className="pl-10 h-12 bg-white border-slate-200 text-slate-900 placeholder:text-slate-400 dark:bg-white dark:border-slate-200 dark:text-slate-900 dark:placeholder:text-slate-400"
                     maxLength={8}
                     required
                   />
@@ -202,7 +202,7 @@ export default function LoginPage() {
                     placeholder="••••••••"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="pl-10 pr-10 h-12 bg-white border-slate-200 text-slate-900 placeholder:text-slate-400"
+                    className="pl-10 pr-10 h-12 bg-white border-slate-200 text-slate-900 placeholder:text-slate-400 dark:bg-white dark:border-slate-200 dark:text-slate-900 dark:placeholder:text-slate-400"
                     required
                   />
                   <button
