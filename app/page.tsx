@@ -145,7 +145,7 @@ export default function LoginPage() {
           {/* Mobile Logo */}
           <div className="lg:hidden mb-8">
             <BlurFade delay={0.1}>
-              <div className="bg-white shadow-sm border border-slate-200 w-fit p-1 rounded-full">
+              <div className="bg-white shadow-sm border border-slate-200 w-fit p-1 pr-4 rounded-full text-slate-900">
                 <Logo />
               </div>
             </BlurFade>
