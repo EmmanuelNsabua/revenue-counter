@@ -6,12 +6,13 @@ import { getSession, setSession, clearSession, updateUserSession } from "@/lib/a
 import { useRouter } from "next/navigation";
 import { useQueryClient } from "@tanstack/react-query";
 import { api } from "@/lib/api";
+import { useAccess } from "@/contexts/PermissionContext";
 
 interface AuthContextType {
   user: User | null;
   isAuthenticated: boolean;
   isLoading: boolean;
-  login: (token: string, user: User) => void;
+  login: (token: string, user: User, permissions?: Record<string, boolean>) => void;
   logout: () => void;
   setUser: React.Dispatch<React.SetStateAction<User | null>>;
 }
@@ -59,13 +60,18 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     verifySession();
   }, []);
 
+  const { setPermissions } = useAccess();
+
   /**
    * MÉTHODE LOGIN
    * Appelé après le succès du POST /login. Stocke les infos et redirige par rôle.
    */
-  const login = (token: string, user: User) => {
+  const login = (token: string, user: User, permissions?: Record<string, boolean>) => {
     setSession(token, user);
     setUser(user);
+    if (permissions) {
+      setPermissions(permissions);
+    }
     
     console.log("Login success, redirecting for role:", user.role);
 

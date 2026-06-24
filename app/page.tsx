@@ -49,8 +49,8 @@ export default function LoginPage() {
         password,
       });
 
-      const { access_token, agent: userData } = response.data;
-      login(access_token, userData);
+      const { access_token, agent: userData, permissions } = response.data as any;
+      login(access_token, userData, permissions);
     } catch (err: unknown) {
       console.error("Login error details:", err);
       if (axios.isAxiosError(err)) {

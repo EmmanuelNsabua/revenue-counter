@@ -1,14 +1,15 @@
-import type { Metadata } from "next";
+"use client";
+
 import { KpiCards } from "@/components/dashboard/kpi-cards";
 import { RecentPaiements } from "@/components/dashboard/recent-paiements";
 import { RippleButton } from "@/components/magicui/ripple-button";
 import { BlurFade } from "@/components/magicui/blur-fade";
 import { Plus, Store } from "lucide-react";
 import Link from "next/link";
-
-export const metadata: Metadata = { title: "Tableau de bord" };
+import { useAccess } from "@/contexts/PermissionContext";
 
 export default function DashboardPage() {
+  const { hasAccess } = useAccess();
   return (
     <div className="space-y-6 max-w-7xl pb-16 md:pb-0">
       <BlurFade delay={0.1}>
@@ -25,12 +26,14 @@ export default function DashboardPage() {
                 Voir commerçants
               </RippleButton>
             </Link>
-            <Link href="/paiements/nouveau" className="flex-1 sm:flex-none">
-              <RippleButton className="w-full gap-2">
-                <Plus size={16} />
-                Nouveau paiement
-              </RippleButton>
-            </Link>
+            {hasAccess("can_create_payment") && (
+              <Link href="/paiements/nouveau" className="flex-1 sm:flex-none">
+                <RippleButton className="w-full gap-2">
+                  <Plus size={16} />
+                  Nouveau paiement
+                </RippleButton>
+              </Link>
+            )}
           </div>
         </div>
       </BlurFade>

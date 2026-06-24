@@ -1,6 +1,7 @@
 import Sidebar from "@/components/layout/Sidebar";
 import Topbar from "@/components/layout/Topbar";
 import { BottomNav } from "@/components/layout/BottomNav";
+import { AgentAccessWrapper } from "@/components/layout/AgentAccessWrapper";
 
 export default function AgentLayout({
   children,
@@ -20,7 +21,9 @@ export default function AgentLayout({
           <Topbar />
         </div>
         <main className="flex-1 overflow-y-auto p-4 md:p-6 print:p-0 print:overflow-visible">
-          {children}
+          <AgentAccessWrapper>
+            {children}
+          </AgentAccessWrapper>
         </main>
       </div>
 
