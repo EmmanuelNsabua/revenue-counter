@@ -17,7 +17,7 @@ export default function SuperAdminAdminsPage() {
   const { data: allAgents = [], isLoading } = useAgents();
   
   // Filtrer uniquement les administrateurs
-  const admins = allAgents.filter(agent => agent.role === 'admin');
+  const admins = allAgents.filter(agent => agent.role?.startsWith('admin'));
 
   return (
     <div className="space-y-6 max-w-7xl pb-16 md:pb-0">

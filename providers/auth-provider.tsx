@@ -78,20 +78,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     // Redirection basée sur le rôle (insensible à la casse)
     const role = user.role?.toLowerCase() || "";
     
-    switch (role) {
-      case "agent":
-        router.push("/dashboard");
-        break;
-      case "admin":
-        router.push("/admin/dashboard");
-        break;
-      case "superadmin":
-      case "super_admin":
-        router.push("/superadmin/dashboard");
-        break;
-      default:
-        console.warn("Unknown role:", role);
-        router.push("/");
+    if (role === "agent") {
+      router.push("/dashboard");
+    } else if (role.startsWith("admin")) {
+      router.push("/admin/dashboard");
+    } else if (role === "superadmin" || role === "super_admin") {
+      router.push("/superadmin/dashboard");
+    } else {
+      console.warn("Unknown role:", role);
+      router.push("/");
     }
   };
 

@@ -25,7 +25,7 @@ export default function proxy(request: NextRequest) {
    */
   if (token && pathname === "/") {
     if (role === "agent") return NextResponse.redirect(new URL("/dashboard", request.url));
-    if (role === "admin") return NextResponse.redirect(new URL("/admin/dashboard", request.url));
+    if (role.startsWith("admin")) return NextResponse.redirect(new URL("/admin/dashboard", request.url));
     if (role === "superadmin") return NextResponse.redirect(new URL("/superadmin/dashboard", request.url));
   }
 
@@ -51,7 +51,7 @@ export default function proxy(request: NextRequest) {
     }
 
     // L'admin n'a pas accès au superadmin et ne doit pas errer sur les routes agent racines
-    if (role === "admin" && (isSuperAdminRoute || isAgentRoute && !isAdminRoute)) {
+    if (role.startsWith("admin") && (isSuperAdminRoute || isAgentRoute && !isAdminRoute)) {
        return NextResponse.redirect(new URL("/admin/dashboard", request.url));
     }
 

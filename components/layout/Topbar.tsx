@@ -46,7 +46,7 @@ export default function Topbar({
   const displayUser = {
     name: user?.nom_complet || "Utilisateur",
     role: user?.role === "agent" ? "Agent de recouvrement" : 
-          user?.role === "admin" ? "Administrateur Marché" : 
+          user?.role?.startsWith("admin") ? "Administrateur Marché" : 
           user?.role === "superadmin" ? "Direction Générale" : "Chargement...",
   };
 
