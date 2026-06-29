@@ -42,7 +42,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="fr" suppressHydrationWarning>
-      <body className={`${archivo.variable} ${ebGaramond.variable} antialiased font-sans`}>
+      <body suppressHydrationWarning className={`${archivo.variable} ${ebGaramond.variable} antialiased font-sans`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"

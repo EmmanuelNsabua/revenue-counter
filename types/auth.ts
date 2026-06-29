@@ -1,21 +1,27 @@
-export type UserRole = "agent" | "admin" | "superadmin" | "super_admin";
+export type UserRole = "agent" | "admin" | "superadmin" | string;
+
+export interface UserPermissions {
+  [key: string]: boolean;
+}
 
 export interface User {
   id: number;
-  nom: string;
-  code_agent: string;
-  role: UserRole;
-  actif?: boolean;
-  zone_id?: number;
-  zone?: {
-    id: number;
-    nom: string;
-  };
+  nom_complet: string;
+  identifiant: string;
+  role: UserRole | null;
+  grade: string | null;
+  institution: string | null;
+  avatar_url: string | null;
 }
 
 export interface AuthResponse {
   success: boolean;
-  access_token: string;
-  agent: User;
+  message?: string;
   error?: string;
+  data?: {
+    access_token: string;
+    token_type: string;
+    user: User;
+    permissions: UserPermissions;
+  };
 }

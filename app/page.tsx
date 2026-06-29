@@ -15,7 +15,7 @@ import { RippleButton } from "@/components/magicui/ripple-button";
 export default function LoginPage() {
   const router = useRouter();
   const { login, isAuthenticated, user, isLoading: authLoading } = useAuth();
-  const [matricule, setMatricule] = useState("");
+  const [identifiant, setIdentifiant] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
@@ -45,17 +45,20 @@ export default function LoginPage() {
 
     try {
       const response = await api.post<AuthResponse>("/login", {
-        code_agent: matricule.trim().toUpperCase(),
+        identifiant: identifiant.trim(),
         password,
       });
 
-      const { access_token, agent: userData, permissions } = response.data as any;
-      login(access_token, userData, permissions);
+      const responseData = response.data.data;
+      if (responseData) {
+        const { access_token, user: userData, permissions } = responseData;
+        login(access_token, userData, permissions);
+      }
     } catch (err: unknown) {
       console.error("Login error details:", err);
       if (axios.isAxiosError(err)) {
         if (err.response?.status === 401) {
-          setError("Code Agent ou mot de passe incorrect.");
+          setError("Identifiant ou mot de passe incorrect.");
         } else if (err.response?.data?.error) {
           setError(err.response.data.error as string);
         } else if (err.response?.data?.message) {
@@ -171,18 +174,19 @@ export default function LoginPage() {
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="space-y-2">
                 <label htmlFor="matricule" className="text-xs font-semibold uppercase tracking-wider text-slate-500">
-                  Code Agent
+                  Identifiant
                 </label>
                 <div className="relative">
                   <User className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-500" />
                   <Input
-                    id="matricule"
+                    id="identifiant"
+                    name="identifiant"
                     type="text"
-                    placeholder="ATXXXXXX"
-                    value={matricule}
-                    onChange={(e) => setMatricule(e.target.value)}
+                    autoComplete="username"
+                    placeholder="Identifiant"
+                    value={identifiant}
+                    onChange={(e) => setIdentifiant(e.target.value)}
                     className="pl-10 h-12 bg-white border-slate-200 text-slate-900 placeholder:text-slate-400 dark:bg-white dark:border-slate-200 dark:text-slate-900 dark:placeholder:text-slate-400"
-                    maxLength={8}
                     required
                   />
                 </div>

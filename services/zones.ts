@@ -9,8 +9,11 @@ export interface Zone {
 
 export const zonesService = {
   getAll: async () => {
-    const response = await api.get<{ success: boolean; data: Zone[] }>("/zones");
-    return response.data.data;
+    const response = await api.get<any>("/zones");
+    // Handle both paginated and non-paginated responses
+    return Array.isArray(response.data.data) 
+      ? response.data.data 
+      : response.data.data.data || [];
   },
   
   getById: async (id: number | string) => {
