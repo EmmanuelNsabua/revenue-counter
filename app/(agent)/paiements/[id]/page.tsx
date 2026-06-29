@@ -120,7 +120,7 @@ export default function PaiementDetailPage({ params }: { params: Promise<{ id: s
           </div>
           <div className="flex justify-between">
             <span className="text-muted-foreground print:text-black">Agent:</span>
-            <span className="text-right">{paiement.agent?.nom || "Non spécifié"}</span>
+            <span className="text-right">{paiement.agent?.nom_complet || "Non spécifié"}</span>
           </div>
           
           <div className="flex justify-between border-t-2 border-black/10 pt-4 mt-4 text-lg font-bold print:border-black">

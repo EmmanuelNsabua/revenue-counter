@@ -39,7 +39,7 @@ export default function SuperAdminStructuresPage() {
           />
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {zones.map((zone, index) => (
+            {zones.map((zone: any, index: number) => (
               <BlurFade key={zone.id} delay={0.2 + index * 0.05}>
                 <Card className="flex flex-col h-full">
                   <CardHeader className="pb-4">

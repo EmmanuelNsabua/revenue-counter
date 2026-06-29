@@ -11,10 +11,10 @@ export default function ProfilPage() {
   const { user, logout } = useAuth();
 
   const displayUser = {
-    nom: user?.nom || "Chargement...",
+    nom: user?.nom_complet || "Chargement...",
     role: user?.role === "agent" ? "Agent de recouvrement" : "Administrateur",
     zone: "Marché Kenya",
-    code: user?.code_agent || "ATXXXXXX",
+    code: user?.identifiant || "ATXXXXXX",
   };
 
   return (
@@ -47,7 +47,7 @@ export default function ProfilPage() {
                   <p className="text-sm text-muted-foreground flex items-center gap-2">
                     <Shield size={14} /> Identifiant Système
                   </p>
-                  <p className="font-medium text-foreground">#{user?.code_agent || "..."}</p>
+                  <p className="font-medium text-foreground">#{user?.identifiant || "..."}</p>
                 </div>
                 <div className="space-y-1">
                   <p className="text-sm text-muted-foreground flex items-center gap-2">

@@ -76,7 +76,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     console.log("Login success, redirecting for role:", user.role);
 
     // Redirection basée sur le rôle (insensible à la casse)
-    const role = user.role.toLowerCase();
+    const role = user.role?.toLowerCase() || "";
     
     switch (role) {
       case "agent":

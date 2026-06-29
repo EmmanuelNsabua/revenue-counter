@@ -11,7 +11,7 @@ export const useUpdateProfile = () => {
     onSuccess: (data) => {
       // Met à jour le contexte utilisateur avec le nouveau nom
       if (user && data.user) {
-        setUser({ ...user, nom: data.user.nom });
+        setUser({ ...user, nom_complet: data.user.nom_complet });
       }
       toast.success("Profil mis à jour avec succès");
     },

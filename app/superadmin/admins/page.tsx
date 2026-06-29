@@ -65,16 +65,16 @@ export default function SuperAdminAdminsPage() {
                 <tbody className="divide-y divide-border">
                   {admins.map((admin) => (
                     <tr key={admin.id} className="hover:bg-muted/50 transition-colors">
-                      <td className="px-6 py-5 font-bold text-muted-foreground">{admin.code_agent}</td>
+                      <td className="px-6 py-5 font-bold text-muted-foreground">{admin.identifiant}</td>
                       <td className="px-6 py-5 font-bold text-foreground flex items-center gap-2">
                         <Shield size={14} className="text-primary" />
-                        {admin.nom}
+                        {admin.nom_complet}
                       </td>
-                      <td className="px-6 py-5">{admin.zone?.nom || "Non assigné"}</td>
+                      <td className="px-6 py-5">{admin.institution || "Non assigné"}</td>
                       <td className="px-6 py-5 text-muted-foreground">-</td>
                       <td className="px-6 py-5">
-                        <Badge variant={admin.actif ? "default" : "destructive"}>
-                          {admin.actif ? "Actif" : "Inactif"}
+                        <Badge variant="default">
+                          Actif
                         </Badge>
                       </td>
                       <td className="px-6 py-5 text-right">
@@ -85,8 +85,8 @@ export default function SuperAdminAdminsPage() {
                           <DropdownMenuContent align="end" className="w-48">
                             <DropdownMenuItem>Modifier les droits</DropdownMenuItem>
                             <DropdownMenuItem>Réinitialiser le mot de passe</DropdownMenuItem>
-                            <DropdownMenuItem className={admin.actif ? "text-destructive" : "text-primary"}>
-                              {admin.actif ? "Suspendre l'accès" : "Réactiver l'accès"}
+                            <DropdownMenuItem className="text-destructive">
+                              Suspendre l'accès
                             </DropdownMenuItem>
                           </DropdownMenuContent>
                         </DropdownMenu>

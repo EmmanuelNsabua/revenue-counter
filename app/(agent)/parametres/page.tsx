@@ -20,7 +20,7 @@ export default function ParametresPage() {
   const { theme, setTheme } = useTheme();
   
   // Profile state
-  const [nom, setNom] = useState(user?.nom || "");
+  const [nom, setNom] = useState(user?.nom_complet || "");
   const updateProfile = useUpdateProfile();
 
   // Password state
@@ -153,7 +153,7 @@ export default function ParametresPage() {
                     <Label htmlFor="code">Code Agent / Matricule</Label>
                     <Input 
                       id="code" 
-                      value={user.code_agent} 
+                      value={user.identifiant} 
                       disabled 
                       className="max-w-md bg-muted font-mono"
                     />
@@ -163,14 +163,14 @@ export default function ParametresPage() {
                     <Label htmlFor="role">Rôle système</Label>
                     <Input 
                       id="role" 
-                      value={user.role.toUpperCase()} 
+                      value={user.role?.toUpperCase() || "NON ASSIGNÉ"} 
                       disabled 
                       className="max-w-md bg-muted"
                     />
                   </div>
                   <Button 
                     type="submit" 
-                    disabled={updateProfile.isPending || nom === user.nom || !nom.trim()}
+                    disabled={updateProfile.isPending || nom === user.nom_complet || !nom.trim()}
                     className="mt-4"
                   >
                     {updateProfile.isPending ? (
