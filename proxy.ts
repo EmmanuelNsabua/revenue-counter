@@ -25,7 +25,7 @@ export default function proxy(request: NextRequest) {
    */
   if (token && pathname === "/") {
     if (role === "agent") return NextResponse.redirect(new URL("/dashboard", request.url));
-    if (role.startsWith("admin")) return NextResponse.redirect(new URL("/admin/dashboard", request.url));
+    if (role?.startsWith("admin")) return NextResponse.redirect(new URL("/admin/dashboard", request.url));
     if (role === "superadmin") return NextResponse.redirect(new URL("/superadmin/dashboard", request.url));
   }
 
