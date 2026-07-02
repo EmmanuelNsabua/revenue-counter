@@ -20,7 +20,10 @@ import { Label } from "@/components/ui/label";
 
 export default function AdminCommercantsPage() {
   const [page, setPage] = useState(1);
+  const [search, setSearch] = useState("");
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [editingCommercant, setEditingCommercant] = useState<any>(null);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   
   // Form states
   const [nom, setNom] = useState("");
@@ -31,11 +34,16 @@ export default function AdminCommercantsPage() {
 
   const queryClient = useQueryClient();
 
-  // Fetch commercants with pagination
+  // Fetch commercants with pagination and search
   const { data: commercantsData, isLoading } = useQuery({
-    queryKey: ["commercants", page],
+    queryKey: ["commercants", page, search],
     queryFn: async () => {
-      const res = await api.get(`/commercants?page=${page}`);
+      const res = await api.get("/commercants", {
+        params: {
+          page,
+          search: search.trim() || undefined
+        }
+      });
       return res.data;
     },
   });
@@ -64,18 +72,66 @@ export default function AdminCommercantsPage() {
       queryClient.invalidateQueries({ queryKey: ["commercants"] });
       toast.success("Commerçant enregistré avec succès");
       setIsCreateModalOpen(false);
-      // Reset form
-      setNom("");
-      setNumeroDocument("");
-      setTypeActivite("");
-      setEmplacement("");
-      setZoneId("");
+      resetForm();
     },
     onError: (error: any) => {
-      const msg = error?.response?.data?.message || "Erreur lors de la création du commerçant";
+      const msg = error?.response?.data?.error || error?.response?.data?.message || "Erreur lors de la création du commerçant";
       toast.error(msg);
     }
   });
+
+  // Update commercant mutation
+  const updateMutation = useMutation({
+    mutationFn: async ({ id, data }: { id: number; data: any }) => {
+      const res = await api.put(`/commercants/${id}`, data);
+      return res.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["commercants"] });
+      toast.success("Commerçant mis à jour avec succès");
+      setIsEditModalOpen(false);
+      setEditingCommercant(null);
+      resetForm();
+    },
+    onError: (error: any) => {
+      const msg = error?.response?.data?.error || error?.response?.data?.message || "Erreur lors de la modification du commerçant";
+      toast.error(msg);
+    }
+  });
+
+  // Delete commercant mutation
+  const deleteMutation = useMutation({
+    mutationFn: async (id: number) => {
+      const res = await api.delete(`/commercants/${id}`);
+      return res.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["commercants"] });
+      toast.success("Commerçant supprimé avec succès");
+    },
+    onError: (error: any) => {
+      const msg = error?.response?.data?.error || error?.response?.data?.message || "Erreur lors de la suppression";
+      toast.error(msg);
+    }
+  });
+
+  const resetForm = () => {
+    setNom("");
+    setNumeroDocument("");
+    setTypeActivite("");
+    setEmplacement("");
+    setZoneId("");
+  };
+
+  const handleStartEdit = (commercant: any) => {
+    setEditingCommercant(commercant);
+    setNom(commercant.nom);
+    setNumeroDocument(commercant.numero_document);
+    setTypeActivite(commercant.type_activite);
+    setEmplacement(commercant.emplacement);
+    setZoneId(commercant.zone_id?.toString() || "");
+    setIsEditModalOpen(true);
+  };
 
   const handleCreateCommercant = (e: React.FormEvent) => {
     e.preventDefault();
@@ -89,6 +145,22 @@ export default function AdminCommercantsPage() {
     });
   };
 
+  const handleUpdateCommercant = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!editingCommercant) return;
+    updateMutation.mutate({
+      id: editingCommercant.id,
+      data: {
+        nom,
+        numero_document: numeroDocument,
+        type_activite: typeActivite,
+        emplacement,
+        zone_id: parseInt(zoneId),
+        actif: editingCommercant.actif,
+      }
+    });
+  };
+
   const isFormValid = nom.trim() && numeroDocument.trim() && typeActivite.trim() && emplacement.trim() && zoneId;
 
   return (
@@ -99,7 +171,7 @@ export default function AdminCommercantsPage() {
             <h1 className="text-2xl font-bold tracking-tight">Commerçants</h1>
             <p className="text-sm text-muted-foreground">Annuaire et gestion de tous les contribuables.</p>
           </div>
-          <Button onClick={() => setIsCreateModalOpen(true)} className="gap-2 w-full sm:w-auto">
+          <Button onClick={() => { resetForm(); setIsCreateModalOpen(true); }} className="gap-2 w-full sm:w-auto">
             <Plus size={16} />
             Nouveau Commerçant
           </Button>
@@ -110,7 +182,12 @@ export default function AdminCommercantsPage() {
         <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center mb-6">
           <div className="relative w-full sm:max-w-sm">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            <Input placeholder="Rechercher (Nom, N°, etc.)..." className="pl-9" />
+            <Input 
+              placeholder="Rechercher (Nom, N°, etc.)..." 
+              className="pl-9" 
+              value={search}
+              onChange={(e) => { setSearch(e.target.value); setPage(1); }}
+            />
           </div>
         </div>
       </BlurFade>
@@ -123,7 +200,7 @@ export default function AdminCommercantsPage() {
             <Store className="w-12 h-12 text-muted-foreground mb-4 opacity-50" />
             <h3 className="text-lg font-semibold">Aucun commerçant trouvé</h3>
             <p className="text-muted-foreground max-w-sm mx-auto mt-2">
-              Le répertoire est vide. Ajoutez votre premier commerçant.
+              Le répertoire est vide ou aucun résultat ne correspond.
             </p>
           </div>
         ) : (
@@ -178,8 +255,12 @@ export default function AdminCommercantsPage() {
                               <MoreVertical size={16} />
                             </DropdownMenuTrigger>
                             <DropdownMenuContent align="end">
-                              <DropdownMenuItem>Modifier</DropdownMenuItem>
-                              <DropdownMenuItem className="text-destructive">Désactiver</DropdownMenuItem>
+                              <DropdownMenuItem onClick={() => handleStartEdit(commercant)}>Modifier</DropdownMenuItem>
+                              <DropdownMenuItem onClick={() => {
+                                if(confirm("Confirmez-vous la suppression de ce commerçant ?")) {
+                                  deleteMutation.mutate(commercant.id);
+                                }
+                              }} className="text-destructive">Supprimer</DropdownMenuItem>
                             </DropdownMenuContent>
                           </DropdownMenu>
                         </td>
@@ -299,6 +380,87 @@ export default function AdminCommercantsPage() {
                     Enregistrement...
                   </>
                 ) : "Enregistrer"}
+              </Button>
+            </div>
+          </form>
+        </DialogContent>
+      </Dialog>
+
+      {/* Modal de modification */}
+      <Dialog open={isEditModalOpen} onOpenChange={setIsEditModalOpen}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Modifier le commerçant</DialogTitle>
+            <DialogDescription>
+              Ajustez les informations d'identification de ce contribuable.
+            </DialogDescription>
+          </DialogHeader>
+          <form onSubmit={handleUpdateCommercant} className="space-y-4 py-2">
+            <div className="grid grid-cols-1 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="edit-nom">Nom complet ou Raison sociale</Label>
+                <Input 
+                  id="edit-nom" 
+                  value={nom} 
+                  onChange={(e) => setNom(e.target.value)} 
+                  required 
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="edit-numeroDocument">N° RCCM / Id Nat / Pièce</Label>
+                <Input 
+                  id="edit-numeroDocument" 
+                  value={numeroDocument} 
+                  onChange={(e) => setNumeroDocument(e.target.value)} 
+                  required 
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="edit-typeActivite">Type d'activité principale</Label>
+                <Input 
+                  id="edit-typeActivite" 
+                  value={typeActivite} 
+                  onChange={(e) => setTypeActivite(e.target.value)} 
+                  required 
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="edit-zone_id">Zone affectée</Label>
+                <select 
+                  id="edit-zone_id" 
+                  value={zoneId} 
+                  onChange={(e) => setZoneId(e.target.value)}
+                  className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background"
+                  required
+                >
+                  <option value="">Sélectionnez une zone</option>
+                  {zonesList.map((z: any) => (
+                    <option key={z.id} value={z.id}>{z.nom}</option>
+                  ))}
+                </select>
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="edit-emplacement">Adresse / Emplacement</Label>
+                <Input 
+                  id="edit-emplacement" 
+                  value={emplacement} 
+                  onChange={(e) => setEmplacement(e.target.value)} 
+                  required 
+                />
+              </div>
+            </div>
+            
+            <div className="pt-4 flex items-center justify-end gap-2 border-t mt-4">
+              <Button type="button" variant="outline" onClick={() => { setIsEditModalOpen(false); setEditingCommercant(null); }}>
+                Annuler
+              </Button>
+              <Button type="submit" disabled={updateMutation.isPending || !isFormValid}>
+                {updateMutation.isPending ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Enregistrement...
+                  </>
+                ) : "Sauvegarder"}
               </Button>
             </div>
           </form>

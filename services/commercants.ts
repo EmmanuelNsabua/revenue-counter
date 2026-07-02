@@ -35,4 +35,28 @@ export const commercantsService = {
     const response = await api.get<CommercantResponse>(`/commercants/${id}`);
     return response.data.data;
   },
+
+  /**
+   * Crée un nouveau commerçant
+   */
+  create: async (data: Partial<Commercant>) => {
+    const response = await api.post<CommercantResponse>("/commercants", data);
+    return response.data.data;
+  },
+
+  /**
+   * Met à jour un commerçant existant
+   */
+  update: async ({ id, data }: { id: string | number; data: Partial<Commercant> }) => {
+    const response = await api.put<CommercantResponse>(`/commercants/${id}`, data);
+    return response.data.data;
+  },
+
+  /**
+   * Supprime un commerçant
+   */
+  delete: async (id: string | number) => {
+    const response = await api.delete<{ success: boolean }>(`/commercants/${id}`);
+    return response.data;
+  },
 };
