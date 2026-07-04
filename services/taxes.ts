@@ -12,7 +12,8 @@ export const taxesService = {
    */
   getAll: async () => {
     const response = await api.get<TaxesResponse>("/taxes");
-    return response.data.data;
+    const data = response.data.data;
+    return Array.isArray(data) ? data : ((data as any)?.data || []);
   },
 
   /**

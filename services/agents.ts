@@ -3,8 +3,9 @@ import { User } from "@/types/auth";
 
 export const agentsService = {
   getAll: async () => {
-    const response = await api.get<{ success: boolean; data: User[] }>("/agents");
-    return response.data.data;
+    const response = await api.get<{ success: boolean; data: User[] | any }>("/agents");
+    const data = response.data.data;
+    return Array.isArray(data) ? data : (data?.data || []);
   },
   
   getById: async (id: number | string) => {

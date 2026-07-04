@@ -19,7 +19,8 @@ export const paiementsService = {
     const response = await api.get<PaiementsResponse>("/paiements", {
       params,
     });
-    return response.data.data;
+    const data = response.data.data;
+    return Array.isArray(data) ? data : ((data as any)?.data || []);
   },
 
   /**

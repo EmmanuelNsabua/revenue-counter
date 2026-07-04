@@ -25,7 +25,11 @@ export const commercantsService = {
     const response = await api.get<CommercantsResponse>("/commercants", {
       params: cleanParams,
     });
-    return response.data.data;
+    
+    // Si le backend renvoie un objet de pagination, les données sont dans res.data.data.data
+    // Si c'est juste un wrapper success, c'est dans res.data.data
+    const data = response.data.data;
+    return Array.isArray(data) ? data : ((data as any)?.data || []);
   },
 
   /**
