@@ -13,7 +13,7 @@ export const taxesService = {
   getAll: async () => {
     const response = await api.get<TaxesResponse>("/taxes");
     const data = response.data.data;
-    return Array.isArray(data) ? data : ((data as any)?.data || []);
+    return (Array.isArray(data) ? data : ((data as any)?.data || [])) as Taxe[];
   },
 
   /**

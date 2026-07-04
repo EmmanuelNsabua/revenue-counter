@@ -20,7 +20,7 @@ export const paiementsService = {
       params,
     });
     const data = response.data.data;
-    return Array.isArray(data) ? data : ((data as any)?.data || []);
+    return (Array.isArray(data) ? data : ((data as any)?.data || [])) as Paiement[];
   },
 
   /**

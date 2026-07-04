@@ -5,7 +5,7 @@ export const agentsService = {
   getAll: async () => {
     const response = await api.get<{ success: boolean; data: User[] | any }>("/agents");
     const data = response.data.data;
-    return Array.isArray(data) ? data : (data?.data || []);
+    return (Array.isArray(data) ? data : (data?.data || [])) as User[];
   },
   
   getById: async (id: number | string) => {
