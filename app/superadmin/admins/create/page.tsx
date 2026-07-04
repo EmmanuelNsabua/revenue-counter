@@ -174,7 +174,7 @@ export default function CreateAdminPage() {
                   <Label>Rôle</Label>
                   <Select 
                     value={formData.role} 
-                    onValueChange={(val) => setFormData({...formData, role: val})}
+                    onValueChange={(val) => setFormData({...formData, role: val || ""})}
                     disabled={isLoadingRoles}
                     required
                   >
@@ -193,7 +193,7 @@ export default function CreateAdminPage() {
                   <Label>Grade</Label>
                   <Select 
                     value={formData.grade} 
-                    onValueChange={(val) => setFormData({...formData, grade: val})}
+                    onValueChange={(val) => setFormData({...formData, grade: val || ""})}
                     disabled={isLoadingGrades}
                   >
                     <SelectTrigger>
@@ -211,7 +211,7 @@ export default function CreateAdminPage() {
                   <Label>Structure (Zone / Marché)</Label>
                   <Select 
                     value={formData.institution} 
-                    onValueChange={(val) => setFormData({...formData, institution: val})}
+                    onValueChange={(val) => setFormData({...formData, institution: val || ""})}
                     disabled={isLoadingStructures}
                   >
                     <SelectTrigger>
