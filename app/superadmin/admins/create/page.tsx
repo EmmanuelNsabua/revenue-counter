@@ -13,6 +13,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ArrowLeft, Upload, User, Loader2, Phone, Camera, Shield, Star, Building2, UserPlus } from "lucide-react";
 import { BlurFade } from "@/components/magicui/blur-fade";
+import { toast } from "sonner";
 
 export default function CreateAdminPage() {
   const router = useRouter();
@@ -42,9 +43,13 @@ export default function CreateAdminPage() {
     },
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ["agents"] });
-      // On affiche la vue de succès avec les données retournées
+      toast.success("Administrateur créé avec succès !");
       setCreatedAdmin(data);
     },
+    onError: (error: any) => {
+      console.error(error);
+      toast.error(error?.response?.data?.message || error.message || "Erreur lors de la création de l'administrateur");
+    }
   });
 
   const handlePhotoClick = () => {
@@ -62,8 +67,11 @@ export default function CreateAdminPage() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Si l'API attend du JSON plutôt que du FormData, il faudrait adapter.
-    // Ici on prépare un FormData car il y a une photo.
+    if (!formData.nom_complet || !formData.tel || !formData.role || !formData.grade || !formData.institution) {
+      toast.error("Veuillez remplir tous les champs obligatoires (avec astérisque)");
+      return;
+    }
+    
     const submitData = new FormData();
     submitData.append("nom_complet", formData.nom_complet);
     submitData.append("role", formData.role);
@@ -133,7 +141,6 @@ export default function CreateAdminPage() {
                       <Input 
                         id="nom_complet" 
                         placeholder="Ex: Jean Dupont" 
-                        required 
                         className="pl-10 h-12"
                         value={formData.nom_complet}
                         onChange={(e) => setFormData({...formData, nom_complet: e.target.value})}
@@ -150,7 +157,6 @@ export default function CreateAdminPage() {
                       <Input 
                         id="tel" 
                         placeholder="Ex: +243..." 
-                        required
                         className="pl-10 h-12"
                         value={formData.tel}
                         onChange={(e) => setFormData({...formData, tel: e.target.value})}
@@ -205,7 +211,6 @@ export default function CreateAdminPage() {
                         value={formData.role} 
                         onValueChange={(val) => setFormData({...formData, role: val || ""})}
                         disabled={isLoadingRoles}
-                        required
                       >
                         <SelectTrigger className="w-full pl-10 h-12">
                           <SelectValue placeholder="Sélectionner un rôle" />
@@ -229,7 +234,6 @@ export default function CreateAdminPage() {
                         value={formData.grade} 
                         onValueChange={(val) => setFormData({...formData, grade: val || ""})}
                         disabled={isLoadingGrades}
-                        required
                       >
                         <SelectTrigger className="w-full pl-10 h-12">
                           <SelectValue placeholder="Sélectionner un grade" />
@@ -253,7 +257,6 @@ export default function CreateAdminPage() {
                         value={formData.institution} 
                         onValueChange={(val) => setFormData({...formData, institution: val || ""})}
                         disabled={isLoadingStructures}
-                        required
                       >
                         <SelectTrigger className="w-full pl-10 h-12">
                           <SelectValue placeholder="Sélectionner la structure d'affectation" />
