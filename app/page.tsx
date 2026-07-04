@@ -173,7 +173,7 @@ export default function LoginPage() {
           <BlurFade delay={0.4}>
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="space-y-2">
-                <label htmlFor="matricule" className="text-xs font-semibold uppercase tracking-wider text-slate-500">
+                <label htmlFor="identifiant" className="text-xs font-semibold uppercase tracking-wider text-slate-500">
                   Identifiant
                 </label>
                 <div className="relative">
