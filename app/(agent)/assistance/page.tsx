@@ -206,7 +206,6 @@ export default function AssistancePage() {
                                 </span>
                               )}
                             </div>
-                          </div>
                         </DialogTrigger>
                         <DialogContent className="max-w-2xl">
                           <DialogHeader>
@@ -229,7 +228,7 @@ export default function AssistancePage() {
                 <CardTitle>Questions Fréquentes (FAQ)</CardTitle>
               </CardHeader>
               <CardContent>
-                <Accordion type="single" collapsible className="w-full">
+                <Accordion className="w-full">
                   <AccordionItem value="item-1">
                     <AccordionTrigger className="text-left font-semibold">Comment enregistrer un paiement ?</AccordionTrigger>
                     <AccordionContent className="text-muted-foreground">
