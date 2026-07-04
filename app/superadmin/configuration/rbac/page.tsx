@@ -165,7 +165,7 @@ function GradePermissionEditor({ grade, availablePermissions }: { grade: any, av
                 />
                 <div className="space-y-0.5 leading-none overflow-hidden">
                   <p className="font-semibold text-sm truncate" title={perm.nom}>
-                    {perm.nom.replace(/_/g, " ").replace(/\b\w/g, c => c.toUpperCase())}
+                    {perm.nom.replace(/_/g, " ").replace(/\b\w/g, (c: string) => c.toUpperCase())}
                   </p>
                   <p className="text-[10px] uppercase font-bold text-muted-foreground tracking-wider truncate">
                     Système
