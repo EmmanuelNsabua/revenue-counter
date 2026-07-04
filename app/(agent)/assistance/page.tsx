@@ -184,8 +184,9 @@ export default function AssistancePage() {
                   <div className="space-y-4">
                     {tickets?.map(ticket => (
                       <Dialog key={ticket.id} open={selectedTicketId === ticket.id} onOpenChange={(open) => setSelectedTicketId(open ? ticket.id : null)}>
-                        <DialogTrigger asChild>
-                          <div className="p-4 border rounded-lg hover:bg-muted/50 cursor-pointer transition-colors flex items-start justify-between">
+                        <DialogTrigger 
+                          render={<div className="p-4 border rounded-lg hover:bg-muted/50 cursor-pointer transition-colors flex items-start justify-between" />}
+                        >
                             <div>
                               <div className="flex items-center gap-2 mb-1">
                                 <span className="font-semibold text-sm">{ticket.reference}</span>
