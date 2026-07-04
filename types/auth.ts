@@ -12,6 +12,7 @@ export interface User {
   grade: string | null;
   institution: string | null;
   avatar_url: string | null;
+  preferences?: Record<string, any>;
 }
 
 export interface AuthResponse {
