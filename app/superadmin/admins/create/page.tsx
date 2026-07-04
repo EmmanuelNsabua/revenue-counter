@@ -73,7 +73,7 @@ export default function CreateAdminPage() {
     }
     
     const submitData = new FormData();
-    submitData.append("nom_complet", formData.nom_complet);
+    submitData.append("nom", formData.nom_complet);
     submitData.append("role", formData.role);
     submitData.append("grade", formData.grade);
     submitData.append("institution", formData.institution);
