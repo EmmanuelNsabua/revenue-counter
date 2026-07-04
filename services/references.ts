@@ -52,14 +52,8 @@ export const referencesService = {
       return (Array.isArray(data) ? data : ((data as any)?.data || [])) as Structure[];
     } catch (e) {
       return [
-        { id: 1, nom: "Commune Annexe", cleTenant: "commune_annexe" },
-        { id: 2, nom: "Commune Kamalondo", cleTenant: "commune_kamalondo" },
-        { id: 3, nom: "Commune Kampemba", cleTenant: "commune_kampemba" },
-        { id: 4, nom: "Commune Katuba", cleTenant: "commune_katuba" },
-        { id: 5, nom: "Commune Kenya", cleTenant: "commune_kenya" },
-        { id: 6, nom: "Commune Lubumbashi", cleTenant: "commune_lubumbashi" },
-        { id: 7, nom: "Commune Rwashi", cleTenant: "commune_rwashi" },
-        { id: 8, nom: "Mairie de Lubumbashi", cleTenant: "mairie_lubumbashi" }
+        { id: 1, nom: "Commune", cleTenant: "COMMUNE" },
+        { id: 2, nom: "Mairie", cleTenant: "MAIRIE" }
       ];
     }
   }
