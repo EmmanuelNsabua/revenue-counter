@@ -38,9 +38,10 @@ export const referencesService = {
       return (Array.isArray(data) ? data : ((data as any)?.data || [])) as Grade[];
     } catch (e) {
       return [
-        { id: 1, nom: "Superviseur Général" },
-        { id: 2, nom: "Chef de Division" },
-        { id: 3, nom: "Agent de Bureau" }
+        { id: 1, nom: "Super Administrateur" },
+        { id: 2, nom: "Maire" },
+        { id: 3, nom: "Bourgmestre" },
+        { id: 4, nom: "Chef de Marché" }
       ];
     }
   },
