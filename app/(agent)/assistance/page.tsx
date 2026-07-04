@@ -134,10 +134,10 @@ export default function AssistancePage() {
                   <CardDescription>Suivi de vos demandes d&apos;assistance.</CardDescription>
                 </div>
                 <Dialog open={isNewTicketOpen} onOpenChange={setIsNewTicketOpen}>
-                  <DialogTrigger asChild>
-                    <Button size="sm" className="gap-2">
-                      <Plus className="h-4 w-4" /> Nouveau Ticket
-                    </Button>
+                  <DialogTrigger 
+                    render={<Button size="sm" className="gap-2" />}
+                  >
+                    <Plus className="h-4 w-4" /> Nouveau Ticket
                   </DialogTrigger>
                   <DialogContent>
                     <DialogHeader>
@@ -150,7 +150,7 @@ export default function AssistancePage() {
                       </div>
                       <div className="grid gap-2">
                         <Label htmlFor="categorie">Catégorie</Label>
-                        <Select value={categorie} onValueChange={setCategorie} required>
+                        <Select value={categorie} onValueChange={(val) => setCategorie(val as string)} required>
                           <SelectTrigger>
                             <SelectValue placeholder="Sélectionnez une catégorie" />
                           </SelectTrigger>
