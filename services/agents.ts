@@ -13,7 +13,8 @@ export const agentsService = {
     return response.data.data;
   },
   
-  create: async (data: Partial<User>) => {
+  create: async (data: Partial<User> | FormData) => {
+    // Si c'est du FormData, axios va automatiquement configurer le Content-Type: multipart/form-data
     const response = await api.post<{ success: boolean; data: User }>("/agents", data);
     return response.data.data;
   },

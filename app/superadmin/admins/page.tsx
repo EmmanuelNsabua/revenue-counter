@@ -12,6 +12,8 @@ import { useAgents } from "@/hooks/use-agents";
 import { TableSkeleton } from "@/components/ui/skeletons";
 import { EmptyAgents } from "@/components/ui/empty-state";
 import { BlurFade } from "@/components/magicui/blur-fade";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
 
 export default function SuperAdminAdminsPage() {
   const { data: allAgents = [], isLoading } = useAgents();
@@ -27,10 +29,12 @@ export default function SuperAdminAdminsPage() {
             <h1 className="text-3xl font-black tracking-tight uppercase">Administrateurs</h1>
             <p className="text-sm text-muted-foreground mt-1">Gestion des droits et accès des superviseurs.</p>
           </div>
-          <ActionButton className="gap-2 w-full sm:w-auto h-12 px-6" toastMessage="Création d'un nouvel administrateur.">
-            <UserPlus size={18} />
-            Créer un accès Admin
-          </ActionButton>
+          <Link href="/superadmin/admins/create" className="w-full sm:w-auto">
+            <Button className="gap-2 w-full h-12 px-6 bg-primary text-primary-foreground hover:bg-primary/90">
+              <UserPlus size={18} />
+              Créer un accès Admin
+            </Button>
+          </Link>
         </div>
       </BlurFade>
 
