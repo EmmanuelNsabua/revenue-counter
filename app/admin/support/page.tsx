@@ -53,7 +53,7 @@ function AdminTicketModal({ ticketId, onClose }: { ticketId: number, onClose: ()
         </div>
         <div className="w-48 shrink-0">
           <Label className="text-xs mb-1 block">Statut du ticket</Label>
-          <Select value={ticket.statut} onValueChange={handleStatusChange}>
+          <Select value={ticket.statut} onValueChange={(val) => val && handleStatusChange(val)}>
             <SelectTrigger>
               <SelectValue />
             </SelectTrigger>
