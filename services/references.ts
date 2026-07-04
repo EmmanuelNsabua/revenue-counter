@@ -25,9 +25,8 @@ export const referencesService = {
       return (Array.isArray(data) ? data : ((data as any)?.data || [])) as Role[];
     } catch (e) {
       return [
-        { id: 1, nom: "Administrateur Système", code: "admin_sys" },
-        { id: 2, nom: "Chef de Zone", code: "admin_zone" },
-        { id: 3, nom: "Superviseur", code: "admin_sup" }
+        { id: 1, nom: "Super Admin", code: "superadmin" },
+        { id: 2, nom: "Admin", code: "admin" }
       ];
     }
   },
@@ -39,9 +38,9 @@ export const referencesService = {
       return (Array.isArray(data) ? data : ((data as any)?.data || [])) as Grade[];
     } catch (e) {
       return [
-        { id: 1, nom: "Grade A" },
-        { id: 2, nom: "Grade B" },
-        { id: 3, nom: "Grade C" }
+        { id: 1, nom: "Superviseur Général" },
+        { id: 2, nom: "Chef de Division" },
+        { id: 3, nom: "Agent de Bureau" }
       ];
     }
   },
@@ -53,9 +52,14 @@ export const referencesService = {
       return (Array.isArray(data) ? data : ((data as any)?.data || [])) as Structure[];
     } catch (e) {
       return [
-        { id: 1, nom: "Direction Générale", cleTenant: "dir_gen" },
-        { id: 2, nom: "Mairie Centrale", cleTenant: "mairie_centrale" },
-        { id: 3, nom: "Commune Kenya", cleTenant: "com_kenya" }
+        { id: 1, nom: "Commune Annexe", cleTenant: "commune_annexe" },
+        { id: 2, nom: "Commune Kamalondo", cleTenant: "commune_kamalondo" },
+        { id: 3, nom: "Commune Kampemba", cleTenant: "commune_kampemba" },
+        { id: 4, nom: "Commune Katuba", cleTenant: "commune_katuba" },
+        { id: 5, nom: "Commune Kenya", cleTenant: "commune_kenya" },
+        { id: 6, nom: "Commune Lubumbashi", cleTenant: "commune_lubumbashi" },
+        { id: 7, nom: "Commune Rwashi", cleTenant: "commune_rwashi" },
+        { id: 8, nom: "Mairie de Lubumbashi", cleTenant: "mairie_lubumbashi" }
       ];
     }
   }

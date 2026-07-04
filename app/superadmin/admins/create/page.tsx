@@ -160,7 +160,7 @@ export default function CreateAdminPage() {
                 </div>
                 
                 {/* Zone Photo de profil à droite */}
-                <div className="shrink-0 flex flex-col items-center justify-center space-y-4 p-8 bg-white border border-border border-dashed rounded-xl w-full md:w-[320px] h-[280px]">
+                <div className="shrink-0 flex flex-col items-center justify-center space-y-3 p-6 bg-white border border-border border-dashed rounded-xl w-full md:w-[280px]">
                   <input 
                     type="file" 
                     ref={fileInputRef} 
@@ -169,24 +169,24 @@ export default function CreateAdminPage() {
                     onChange={handlePhotoChange}
                   />
                   {photoPreview ? (
-                    <div className="w-24 h-24 rounded-full overflow-hidden border-2 border-primary relative group cursor-pointer" onClick={handlePhotoClick}>
+                    <div className="w-20 h-20 rounded-full overflow-hidden border-2 border-primary relative group cursor-pointer" onClick={handlePhotoClick}>
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img src={photoPreview} alt="Aperçu" className="w-full h-full object-cover" />
                       <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                        <Upload size={20} className="text-white" />
+                        <Upload size={16} className="text-white" />
                       </div>
                     </div>
                   ) : (
-                    <div className="w-20 h-20 rounded-full bg-slate-50 flex items-center justify-center text-slate-400 border border-slate-100">
-                      <Camera size={32} />
+                    <div className="w-16 h-16 rounded-full bg-slate-50 flex items-center justify-center text-slate-400 border border-slate-100">
+                      <Camera size={28} />
                     </div>
                   )}
                   <div className="text-center space-y-1">
-                    <p className="font-semibold text-base">Importer une photo</p>
-                    <p className="text-sm text-muted-foreground">JPG, PNG (Max 2MB)</p>
+                    <p className="font-semibold text-sm">Importer une photo</p>
+                    <p className="text-xs text-muted-foreground">JPG, PNG (Max 2MB)</p>
                   </div>
-                  <Button type="button" variant="outline" className="gap-2 h-10 px-4 mt-2" onClick={handlePhotoClick}>
-                    <Upload size={16} /> Choisir un fichier
+                  <Button type="button" variant="outline" className="gap-2 h-9 px-3 mt-1 text-sm" onClick={handlePhotoClick}>
+                    <Upload size={14} /> Choisir un fichier
                   </Button>
                 </div>
               </div>
@@ -207,7 +207,7 @@ export default function CreateAdminPage() {
                         disabled={isLoadingRoles}
                         required
                       >
-                        <SelectTrigger className="pl-10 h-12">
+                        <SelectTrigger className="w-full pl-10 h-12">
                           <SelectValue placeholder="Sélectionner un rôle" />
                         </SelectTrigger>
                         <SelectContent>
@@ -231,7 +231,7 @@ export default function CreateAdminPage() {
                         disabled={isLoadingGrades}
                         required
                       >
-                        <SelectTrigger className="pl-10 h-12">
+                        <SelectTrigger className="w-full pl-10 h-12">
                           <SelectValue placeholder="Sélectionner un grade" />
                         </SelectTrigger>
                         <SelectContent>
@@ -255,7 +255,7 @@ export default function CreateAdminPage() {
                         disabled={isLoadingStructures}
                         required
                       >
-                        <SelectTrigger className="pl-10 h-12">
+                        <SelectTrigger className="w-full pl-10 h-12">
                           <SelectValue placeholder="Sélectionner la structure d'affectation" />
                         </SelectTrigger>
                         <SelectContent>
