@@ -48,10 +48,18 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         // Validation réelle du token auprès du backend
         const response = await api.get<User>("/user");
         setUser(response.data);
-      } catch {
-        // En cas d'échec (401), le token est invalidé
-        setUser(null);
-        clearSession();
+      } catch (error: any) {
+        if (error?.response?.status === 401) {
+          // Token invalidé
+          setUser(null);
+          clearSession();
+        } else {
+          // Erreur réseau ou serveur (500), on garde la session locale pour ne pas déconnecter l'utilisateur
+          const { user: cachedUser } = getSession();
+          if (cachedUser) {
+            setUser(cachedUser);
+          }
+        }
       } finally {
         setIsLoading(false);
       }

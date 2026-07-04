@@ -45,16 +45,33 @@ export default function AdminAgentsPage() {
   const agents = responseData?.data?.data || [];
   const pagination = responseData?.data || null;
 
+  // Fetch zones for the select input
+  const { data: zonesData } = useQuery({
+    queryKey: ["zones", "all"],
+    queryFn: async () => {
+      const res = await api.get("/zones");
+      return res.data;
+    },
+  });
+  const zonesList = zonesData?.data?.data || zonesData?.data || [];
+
   // Create agent mutation
   const createMutation = useMutation({
     mutationFn: async (newAgent: any) => {
       const res = await api.post('/agents', newAgent);
       return res.data;
     },
-    onSuccess: () => {
+    onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ["agents"] });
-      toast.success("Agent créé avec succès");
       setIsCreateModalOpen(false);
+      
+      if (data?.data?.password_provisoire) {
+         // Show credentials to the admin
+         alert(`Agent créé avec succès !\n\nMatricule: ${data.data.code_agent}\nMot de passe: ${data.data.password_provisoire}\n\nVeuillez copier et transmettre ces informations à l'agent.`);
+      } else {
+         toast.success("Agent créé avec succès");
+      }
+      
       // Reset form
       setNom("");
       setCodeAgent("");
@@ -71,9 +88,9 @@ export default function AdminAgentsPage() {
     e.preventDefault();
     createMutation.mutate({
       nom,
-      code_agent: codeAgent,
+      code_agent: codeAgent || undefined,
       role,
-      password,
+      password: password || undefined,
       zone_id: zoneId ? parseInt(zoneId) : null,
     });
   };
@@ -203,9 +220,9 @@ export default function AdminAgentsPage() {
               <Label htmlFor="code_agent">Code Agent (Matricule)</Label>
               <Input 
                 id="code_agent" 
+                placeholder="Auto-généré si vide (ex: AT3XXXXX)"
                 value={codeAgent} 
                 onChange={(e) => setCodeAgent(e.target.value)} 
-                required 
               />
             </div>
             <div className="grid grid-cols-2 gap-4">
@@ -224,13 +241,18 @@ export default function AdminAgentsPage() {
                 </select>
               </div>
               <div className="space-y-2">
-                <Label htmlFor="zone_id">ID Zone (Optionnel)</Label>
-                <Input 
+                <Label htmlFor="zone_id">Zone affectée (Optionnel)</Label>
+                <select 
                   id="zone_id" 
-                  type="number" 
                   value={zoneId} 
-                  onChange={(e) => setZoneId(e.target.value)} 
-                />
+                  onChange={(e) => setZoneId(e.target.value)}
+                  className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background"
+                >
+                  <option value="">Aucune zone</option>
+                  {zonesList.map((z: any) => (
+                    <option key={z.id} value={z.id}>{z.nom}</option>
+                  ))}
+                </select>
               </div>
             </div>
             <div className="space-y-2">
@@ -238,9 +260,9 @@ export default function AdminAgentsPage() {
               <Input 
                 id="password" 
                 type="password" 
+                placeholder="Auto-généré si vide"
                 value={password} 
                 onChange={(e) => setPassword(e.target.value)} 
-                required 
                 minLength={6}
               />
             </div>

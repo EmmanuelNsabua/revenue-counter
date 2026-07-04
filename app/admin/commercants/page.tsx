@@ -161,7 +161,7 @@ export default function AdminCommercantsPage() {
     });
   };
 
-  const isFormValid = nom.trim() && numeroDocument.trim() && typeActivite.trim() && emplacement.trim() && zoneId;
+  const isFormValid = nom.trim() && typeActivite.trim() && emplacement.trim() && zoneId;
 
   return (
     <div className="space-y-6 max-w-7xl pb-16 md:pb-0">
@@ -326,10 +326,9 @@ export default function AdminCommercantsPage() {
                 <Label htmlFor="numeroDocument">N° RCCM / Id Nat / Pièce</Label>
                 <Input 
                   id="numeroDocument" 
-                  placeholder="Ex: CD/LSH/RCCM/24-B-1234"
+                  placeholder="Ex: CD/LSH/RCCM/24-B-1234 (Optionnel)"
                   value={numeroDocument} 
                   onChange={(e) => setNumeroDocument(e.target.value)} 
-                  required 
                 />
               </div>
               <div className="space-y-2">
@@ -409,10 +408,9 @@ export default function AdminCommercantsPage() {
               <div className="space-y-2">
                 <Label htmlFor="edit-numeroDocument">N° RCCM / Id Nat / Pièce</Label>
                 <Input 
-                  id="edit-numeroDocument" 
+                  placeholder="Optionnel"
                   value={numeroDocument} 
                   onChange={(e) => setNumeroDocument(e.target.value)} 
-                  required 
                 />
               </div>
               <div className="space-y-2">

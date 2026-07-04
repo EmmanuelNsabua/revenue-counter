@@ -13,10 +13,16 @@ export default function SuperAdminConfigPage() {
             <h1 className="text-3xl font-black tracking-tight uppercase">Configuration Globale</h1>
             <p className="text-sm text-muted-foreground mt-1">Règles métier, sécurité et paramètres du système central.</p>
           </div>
-          <ActionButton className="gap-2 w-full sm:w-auto h-12 px-8 font-bold" toastMessage="Configuration système sauvegardée avec succès.">
-            <Save size={18} />
-            Enregistrer les modifications
-          </ActionButton>
+          <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
+            <ActionButton className="gap-2 w-full sm:w-auto h-12 px-8 font-bold" toastMessage="Configuration système sauvegardée avec succès.">
+              <Save size={18} />
+              Enregistrer les modifications
+            </ActionButton>
+            <a href="/superadmin/configuration/rbac" className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-12 px-8 gap-2">
+              <Shield size={18} className="text-primary" />
+              Droits et Accès (RBAC)
+            </a>
+          </div>
         </div>
       </BlurFade>
 
