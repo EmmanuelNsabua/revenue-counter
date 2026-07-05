@@ -44,7 +44,16 @@ export default function CreateAdminPage() {
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ["agents"] });
       toast.success("Administrateur créé avec succès !");
-      setCreatedAdmin(data);
+      // On combine les données retournées par l'API avec celles du formulaire
+      setCreatedAdmin({
+        ...data,
+        nom_complet: formData.nom_complet,
+        tel: formData.tel,
+        role: formData.role,
+        grade: formData.grade,
+        institution: formData.institution,
+        avatarPreview: photoPreview
+      });
     },
     onError: (error: any) => {
       console.error(error);
