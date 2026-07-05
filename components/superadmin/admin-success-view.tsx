@@ -68,13 +68,13 @@ export function AdminSuccessView({ admin, onBack }: AdminSuccessViewProps) {
               <label className="text-xs font-semibold uppercase text-muted-foreground">Matricule (Identifiant)</label>
               <div className="flex items-center gap-2">
                 <div className="flex-1 bg-background border border-border rounded-lg px-4 py-3 font-mono font-medium text-lg">
-                  {admin.identifiant}
+                  {admin.identifiant || (admin as any).matricule || "Non défini par le serveur"}
                 </div>
                 <Button 
                   variant="outline" 
                   size="icon" 
                   className="h-12 w-12 shrink-0" 
-                  onClick={() => copyToClipboard(admin.identifiant, "id")}
+                  onClick={() => copyToClipboard(admin.identifiant || (admin as any).matricule || "", "id")}
                 >
                   {copiedId ? <CheckCircle2 size={18} className="text-green-500" /> : <Copy size={18} />}
                 </Button>
@@ -122,14 +122,9 @@ export function AdminSuccessView({ admin, onBack }: AdminSuccessViewProps) {
             <MessageCircle size={18} />
             Partager sur WhatsApp
           </Button>
-          <div className="flex gap-3 w-full sm:flex-1">
-            <Button variant="outline" className="w-full" onClick={onBack}>
-              Retour à la liste
-            </Button>
-            <Button variant="default" className="w-full" onClick={() => window.location.reload()}>
-              Nouveau
-            </Button>
-          </div>
+          <Button variant="outline" className="w-full sm:flex-1" onClick={onBack}>
+            Retour à la liste
+          </Button>
         </CardFooter>
       </Card>
     </div>
