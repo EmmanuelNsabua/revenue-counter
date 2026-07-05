@@ -6,4 +6,10 @@ export interface Commercant {
   telephone?: string;
   actif: boolean;
   activite?: string;
+  type_activite?: string;
+  created_at?: string;
+  zone?: {
+    id: number;
+    nom: string;
+  };
 }
