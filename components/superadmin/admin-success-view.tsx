@@ -68,8 +68,10 @@ export function AdminSuccessView({ admin, onBack }: AdminSuccessViewProps) {
             <div className="shrink-0 flex flex-col items-center gap-2">
               <div className="w-24 h-24 rounded-full overflow-hidden border-4 border-white shadow-sm bg-slate-200 flex items-center justify-center">
                 {admin.avatarPreview ? (
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={admin.avatarPreview} alt="Avatar" className="w-full h-full object-cover" />
+                  <>
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={admin.avatarPreview} alt="Avatar" className="w-full h-full object-cover" />
+                  </>
                 ) : (
                   <User size={40} className="text-slate-400" />
                 )}
