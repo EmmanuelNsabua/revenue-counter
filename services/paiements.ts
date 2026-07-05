@@ -15,7 +15,7 @@ export const paiementsService = {
   /**
    * Récupère l'historique des paiements avec filtres optionnels
    */
-  getAll: async (params?: { search?: string; mode_paiement?: string }) => {
+  getAll: async (params?: { search?: string; mode_paiement?: string; commercant_id?: string | number }) => {
     const response = await api.get<PaiementsResponse>("/paiements", {
       params,
     });

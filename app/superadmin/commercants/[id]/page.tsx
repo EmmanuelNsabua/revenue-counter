@@ -3,19 +3,38 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { ArrowLeft, Store, Tag, MapPin, Phone, Building2, ShieldAlert, FileText } from "lucide-react";
+import { ArrowLeft, Store, Tag, MapPin, Phone, Building2, ShieldAlert, FileText, Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React from "react";
+import { useCommercant } from "@/hooks/use-commercants";
+import { usePaiements } from "@/hooks/use-paiements";
+import { format } from "date-fns";
+import { fr } from "date-fns/locale";
 
 export default function SuperAdminCommercantDetailsPage({ params }: { params: Promise<{ id: string }> }) {
   const router = useRouter();
   const { id } = React.use(params);
-  const commercantId = id || "COM-001";
   
-  const auditLogs = [
-    { date: "Hier à 14:20", action: "Création Fiche", by: "Admin 001", details: "RAS" },
-    { date: "Hier à 15:00", action: "Paiement 5000 FC", by: "Agent 004", details: "Transaction validée" },
-  ];
+  const { data: commercant, isLoading: isLoadingCommercant } = useCommercant(id);
+  const { data: paiements = [], isLoading: isLoadingPaiements } = usePaiements({ commercant_id: id });
+
+  if (isLoadingCommercant) {
+    return (
+      <div className="flex items-center justify-center h-full min-h-[400px]">
+        <Loader2 className="animate-spin text-primary" size={32} />
+      </div>
+    );
+  }
+
+  if (!commercant) {
+    return (
+      <div className="flex flex-col items-center justify-center h-full min-h-[400px] gap-4">
+        <Store size={48} className="text-muted-foreground opacity-50" />
+        <h2 className="text-xl font-bold">Commerçant introuvable</h2>
+        <Button onClick={() => router.back()} variant="outline">Retour</Button>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6 max-w-5xl mx-auto pb-16 md:pb-0">
@@ -31,7 +50,7 @@ export default function SuperAdminCommercantDetailsPage({ params }: { params: Pr
           </Button>
           <div>
             <h1 className="text-3xl font-black tracking-tight uppercase">Audit Commerçant</h1>
-            <p className="text-sm text-muted-foreground mt-1">Inspection détaillée {commercantId}</p>
+            <p className="text-sm text-muted-foreground mt-1">Inspection détaillée : {commercant.numero_document || `COM-${commercant.id}`}</p>
           </div>
         </div>
         <Button variant="destructive" className="gap-2">
@@ -47,27 +66,29 @@ export default function SuperAdminCommercantDetailsPage({ params }: { params: Pr
                 <Store size={32} />
               </div>
             </div>
-            <CardTitle className="text-2xl">Boutique Mama Nene</CardTitle>
+            <CardTitle className="text-2xl">{commercant.nom}</CardTitle>
             <CardDescription className="flex items-center gap-1.5 font-bold mt-2 text-foreground">
-              <Building2 size={16} className="text-primary" /> Marché Kenya
+              <Building2 size={16} className="text-primary" /> {commercant.zone?.nom || "Zone non assignée"}
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="flex items-center gap-3 text-sm">
               <Tag size={16} className="text-muted-foreground flex-shrink-0" />
-              <span>Alimentation & Vivres</span>
+              <span>{commercant.type_activite || "Non spécifié"}</span>
             </div>
             <div className="flex items-center gap-3 text-sm">
               <MapPin size={16} className="text-muted-foreground flex-shrink-0" />
-              <span>Allée A</span>
+              <span>{commercant.emplacement || "Non spécifié"}</span>
             </div>
             <div className="flex items-center gap-3 text-sm">
               <Phone size={16} className="text-muted-foreground flex-shrink-0" />
-              <span>+243 99 123 4567</span>
+              <span>Non renseigné</span>
             </div>
             <div className="pt-4 mt-4 border-t border-border flex items-center justify-between">
               <span className="text-sm font-semibold text-muted-foreground">Statut</span>
-              <Badge variant="default" className="uppercase text-[10px] tracking-wider">Actif</Badge>
+              <Badge variant={commercant.actif ? "default" : "destructive"} className="uppercase text-[10px] tracking-wider">
+                {commercant.actif ? "Actif" : "Inactif"}
+              </Badge>
             </div>
           </CardContent>
         </Card>
@@ -81,21 +102,54 @@ export default function SuperAdminCommercantDetailsPage({ params }: { params: Pr
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="space-y-4">
-                {auditLogs.map((log, i) => (
-                  <div key={i} className="flex justify-between items-start pb-4 border-b border-border last:border-0 last:pb-0">
-                    <div>
-                      <p className="font-bold text-sm text-foreground">{log.action}</p>
-                      <p className="text-xs text-muted-foreground mt-1">Par : {log.by} — {log.details}</p>
+              {isLoadingPaiements ? (
+                <div className="flex justify-center p-8">
+                  <Loader2 className="animate-spin text-primary" size={24} />
+                </div>
+              ) : paiements.length === 0 ? (
+                <div className="text-center p-8 text-muted-foreground text-sm">
+                  Aucune activité enregistrée pour ce commerçant.
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  {/* Fake creation log based on commercant creation date if available */}
+                  {commercant.created_at && (
+                    <div className="flex justify-between items-start pb-4 border-b border-border last:border-0 last:pb-0">
+                      <div>
+                        <p className="font-bold text-sm text-foreground">Création Fiche</p>
+                        <p className="text-xs text-muted-foreground mt-1">Système — Enregistrement initial</p>
+                      </div>
+                      <div className="text-right">
+                        <p className="text-xs font-semibold px-2 py-1 rounded-md bg-secondary text-secondary-foreground">
+                          {format(new Date(commercant.created_at), "d MMM yyyy 'à' HH:mm", { locale: fr })}
+                        </p>
+                      </div>
                     </div>
-                    <div className="text-right">
-                      <p className="text-xs font-semibold px-2 py-1 rounded-md bg-secondary text-secondary-foreground">
-                        {log.date}
-                      </p>
+                  )}
+
+                  {paiements.map((paiement: any) => (
+                    <div key={paiement.id} className="flex justify-between items-start pb-4 border-b border-border last:border-0 last:pb-0">
+                      <div>
+                        <p className="font-bold text-sm text-foreground flex items-center gap-2">
+                          Paiement {paiement.montant} FC
+                          <Badge variant="outline" className="text-[10px] h-5">{paiement.mode_paiement}</Badge>
+                        </p>
+                        <p className="text-xs text-muted-foreground mt-1">
+                          Par : {paiement.agent?.user?.nom_complet || `Agent ${paiement.agent_id}`} — 
+                          <span className={paiement.statut === "valide" ? "text-green-600 font-medium ml-1" : "text-amber-600 font-medium ml-1"}>
+                            Transaction {paiement.statut}
+                          </span>
+                        </p>
+                      </div>
+                      <div className="text-right">
+                        <p className="text-xs font-semibold px-2 py-1 rounded-md bg-secondary text-secondary-foreground">
+                          {format(new Date(paiement.date_paiement || paiement.created_at), "d MMM yyyy 'à' HH:mm", { locale: fr })}
+                        </p>
+                      </div>
                     </div>
-                  </div>
-                ))}
-              </div>
+                  ))}
+                </div>
+              )}
             </CardContent>
           </Card>
         </div>

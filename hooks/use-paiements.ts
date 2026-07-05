@@ -5,7 +5,7 @@ import { toast } from "sonner";
 import { api } from "@/lib/api";
 import axios from "axios";
 
-export const usePaiements = (filters?: { search?: string; mode_paiement?: string }) => {
+export const usePaiements = (filters?: { search?: string; mode_paiement?: string; commercant_id?: string | number }) => {
   return useQuery({
     queryKey: ["paiements", filters],
     queryFn: () => paiementsService.getAll(filters),
