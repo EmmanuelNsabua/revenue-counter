@@ -51,7 +51,7 @@ export default function SuperAdminCommercantsPage() {
                   <th className="px-6 py-5">Code</th>
                   <th className="px-6 py-5">Nom</th>
                   <th className="px-6 py-5">Activité</th>
-                  <th className="px-6 py-5">Zone locale</th>
+                  <th className="px-6 py-5">Adresse</th>
                   <th className="px-6 py-5">Statut</th>
                   <th className="px-6 py-5 text-right">Actions</th>
                 </tr>
@@ -66,7 +66,7 @@ export default function SuperAdminCommercantsPage() {
                         {commercant.nom}
                       </div>
                     </td>
-                    <td className="px-6 py-5">{commercant.activite}</td>
+                    <td className="px-6 py-5">{commercant.type_activite}</td>
                     <td className="px-6 py-5 text-muted-foreground">{commercant.emplacement}</td>
                     <td className="px-6 py-5">
                       <Badge variant={commercant.actif ? "default" : "destructive"}>
