@@ -22,7 +22,7 @@ const ebGaramond = EB_Garamond({
 export const metadata: Metadata = {
   title: {
     default: "Revenue Counter — Mairie de Lubumbashi",
-    template: "%s | Revenue Counter",
+    template: "%s | Commune de Kenya",
   },
   description:
     "Application de gestion de recouvrement des taxes du marché de la Kenya, Lubumbashi, RDC.",
