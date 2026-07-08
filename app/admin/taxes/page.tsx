@@ -35,7 +35,7 @@ export default function AdminTaxesPage() {
   const [frequence, setFrequence] = useState<"journalier" | "mensuel" | "annuel">("journalier");
   const [description, setDescription] = useState("");
 
-  const isSuperAdmin = user?.role === "superadmin";
+  const isDirection = user?.role === "admin" && user?.grade_niveau === 1;
 
   // Create Taxe Mutation
   const createMutation = useMutation({
@@ -121,7 +121,7 @@ export default function AdminTaxesPage() {
           <h1 className="text-2xl font-bold tracking-tight">Taxes</h1>
           <p className="text-sm text-muted-foreground">Configuration locale des montants et des types de taxes.</p>
         </div>
-        {isSuperAdmin ? (
+        {isDirection ? (
           <Button onClick={() => { resetCreateForm(); setIsCreateModalOpen(true); }} className="gap-2 w-full sm:w-auto">
             <Plus size={16} />
             Nouvelle Taxe
@@ -142,9 +142,9 @@ export default function AdminTaxesPage() {
       <div className="bg-rdc-yellow/10 border border-rdc-yellow/20 rounded-lg p-4 flex gap-3 items-start text-rdc-yellow mb-6">
         <ShieldAlert size={20} className="mt-0.5 flex-shrink-0" />
         <div className="text-sm">
-          <p className="font-semibold">{isSuperAdmin ? "Mode Super Administrateur" : "Mode restreint"}</p>
+          <p className="font-semibold">{isDirection ? "Mode Direction" : "Mode restreint"}</p>
           <p className="text-rdc-yellow/80">
-            {isSuperAdmin 
+            {isDirection 
               ? "Vous avez un accès total pour créer de nouvelles taxes fiscales et ajuster tous les montants." 
               : "En tant qu'administrateur local, vous ne pouvez que modifier les montants des taxes existantes."}
           </p>

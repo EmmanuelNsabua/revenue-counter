@@ -10,6 +10,7 @@ export interface User {
   identifiant: string;
   role: UserRole | null;
   grade: string | null;
+  grade_niveau?: number | null;
   institution: string | null;
   avatar_url: string | null;
   preferences?: Record<string, any>;
