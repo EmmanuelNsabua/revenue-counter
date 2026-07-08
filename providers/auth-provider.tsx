@@ -47,6 +47,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       try {
         // Validation réelle du token auprès du backend
         const response = await api.get<User>("/user");
+        // Persist the fresh profile (includes grade_niveau, etc.) into localStorage
+        updateUserSession(response.data);
         setUser(response.data);
       } catch (error: any) {
         if (error?.response?.status === 401) {

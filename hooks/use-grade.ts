@@ -16,9 +16,11 @@ export function useGrade() {
     isGrade1: niveau === 1,
     isGrade2: niveau === 2,
     isGrade3: niveau === 3,
-    /** Grade 1 ou 2 : peut gérer zones et administrateurs */
+    /** Grade 1 ou 2 seulement : peut gérer zones et administrateurs */
     canManageStructure: niveau !== null && niveau <= 2,
     /** Grade 1 seulement : peut voir toutes les données globales */
     isDirection: niveau === 1,
+    /** True while user is still loading (niveau unknown) */
+    isLoading: niveau === null,
   };
 }

@@ -30,6 +30,8 @@ export const setSession = (token: string, user: User) => {
 export const updateUserSession = (user: User) => {
   if (typeof window !== "undefined") {
     localStorage.setItem(USER_KEY, JSON.stringify(user));
+    // Keep cookie in sync so server-side middleware always has the latest role
+    document.cookie = `revenue_role=${user.role}; path=/; max-age=86400; SameSite=Lax`;
   }
 };
 

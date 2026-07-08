@@ -39,8 +39,11 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   };
 
   // Filter nav items based on grade niveau
+  // While loading (niveau === null), show nothing sensitive — show base items only
   const adminNavItems = allAdminNavItems.filter((item) => {
-    const gradeNiveau = niveau ?? 1;
+    const gradeNiveau = niveau;
+    // If grade hasn't loaded yet, only show items without maxGrade restriction
+    if (gradeNiveau === null) return !(item as any).maxGrade;
     if ((item as any).maxGrade && gradeNiveau > (item as any).maxGrade) return false;
     return true;
   }).map(({ minGrade, maxGrade, ...rest }: any) => rest);
