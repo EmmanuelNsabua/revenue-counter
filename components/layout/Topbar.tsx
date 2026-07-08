@@ -45,9 +45,11 @@ export default function Topbar({
 
   const displayUser = {
     name: user?.nom_complet || "Utilisateur",
-    role: user?.role === "agent" ? "Agent de recouvrement" : 
-          user?.role?.startsWith("admin") ? "Administrateur Marché" : 
-          user?.role === "superadmin" ? "Direction Générale" : "Chargement...",
+    role: user?.grade || (
+            user?.role === "agent" ? "Agent de recouvrement" : 
+            user?.role?.startsWith("admin") ? "Administrateur" : 
+            user?.role === "superadmin" ? "Direction Générale" : "Chargement..."
+          ),
   };
 
   return (
