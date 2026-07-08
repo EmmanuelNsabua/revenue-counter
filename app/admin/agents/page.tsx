@@ -18,6 +18,7 @@ import { EmptyAgents } from "@/components/ui/empty-state";
 import { BlurFade } from "@/components/magicui/blur-fade";
 import { toast } from "sonner";
 import { Label } from "@/components/ui/label";
+import { ZoneMultiSelect } from "@/components/ui/zone-multi-select";
 
 export default function AdminAgentsPage() {
   const [page, setPage] = useState(1);
@@ -28,7 +29,7 @@ export default function AdminAgentsPage() {
   const [codeAgent, setCodeAgent] = useState("");
   const [role, setRole] = useState("agent");
   const [password, setPassword] = useState("");
-  const [zoneId, setZoneId] = useState("");
+  const [zoneIds, setZoneIds] = useState<number[]>([]);
 
   const queryClient = useQueryClient();
 
@@ -77,7 +78,7 @@ export default function AdminAgentsPage() {
       setCodeAgent("");
       setRole("agent");
       setPassword("");
-      setZoneId("");
+      setZoneIds([]);
     },
     onError: (error: any) => {
       toast.error(error?.response?.data?.message || "Erreur lors de la création de l'agent");
@@ -91,7 +92,7 @@ export default function AdminAgentsPage() {
       code_agent: codeAgent || undefined,
       role,
       password: password || undefined,
-      zone_id: zoneId ? parseInt(zoneId) : null,
+      zones: zoneIds,
     });
   };
 
@@ -148,7 +149,19 @@ export default function AdminAgentsPage() {
                             {agent.role}
                           </Badge>
                         </td>
-                        <td className="px-6 py-4">{agent.zone?.nom || "Non assigné"}</td>
+                        <td className="px-6 py-4">
+                          {agent.zones && agent.zones.length > 0 ? (
+                            <div className="flex flex-wrap gap-1">
+                              {agent.zones.map((z: any) => (
+                                <Badge key={z.id} variant="secondary" className="text-[10px] whitespace-nowrap">
+                                  {z.nom}
+                                </Badge>
+                              ))}
+                            </div>
+                          ) : (
+                            <span className="text-muted-foreground italic">Non assigné</span>
+                          )}
+                        </td>
                         <td className="px-6 py-4 text-right">
                           <DropdownMenu>
                             <DropdownMenuTrigger className="flex h-8 w-8 items-center justify-center rounded-md hover:bg-muted text-muted-foreground transition-colors outline-none ml-auto">
@@ -240,18 +253,13 @@ export default function AdminAgentsPage() {
                 </select>
               </div>
               <div className="space-y-2">
-                <Label htmlFor="zone_id">Zone affectée (Optionnel)</Label>
-                <select 
-                  id="zone_id" 
-                  value={zoneId} 
-                  onChange={(e) => setZoneId(e.target.value)}
-                  className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background"
-                >
-                  <option value="">Aucune zone</option>
-                  {zonesList.map((z: any) => (
-                    <option key={z.id} value={z.id}>{z.nom}</option>
-                  ))}
-                </select>
+                <Label>Zones affectées (Optionnel)</Label>
+                <ZoneMultiSelect
+                  zones={zonesList}
+                  selectedZoneIds={zoneIds}
+                  onChange={setZoneIds}
+                  placeholder="Choisir des zones..."
+                />
               </div>
             </div>
             <div className="space-y-2">

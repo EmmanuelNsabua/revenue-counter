@@ -3,11 +3,12 @@
 import Sidebar from "@/components/layout/Sidebar";
 import Topbar from "@/components/layout/Topbar";
 import { BottomNav } from "@/components/layout/BottomNav";
-import { LayoutDashboard, Users, Receipt, Map, HelpCircle, Settings, Store } from "lucide-react";
+import { LayoutDashboard, Users, Receipt, Map, HelpCircle, Settings, Store, Shield } from "lucide-react";
 
 const adminNavItems = [
   { label: "Vue d'ensemble", href: "/admin/dashboard", icon: LayoutDashboard },
   { label: "Agents", href: "/admin/agents", icon: Users },
+  { label: "Administrateurs", href: "/admin/administrateurs", icon: Shield },
   { label: "Commerçants", href: "/admin/commercants", icon: Store },
   { label: "Taxes", href: "/admin/taxes", icon: Receipt },
   { label: "Zones", href: "/admin/zones", icon: Map },
