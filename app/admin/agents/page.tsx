@@ -249,7 +249,6 @@ export default function AdminAgentsPage() {
                   required
                 >
                   <option value="agent">Agent (Terrain)</option>
-                  <option value="admin">Administrateur</option>
                 </select>
               </div>
               <div className="space-y-2">
