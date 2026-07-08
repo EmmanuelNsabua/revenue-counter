@@ -5,6 +5,11 @@ export interface AgentStats {
   nombre_transactions: number;
   commercants_non_regles: number;
   recent_transactions?: any[];
+  zone_performance?: Array<{
+    name: string;
+    montant: number;
+    progress: number;
+  }>;
 }
 
 export const statsService = {
