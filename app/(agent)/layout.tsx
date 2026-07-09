@@ -1,6 +1,6 @@
-import Sidebar from "@/components/layout/Sidebar";
+import Sidebar, { defaultNavItems } from "@/components/layout/Sidebar";
 import Topbar from "@/components/layout/Topbar";
-import { BottomNav } from "@/components/layout/BottomNav";
+import FloatingNav from "@/components/layout/FloatingNav";
 import { AgentAccessWrapper } from "@/components/layout/AgentAccessWrapper";
 
 export default function AgentLayout({
@@ -16,9 +16,9 @@ export default function AgentLayout({
       </div>
 
       {/* Main content area */}
-      <div className="flex-1 flex flex-col min-w-0 overflow-hidden pb-16 md:pb-0 print:pb-0">
+      <div className="flex-1 flex flex-col min-w-0 overflow-hidden md:pb-0">
         <div className="print:hidden">
-          <Topbar />
+          <Topbar profilHref="/profil" />
         </div>
         <main className="flex-1 overflow-y-auto p-4 md:p-6 print:p-0 print:overflow-visible">
           <AgentAccessWrapper>
@@ -27,9 +27,9 @@ export default function AgentLayout({
         </main>
       </div>
 
-      {/* Bottom Navigation for mobile - hidden during print */}
+      {/* Floating Navigation for mobile - hidden during print */}
       <div className="print:hidden">
-        <BottomNav />
+        <FloatingNav navItems={defaultNavItems} />
       </div>
     </div>
   );

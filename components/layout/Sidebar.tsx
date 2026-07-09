@@ -16,7 +16,7 @@ import {
 import Logo from "@/components/ui/Logo";
 import { useState } from "react";
 
-const defaultNavItems = [
+export const defaultNavItems = [
   {
     label: "Tableau de bord",
     href: "/dashboard",

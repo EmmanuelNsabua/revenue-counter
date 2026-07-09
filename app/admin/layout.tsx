@@ -2,7 +2,7 @@
 
 import Sidebar from "@/components/layout/Sidebar";
 import Topbar from "@/components/layout/Topbar";
-import { BottomNav } from "@/components/layout/BottomNav";
+import FloatingNav from "@/components/layout/FloatingNav";
 import {
   LayoutDashboard, Users, Receipt, Map, HelpCircle,
   Settings, Store, Shield, Banknote,
@@ -53,11 +53,11 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       <div className="hidden md:block">
         <Sidebar navItems={adminNavItems} bottomItems={adminBottomItems} roleTitle={getRoleTitle()} />
       </div>
-      <div className="flex-1 flex flex-col min-w-0 overflow-hidden pb-16 md:pb-0">
+      <div className="flex-1 flex flex-col min-w-0 overflow-hidden md:pb-0">
         <Topbar profilHref="/admin/profil" />
         <main className="flex-1 overflow-y-auto p-4 md:p-6">{children}</main>
       </div>
-      <BottomNav navItems={adminNavItems} />
+      <FloatingNav navItems={adminNavItems} />
     </div>
   );
 }

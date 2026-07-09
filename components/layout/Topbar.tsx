@@ -1,13 +1,11 @@
 "use client";
 
-import { Bell, Search, User, Calendar, LogOut, Settings, UserCircle } from "lucide-react";
+import { Bell, User, Calendar, LogOut, Settings, UserCircle } from "lucide-react";
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Input } from "@/components/ui/input";
 import { useAuth } from "@/providers/auth-provider";
 import { useNotifications } from "@/hooks/use-notifications";
-import { AnimatedThemeToggler } from "@/components/magicui/animated-theme-toggler";
 
 import {
   DropdownMenu,
@@ -26,7 +24,6 @@ interface TopbarProps {
 export default function Topbar({
   profilHref = "/profil",
 }: TopbarProps) {
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [currentDate, setCurrentDate] = useState("");
   const { user, logout } = useAuth();
   const { data: notifications = [], markAsRead, markAllAsRead } = useNotifications();
@@ -53,12 +50,12 @@ export default function Topbar({
   };
 
   return (
-    <header className="relative h-16 flex items-center justify-between px-6 bg-card border-b border-border flex-shrink-0 gap-4">
+    <header className="relative h-16 flex items-center justify-between px-6 bg-card border-b border-border shrink-0 gap-4">
       {/* Left section: Logo (mobile) or Date (desktop) */}
       <div className="min-w-0 flex items-center">
         {/* Mobile Logo */}
         <Link href="/dashboard" className="md:hidden flex items-center gap-2 sm:gap-3 min-w-0">
-          <div className="relative flex-shrink-0 w-9 h-9 sm:w-10 sm:h-10 rounded-full overflow-hidden ring-2 ring-border">
+          <div className="relative shrink-0 w-9 h-9 sm:w-10 sm:h-10 rounded-full overflow-hidden ring-2 ring-border">
             <Image src="/assets/logo-mairie-lubumbashi.png" alt="Logo" fill className="w-full h-full object-contain p-0.5 sm:p-1" />
           </div>
           <div className="flex flex-col min-w-0">
@@ -75,19 +72,7 @@ export default function Topbar({
       </div>
 
       {/* Right actions */}
-      <div className="flex items-center gap-1 sm:gap-2 flex-shrink-0">
-
-        {/* Search */}
-        <button 
-          type="button"
-          onClick={() => setIsSearchOpen(!isSearchOpen)}
-          className="flex h-10 w-10 items-center justify-center rounded-full text-muted-foreground hover:text-foreground hover:bg-muted transition-colors outline-none cursor-pointer"
-        >
-          <Search size={20} className="pointer-events-none" />
-        </button>
-
-        {/* Theme Toggle */}
-        <AnimatedThemeToggler variant="circle" />
+      <div className="flex items-center gap-1 sm:gap-2 shrink-0">
 
         {/* Notifications */}
         <DropdownMenu>
@@ -111,7 +96,7 @@ export default function Topbar({
                 )}
               </div>
               <DropdownMenuSeparator />
-              <div className="max-h-[300px] overflow-y-auto">
+              <div className="max-h-75 overflow-y-auto">
                 {notifications.length === 0 ? (
                   <div className="p-4 text-center text-sm text-muted-foreground">Aucune notification</div>
                 ) : (
@@ -180,20 +165,6 @@ export default function Topbar({
         </DropdownMenu>
       </div>
 
-      {/* Deployed Search Bar */}
-      {isSearchOpen && (
-        <div className="absolute top-16 left-0 w-full bg-card border-b border-border p-3 px-6 z-50 shadow-md animate-in slide-in-from-top-2">
-          <div className="relative max-w-3xl mx-auto">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            <Input 
-              autoFocus
-              placeholder="Rechercher dans l'application..." 
-              className="w-full h-10 pl-9 bg-background"
-              onBlur={() => setIsSearchOpen(false)}
-            />
-          </div>
-        </div>
-      )}
     </header>
   );
 }

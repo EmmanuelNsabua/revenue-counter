@@ -2,7 +2,7 @@
 
 import Sidebar from "@/components/layout/Sidebar";
 import Topbar from "@/components/layout/Topbar";
-import { BottomNav } from "@/components/layout/BottomNav";
+import FloatingNav from "@/components/layout/FloatingNav";
 import { LayoutDashboard, Building2, Shield, Sliders, HelpCircle, Settings, Store } from "lucide-react";
 
 const superAdminNavItems = [
@@ -24,13 +24,13 @@ export default function SuperAdminLayout({ children }: { children: React.ReactNo
       <div className="hidden md:block">
         <Sidebar navItems={superAdminNavItems} bottomItems={superAdminBottomItems} roleTitle="Direction Générale" />
       </div>
-      <div className="flex-1 flex flex-col min-w-0 overflow-hidden pb-16 md:pb-0">
+      <div className="flex-1 flex flex-col min-w-0 overflow-hidden md:pb-0">
         <Topbar 
           profilHref="/superadmin/profil" 
         />
         <main className="flex-1 overflow-y-auto p-4 md:p-6">{children}</main>
       </div>
-      <BottomNav navItems={superAdminNavItems} />
+      <FloatingNav navItems={superAdminNavItems} />
     </div>
   );
 }
