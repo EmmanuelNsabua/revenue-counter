@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Plus, X, Search, Moon, Sun, Info, HelpCircle } from "lucide-react";
+import { Plus, X, Search, Moon, Sun, Info, HelpCircle, Settings } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useAuth } from "@/providers/auth-provider";
@@ -77,34 +77,34 @@ export default function FloatingNav({ navItems }: FloatingNavProps) {
             exit={{ opacity: 0 }}
             className="fixed inset-0 z-40 bg-blue-600 flex flex-col items-center justify-start pt-12 pb-6 px-6 md:hidden overflow-y-auto"
           >
-            {/* Top actions (Settings icon left, Theme toggle right) */}
-            <div className="w-full flex justify-between items-center mb-6 text-white/90">
-              <button className="p-2 bg-white/10 rounded-full">
-                {/* Settings icon is part of the mockup, but user said parameter is left of profile pic */}
-                <span className="sr-only">Paramètres</span>
-                <div className="w-6 h-6" /> {/* Placeholder for alignment */}
-              </button>
-              <button 
-                onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-                className="p-2 bg-white/10 rounded-full hover:bg-white/20 transition-colors"
-              >
-                {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
-              </button>
-            </div>
+            {/* User Profile & Top Actions */}
+            <div className="w-full flex justify-between items-center mb-4 px-2 mt-4">
+              <Link href="/parametres" className="p-3 bg-white/10 rounded-full hover:bg-white/20 transition-colors">
+                <Settings size={22} className="text-white" />
+              </Link>
 
-            {/* User Profile */}
-            <div className="flex flex-col items-center mb-8">
-              <div className="relative w-20 h-20 rounded-full overflow-hidden border-2 border-white mb-3 bg-white/20">
+              <div className="relative w-24 h-24 rounded-full overflow-hidden border-[3px] border-white/50 bg-white/20 shrink-0">
                 {user?.avatar_url ? (
-                  <Image src={user.avatar_url} alt="Avatar" fill className="object-cover" />
+                  /* eslint-disable-next-line @next/next/no-img-element */
+                  <img src={user.avatar_url} alt="Avatar" className="w-full h-full object-cover" />
                 ) : (
-                  <div className="w-full h-full flex items-center justify-center text-white text-2xl font-bold">
+                  <div className="w-full h-full flex items-center justify-center text-white text-3xl font-bold">
                     {displayUser.name.charAt(0)}
                   </div>
                 )}
               </div>
-              <h2 className="text-white text-xl font-bold text-center">Bonjour, {displayUser.name.split(' ')[0]} !</h2>
-              <p className="text-blue-200 text-sm">{displayUser.role}</p>
+
+              <button 
+                onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+                className="p-3 bg-white/10 rounded-full hover:bg-white/20 transition-colors"
+              >
+                {theme === 'dark' ? <Sun size={22} className="text-white" /> : <Moon size={22} className="text-white" />}
+              </button>
+            </div>
+            
+            <div className="flex flex-col items-center mb-8">
+              <h2 className="text-white text-2xl font-bold text-center">Bonjour, {displayUser.name.split(' ')[0]} !</h2>
+              <p className="text-blue-200 text-sm mt-1">{displayUser.role}</p>
             </div>
 
             {/* Search Bar */}
