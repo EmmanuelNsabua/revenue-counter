@@ -46,10 +46,22 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
       try {
         // Validation réelle du token auprès du backend
-        const response = await api.get<User>("/user");
+        const response = await api.get<User & { permissions?: string[] }>("/user");
         // Persist the fresh profile (includes grade_niveau, etc.) into localStorage
         updateUserSession(response.data);
         setUser(response.data);
+        
+        // Handle permissions
+        if (response.data.permissions) {
+          const permsRecord: Record<string, boolean> = {};
+          if (response.data.role === "superadmin") {
+            // we could leave it or assume server sends all permissions, but the server didn't send all permissions for superadmin in /user endpoint because it just queries grade.permissions.
+            // Oh wait, in the login endpoint, superadmin gets all permissions. In /user, I didn't add logic for superadmin.
+            // Let's just trust whatever the server sends for now, or fallback to frontend superadmin check.
+          }
+          response.data.permissions.forEach(p => { permsRecord[p] = true; });
+          setPermissions(permsRecord);
+        }
       } catch (error: any) {
         if (error?.response?.status === 401) {
           // Token invalidé

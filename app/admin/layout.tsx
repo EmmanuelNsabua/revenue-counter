@@ -8,18 +8,17 @@ import {
   Settings, Store, Shield, Banknote,
 } from "lucide-react";
 import { useAuth } from "@/providers/auth-provider";
+import { useAccess } from "@/contexts/PermissionContext";
 import { useGrade } from "@/hooks/use-grade";
 
 const allAdminNavItems = [
-  { label: "Vue d'ensemble", href: "/admin/dashboard", icon: LayoutDashboard, minGrade: 1 },
-  { label: "Transactions",   href: "/admin/transactions", icon: Banknote,       minGrade: 1 },
-  { label: "Agents",         href: "/admin/agents",       icon: Users,           minGrade: 1 },
-  // Grade 3 does NOT see Administrateurs
-  { label: "Administrateurs", href: "/admin/administrateurs", icon: Shield,      minGrade: 1, maxGrade: 2 },
-  { label: "Commerçants",    href: "/admin/commercants",  icon: Store,           minGrade: 1 },
-  { label: "Taxes",          href: "/admin/taxes",        icon: Receipt,         minGrade: 1 },
-  // Grade 3 does NOT see Zones
-  { label: "Zones",          href: "/admin/zones",        icon: Map,             minGrade: 1, maxGrade: 2 },
+  { label: "Vue d'ensemble", href: "/admin/dashboard", icon: LayoutDashboard },
+  { label: "Transactions",   href: "/admin/transactions", icon: Banknote },
+  { label: "Agents",         href: "/admin/agents",       icon: Users },
+  { label: "Administrateurs", href: "/admin/administrateurs", icon: Shield, requirePermission: "can_modify_admins" },
+  { label: "Commerçants",    href: "/admin/commercants",  icon: Store },
+  { label: "Taxes",          href: "/admin/taxes",        icon: Receipt },
+  { label: "Zones",          href: "/admin/zones",        icon: Map, requirePermission: "can_modify_areas" },
 ];
 
 const adminBottomItems = [
@@ -30,6 +29,7 @@ const adminBottomItems = [
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const { user } = useAuth();
   const { niveau, canManageStructure } = useGrade();
+  const { hasAccess } = useAccess();
 
   const getRoleTitle = () => {
     if (!user) return "Chargement...";
@@ -38,15 +38,15 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     return "Administrateur";
   };
 
-  // Filter nav items based on grade niveau
-  // While loading (niveau === null), show nothing sensitive — show base items only
+  // Filter nav items based on permissions
   const adminNavItems = allAdminNavItems.filter((item) => {
-    const gradeNiveau = niveau;
-    // If grade hasn't loaded yet, only show items without maxGrade restriction
-    if (gradeNiveau === null) return !(item as any).maxGrade;
-    if ((item as any).maxGrade && gradeNiveau > (item as any).maxGrade) return false;
+    if ((item as any).requirePermission) {
+      // Pour être sûr, pendant le chargement initial si les perms ne sont pas là on cache, ou si le user est grade 1 (niveau 1) il a tout.
+      if (niveau === 1) return true; 
+      return hasAccess((item as any).requirePermission);
+    }
     return true;
-  }).map(({ minGrade, maxGrade, ...rest }: any) => rest);
+  }).map(({ requirePermission, ...rest }: any) => rest);
 
   return (
     <div className="flex h-[100dvh] overflow-hidden bg-background">
