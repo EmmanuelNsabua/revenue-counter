@@ -21,34 +21,16 @@ interface FloatingNavProps {
 
 export default function FloatingNav({ navItems }: FloatingNavProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const [position, setPosition] = useState({ x: 0, y: 0 });
   const [isMounted, setIsMounted] = useState(false);
+  const [imgError, setImgError] = useState(false);
   const pathname = usePathname();
   const { user } = useAuth();
   const { theme, setTheme } = useTheme();
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Load saved position on mount
   useEffect(() => {
     setIsMounted(true);
-    const savedPos = localStorage.getItem("floatingNavPos");
-    if (savedPos) {
-      try {
-        setPosition(JSON.parse(savedPos));
-      } catch (e) {
-        console.error("Failed to parse saved position", e);
-      }
-    }
   }, []);
-
-  const handleDragEnd = (event: any, info: any) => {
-    const newPos = { x: info.point.x, y: info.point.y };
-    // Framer motion uses relative offset for 'x' and 'y', so we need to save the offset.
-    // Actually, info.offset is the delta from the start of the drag.
-    // The easiest way is to let framer-motion handle it via state if possible, but 
-    // saving just the raw x/y offset from the drag is tricky without a controlled component.
-    // We will just save the visual state. For simplicity, let's update `position` state with the new offset.
-  };
 
   // Close menu on route change
   useEffect(() => {
@@ -66,6 +48,9 @@ export default function FloatingNav({ navItems }: FloatingNavProps) {
     ),
   };
 
+  const rolePrefix = user?.role === 'agent' ? '' : user?.role === 'superadmin' ? '/superadmin' : '/admin';
+  const supportRoute = user?.role === 'agent' ? '/assistance' : `${rolePrefix}/support`;
+
   return (
     <>
       {/* Full Screen Overlay */}
@@ -79,14 +64,19 @@ export default function FloatingNav({ navItems }: FloatingNavProps) {
           >
             {/* User Profile & Top Actions */}
             <div className="w-full flex justify-between items-center mb-4 px-2 mt-4">
-              <Link href="/parametres" className="p-3 bg-white/10 rounded-full hover:bg-white/20 transition-colors">
+              <Link href={`${rolePrefix}/parametres`} className="p-3 bg-white/10 rounded-full hover:bg-white/20 transition-colors">
                 <Settings size={22} className="text-white" />
               </Link>
 
               <div className="relative w-24 h-24 rounded-full overflow-hidden border-[3px] border-white/50 bg-white/20 shrink-0">
-                {user?.avatar_url ? (
+                {user?.avatar_url && !imgError ? (
                   /* eslint-disable-next-line @next/next/no-img-element */
-                  <img src={user.avatar_url} alt="Avatar" className="w-full h-full object-cover" />
+                  <img 
+                    src={user.avatar_url} 
+                    alt="Avatar" 
+                    className="w-full h-full object-cover" 
+                    onError={() => setImgError(true)}
+                  />
                 ) : (
                   <div className="w-full h-full flex items-center justify-center text-white text-3xl font-bold">
                     {displayUser.name.charAt(0)}
@@ -140,7 +130,7 @@ export default function FloatingNav({ navItems }: FloatingNavProps) {
 
             {/* Bottom Links */}
             <div className="w-full max-w-sm flex justify-start gap-6 mt-8">
-              <Link href="/assistance" className="flex items-center gap-2 text-white/80 hover:text-white transition-colors">
+              <Link href={supportRoute} className="flex items-center gap-2 text-white/80 hover:text-white transition-colors">
                 <HelpCircle size={18} />
                 <span className="text-sm font-medium">Support</span>
               </Link>
@@ -161,23 +151,6 @@ export default function FloatingNav({ navItems }: FloatingNavProps) {
           dragConstraints={containerRef}
           dragElastic={0.1}
           dragMomentum={false}
-          onDragEnd={(e, info) => {
-            // Keep track of total offset
-            const newPos = { x: position.x + info.offset.x, y: position.y + info.offset.y };
-            setPosition(newPos);
-            localStorage.setItem("floatingNavPos", JSON.stringify(newPos));
-          }}
-          // Default position: bottom right (using absolute coordinates or just animating relative offset)
-          // Since it's fixed, we start it at bottom-right using CSS, and offset it with motion
-          initial={false}
-          animate={isOpen ? { 
-            // When open, position it statically so it aligns with the overlay's close spot (e.g., top right)
-            // But user said: "On sort de ce menu simplement en appuyant sur le bouton qui l'a ouvert qui restera toujours visible même dans cet overlay."
-            // So we just leave it where it is, or move it to a specific spot. We'll leave it where it was dragged!
-            x: position.x, y: position.y
-          } : {
-            x: position.x, y: position.y
-          }}
           className="absolute bottom-6 right-6 pointer-events-auto"
         >
           <button

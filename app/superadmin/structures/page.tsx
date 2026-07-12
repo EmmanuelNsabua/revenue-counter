@@ -5,6 +5,8 @@ import { ActionButton } from "@/components/ui/action-button";
 import { Plus, Building2, MapPin, ExternalLink } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 import { useStructures } from "@/hooks/use-structures";
 import { CardGridSkeleton } from "@/components/ui/skeletons";
 import { EmptyState } from "@/components/ui/empty-state";
@@ -73,9 +75,11 @@ export default function SuperAdminStructuresPage() {
                         <p className="text-2xl font-black text-foreground">{structure.agents_count || 0}</p>
                       </div>
                     </div>
-                    <ActionButton variant="outline" className="w-full gap-2" toastMessage={`Gérer la structure ${structure.nom}`}>
-                      Gérer la structure <ExternalLink size={14} />
-                    </ActionButton>
+                    <Link href={`/superadmin/structures/${structure.id}`} className="w-full">
+                      <Button variant="outline" className="w-full gap-2">
+                        Gérer la structure <ExternalLink size={14} />
+                      </Button>
+                    </Link>
                   </CardContent>
                 </Card>
               </BlurFade>

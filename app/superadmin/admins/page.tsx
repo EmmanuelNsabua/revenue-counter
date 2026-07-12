@@ -8,7 +8,7 @@ import { Search, UserPlus, Shield, MoreVertical } from "lucide-react";
 import {
   DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useAgents } from "@/hooks/use-agents";
+import { useAdmins } from "@/hooks/use-admins";
 import { TableSkeleton } from "@/components/ui/skeletons";
 import { EmptyAgents } from "@/components/ui/empty-state";
 import { BlurFade } from "@/components/magicui/blur-fade";
@@ -16,10 +16,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 
 export default function SuperAdminAdminsPage() {
-  const { data: allAgents = [], isLoading } = useAgents();
-  
-  // Filtrer uniquement les administrateurs
-  const admins = allAgents.filter(agent => agent.role?.startsWith('admin'));
+  const { data: admins = [], isLoading } = useAdmins();
 
   return (
     <div className="space-y-6 max-w-7xl pb-16 md:pb-0">
