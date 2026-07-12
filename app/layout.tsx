@@ -5,6 +5,7 @@ import { QueryProvider } from "@/providers/query-provider";
 import { AuthProvider } from "@/providers/auth-provider";
 import { ThemeProvider } from "@/providers/theme-provider";
 import { PermissionProvider } from "@/contexts/PermissionContext";
+import { EdgeStoreProvider } from "@/lib/edgestore";
 import "./globals.css";
 
 const archivo = Archivo({
@@ -52,8 +53,10 @@ export default function RootLayout({
           <QueryProvider>
             <PermissionProvider>
               <AuthProvider>
-                {children}
-                <Toaster />
+                <EdgeStoreProvider>
+                  {children}
+                  <Toaster />
+                </EdgeStoreProvider>
               </AuthProvider>
             </PermissionProvider>
           </QueryProvider>
