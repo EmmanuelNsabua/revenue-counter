@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useEdgeStore } from '@/lib/edgestore';
 import axios from 'axios';
-import { useAuth } from '@/contexts/AuthContext'; // assuming standard structure
+import { useAuth } from '@/providers/auth-provider';
 import { toast } from 'sonner';
 
 interface AvatarUploadProps {
@@ -17,9 +17,8 @@ export default function AvatarUpload({ currentAvatarUrl, onSuccess }: AvatarUplo
   const { edgestore } = useEdgeStore();
   
   // We try to get auth token and user context
-  // Adjust this according to how your auth is managed
-  const auth = useAuth?.() || { token: '', user: { id: '' } };
-  const token = typeof window !== 'undefined' ? localStorage.getItem('token') || auth.token : '';
+  const { user } = useAuth();
+  const token = typeof window !== 'undefined' ? localStorage.getItem('revenue_token') || '' : '';
 
   const handleUpload = async () => {
     if (!file) return;
