@@ -11,6 +11,9 @@ import { NumberTicker } from "@/components/magicui/number-ticker";
 import { BlurFade } from "@/components/magicui/blur-fade";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { GlobalActionsModal } from "@/components/superadmin/GlobalActionsModal";
+import { api } from "@/lib/api";
+import { toast } from "sonner";
 
 const statIcons = [Globe, Building2, Users, ShieldAlert];
 
@@ -44,6 +47,39 @@ function getStatFormatter(originalValue: string | number) {
 
 export default function SuperAdminDashboardPage() {
   const { data, isLoading } = useSuperAdminStats();
+  const [isActionsModalOpen, setIsActionsModalOpen] = useState(false);
+  const [isExporting, setIsExporting] = useState(false);
+
+  const handleExport = async () => {
+    try {
+      setIsExporting(true);
+      toast.info("Génération du rapport PDF en cours...");
+      
+      const response = await api.get('/superadmin/export/rapport', {
+        responseType: 'blob'
+      });
+      
+      // Create a blob URL and trigger download
+      const blob = new Blob([response.data], { type: 'application/pdf' });
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', `Rapport_Global_${new Date().toISOString().split('T')[0]}.pdf`);
+      document.body.appendChild(link);
+      link.click();
+      
+      // Cleanup
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(link);
+      
+      toast.success("Rapport PDF généré avec succès !");
+    } catch (error) {
+      console.error(error);
+      toast.error("Échec de la génération du rapport.");
+    } finally {
+      setIsExporting(false);
+    }
+  };
 
   const stats = data?.stats || [];
   const structures = data?.structures || [];
@@ -58,11 +94,26 @@ export default function SuperAdminDashboardPage() {
             <p className="text-sm text-muted-foreground mt-1">Vision macroscopique des opérations de la Mairie.</p>
           </div>
           <div className="flex gap-2">
-            <ActionButton variant="outline" toastMessage="Génération du rapport d'activité en cours...">Générer Rapport</ActionButton>
-            <ActionButton toastMessage="Panneau d'actions globales ouvert.">Action Globale</ActionButton>
+            <Button 
+              variant="outline" 
+              onClick={handleExport}
+              disabled={isExporting || isLoading}
+            >
+              {isExporting ? "Génération..." : "Générer Rapport"}
+            </Button>
+            <Button 
+              onClick={() => setIsActionsModalOpen(true)}
+            >
+              Action Globale
+            </Button>
           </div>
         </div>
       </BlurFade>
+
+      <GlobalActionsModal 
+        isOpen={isActionsModalOpen} 
+        onClose={() => setIsActionsModalOpen(false)} 
+      />
 
       {isLoading ? (
         <KpiSkeleton count={4} cols={4} />
