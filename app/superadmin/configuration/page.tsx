@@ -22,14 +22,14 @@ export default function ConfigurationPage() {
 
   return (
     <div className="space-y-6 max-w-6xl mx-auto pb-16 md:pb-0">
-      <BlurFade delay={0.1}>
+      {/*<BlurFade delay={0.1}>
         <div className="mb-8">
           <h1 className="text-3xl font-black tracking-tight uppercase">Configuration Globale</h1>
           <p className="text-sm text-muted-foreground mt-1">
             Règles métier, sécurité et paramètres du système central.
           </p>
         </div>
-      </BlurFade>
+      </BlurFade>*/}
 
       <div className="grid grid-cols-1 md:grid-cols-[250px_1fr] gap-8 items-start">
         {/* Left Sidebar Menu */}
