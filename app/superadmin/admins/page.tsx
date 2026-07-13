@@ -5,9 +5,7 @@ import { ActionButton } from "@/components/ui/action-button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Search, UserPlus, Shield, MoreVertical } from "lucide-react";
-import {
-  DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import { AdminActions } from "@/components/superadmin/AdminActions";
 import { useAdmins } from "@/hooks/use-admins";
 import { TableSkeleton } from "@/components/ui/skeletons";
 import { EmptyAgents } from "@/components/ui/empty-state";
@@ -74,23 +72,14 @@ export default function SuperAdminAdminsPage() {
                       <td className="px-6 py-5">{admin.institution || "Non assigné"}</td>
                       <td className="px-6 py-5 text-muted-foreground">-</td>
                       <td className="px-6 py-5">
-                        <Badge variant="default">
-                          Actif
-                        </Badge>
+                        {admin.statut_actif ? (
+                          <Badge variant="default" className="bg-green-100 text-green-700 hover:bg-green-200 border-0">Actif</Badge>
+                        ) : (
+                          <Badge variant="destructive" className="bg-red-100 text-red-700 hover:bg-red-200 border-0">Suspendu</Badge>
+                        )}
                       </td>
                       <td className="px-6 py-5 text-right">
-                        <DropdownMenu>
-                          <DropdownMenuTrigger className="flex h-8 w-8 items-center justify-center rounded-md hover:bg-muted text-muted-foreground transition-colors outline-none ml-auto">
-                            <MoreVertical size={16} />
-                          </DropdownMenuTrigger>
-                          <DropdownMenuContent align="end" className="w-48">
-                            <DropdownMenuItem>Modifier les droits</DropdownMenuItem>
-                            <DropdownMenuItem>Réinitialiser le mot de passe</DropdownMenuItem>
-                            <DropdownMenuItem className="text-destructive">
-                              Suspendre l'accès
-                            </DropdownMenuItem>
-                          </DropdownMenuContent>
-                        </DropdownMenu>
+                        <AdminActions admin={admin} />
                       </td>
                     </tr>
                   ))}

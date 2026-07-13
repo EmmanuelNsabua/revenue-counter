@@ -17,4 +17,9 @@ export const adminsService = {
     const response = await api.put<{ success: boolean; data: User }>(`/admins/${id}`, data);
     return response.data.data;
   },
+
+  delete: async (id: number | string) => {
+    const response = await api.delete<{ success: boolean; message: string }>(`/admins/${id}`);
+    return response.data;
+  },
 };

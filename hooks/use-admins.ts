@@ -41,3 +41,19 @@ export const useUpdateAdmin = () => {
     },
   });
 };
+
+export const useDeleteAdmin = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: adminsService.delete,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["admins"] });
+      toast.success("Administrateur supprimé");
+    },
+    onError: (error) => {
+      toast.error("Erreur lors de la suppression");
+      console.error(error);
+    },
+  });
+};

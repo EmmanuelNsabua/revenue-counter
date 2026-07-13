@@ -12,6 +12,9 @@ export interface Paiement {
   mode_paiement: ModePaiement;
   created_at: string;
   agent_id: number;
+  reference?: string;
+  date_paiement: string;
+  statut: string;
   
   // Champs inclus lors des jointures (GET)
   agent?: User;

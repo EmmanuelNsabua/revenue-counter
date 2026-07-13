@@ -14,6 +14,11 @@ export interface User {
   institution: string | null;
   avatar_url: string | null;
   preferences?: Record<string, any>;
+  statut_actif?: boolean;
+  nom?: string;
+  password?: string;
+  actif?: boolean;
+  cle_tenant?: string;
 }
 
 export interface AuthResponse {
