@@ -195,7 +195,9 @@ function FormContent() {
             required
           >
             <SelectTrigger id="taxe" className="w-full">
-              <SelectValue placeholder={taxesLoading ? "Chargement..." : "Sélectionnez une taxe"} />
+              <SelectValue placeholder={taxesLoading ? "Chargement..." : "Sélectionnez une taxe"}>
+                {taxeId ? taxes?.find(t => t.id.toString() === taxeId)?.libelle : undefined}
+              </SelectValue>
             </SelectTrigger>
             <SelectContent>
               {taxes?.map(tax => (
