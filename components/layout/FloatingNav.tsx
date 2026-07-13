@@ -8,6 +8,9 @@ import { usePathname } from "next/navigation";
 import { useAuth } from "@/providers/auth-provider";
 import Image from "next/image";
 import { useTheme } from "next-themes";
+import { QrScannerButton } from "@/components/ui/qr-scanner-button";
+import { animate, useMotionValue } from "framer-motion";
+import { cn } from "@/lib/utils";
 
 export interface NavItem {
   label: string;
@@ -27,10 +30,39 @@ export default function FloatingNav({ navItems }: FloatingNavProps) {
   const { user } = useAuth();
   const { theme, setTheme } = useTheme();
   const containerRef = useRef<HTMLDivElement>(null);
+  
+  const [corner, setCorner] = useState<'bottom-right' | 'bottom-left' | 'top-right' | 'top-left'>('bottom-right');
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
 
   useEffect(() => {
     setIsMounted(true);
   }, []);
+
+  const handleDragEnd = (e: any, info: any) => {
+    const { point } = info;
+    const { innerWidth, innerHeight } = window;
+    
+    const isTop = point.y < innerHeight / 2;
+    const isLeft = point.x < innerWidth / 2;
+    
+    if (isTop && isLeft) setCorner('top-left');
+    else if (isTop && !isLeft) setCorner('top-right');
+    else if (!isTop && isLeft) setCorner('bottom-left');
+    else if (!isTop && !isLeft) setCorner('bottom-right');
+    
+    animate(x, 0, { duration: 0.3, type: "spring", bounce: 0.2 });
+    animate(y, 0, { duration: 0.3, type: "spring", bounce: 0.2 });
+  };
+
+  const getCornerClasses = () => {
+    switch(corner) {
+      case 'top-left': return 'top-6 left-6 flex-col';
+      case 'top-right': return 'top-6 right-6 flex-col';
+      case 'bottom-left': return 'bottom-6 left-6 flex-col-reverse';
+      case 'bottom-right': return 'bottom-6 right-6 flex-col-reverse';
+    }
+  };
 
   // Close menu on route change
   useEffect(() => {
@@ -145,18 +177,21 @@ export default function FloatingNav({ navItems }: FloatingNavProps) {
 
       {/* Constraints area for the FAB */}
       <div className="fixed inset-0 pointer-events-none md:hidden z-50 overflow-hidden" ref={containerRef}>
-        {/* Draggable FAB */}
+        {/* Draggable FAB Container */}
         <motion.div
+          layout
+          style={{ x, y }}
           drag={!isOpen} // Disable drag when menu is open
           dragConstraints={containerRef}
+          onDragEnd={handleDragEnd}
           dragElastic={0.1}
           dragMomentum={false}
-          className="absolute bottom-6 right-6 pointer-events-auto"
+          className={cn("absolute pointer-events-auto flex items-center gap-3", getCornerClasses())}
         >
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className={`w-14 h-14 rounded-full flex items-center justify-center shadow-lg transition-colors focus:outline-none focus:ring-4 ${isOpen ? 'bg-white text-blue-600 focus:ring-white/50' : 'bg-primary text-primary-foreground focus:ring-primary/30 hover:scale-105'}`}
-            style={{ zIndex: 51 }} // Above the overlay (40)
+            className={`w-14 h-14 rounded-full flex items-center justify-center shadow-lg transition-colors focus:outline-none focus:ring-4 shrink-0 ${isOpen ? 'bg-white text-blue-600 focus:ring-white/50' : 'bg-primary text-primary-foreground focus:ring-primary/30 hover:scale-105'}`}
+            style={{ zIndex: 51 }}
           >
             <motion.div
               animate={{ rotate: isOpen ? 45 : 0 }} // Rotate Plus into Cross
@@ -165,6 +200,20 @@ export default function FloatingNav({ navItems }: FloatingNavProps) {
               <Plus size={28} />
             </motion.div>
           </button>
+
+          {/* QR Scanner (Only for Agents and when floating nav is visible/closed) */}
+          <AnimatePresence>
+            {!isOpen && user?.role === 'agent' && (
+              <motion.div
+                initial={{ opacity: 0, scale: 0.5 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.5 }}
+                transition={{ duration: 0.2 }}
+              >
+                <QrScannerButton />
+              </motion.div>
+            )}
+          </AnimatePresence>
         </motion.div>
       </div>
     </>
