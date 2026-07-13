@@ -10,7 +10,7 @@ import { Shield, Key, Loader2, Save } from "lucide-react";
 import { toast } from "sonner";
 import { BlurFade } from "@/components/magicui/blur-fade";
 
-export default function RBACPage() {
+export default function RbacTab() {
   const queryClient = useQueryClient();
 
   // Fetch roles and permissions
@@ -44,18 +44,6 @@ export default function RBACPage() {
 
   return (
     <div className="space-y-6 max-w-6xl pb-16 md:pb-0">
-      <BlurFade delay={0.1}>
-        <div className="mb-8">
-          <h1 className="text-3xl font-black tracking-tight uppercase flex items-center gap-3">
-            <Shield className="text-primary size-8" />
-            Droits et Accès (RBAC)
-          </h1>
-          <p className="text-sm text-muted-foreground mt-1">
-            Gérez les permissions globales accordées à chaque grade du système.
-          </p>
-        </div>
-      </BlurFade>
-
       {roles.length === 0 ? (
         <Card><CardContent className="p-8 text-center">Aucun rôle trouvé dans le système.</CardContent></Card>
       ) : (
