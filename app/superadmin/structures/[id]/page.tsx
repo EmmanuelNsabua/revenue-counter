@@ -12,6 +12,7 @@ import { useStructure, useUpdateStructure, useDeleteStructure } from "@/hooks/us
 import { toast } from "sonner";
 import { BlurFade } from "@/components/magicui/blur-fade";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 
 export default function EditStructurePage() {
   const router = useRouter();
@@ -26,6 +27,8 @@ export default function EditStructurePage() {
     nom: "",
     localisation: "",
   });
+
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
 
   useEffect(() => {
     if (structure) {
@@ -68,10 +71,12 @@ export default function EditStructurePage() {
   const handleDelete = () => {
     deleteStructure(structureId, {
       onSuccess: () => {
+        setDeleteDialogOpen(false);
         toast.success("Structure supprimée avec succès");
         router.push("/superadmin/structures");
       },
       onError: (error: any) => {
+        setDeleteDialogOpen(false);
         toast.error(
           error.response?.data?.message || "Impossible de supprimer la structure."
         );
@@ -221,16 +226,37 @@ export default function EditStructurePage() {
                 <Button 
                   variant="destructive" 
                   className="w-full gap-2" 
-                  disabled={hasUsers || isDeleting}
-                  onClick={() => {
-                    if (window.confirm(`Êtes-vous absolument sûr de vouloir supprimer la structure ${structure.nom} ? Cette action est irréversible.`)) {
-                      handleDelete();
-                    }
-                  }}
+                  disabled={isDeleting}
+                  onClick={() => setDeleteDialogOpen(true)}
                 >
                   <Trash2 size={16} /> 
-                  {hasUsers ? "Suppression impossible (Utilisateurs liés)" : "Supprimer la structure"}
+                  Supprimer la structure
                 </Button>
+
+                <Dialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+                  <DialogContent>
+                    <DialogHeader>
+                      <DialogTitle>
+                        {hasUsers ? "Suppression impossible" : "Confirmer la suppression"}
+                      </DialogTitle>
+                      <DialogDescription>
+                        {hasUsers 
+                          ? `Impossible de supprimer la structure "${structure.nom}" car elle possède encore des utilisateurs (admins ou agents) qui y sont rattachés. Veuillez d'abord réaffecter ou supprimer ces utilisateurs.`
+                          : `Êtes-vous absolument sûr de vouloir supprimer la structure "${structure.nom}" ? Cette action est irréversible.`}
+                      </DialogDescription>
+                    </DialogHeader>
+                    <DialogFooter className="gap-2 sm:gap-0 mt-4">
+                      <Button variant="outline" onClick={() => setDeleteDialogOpen(false)}>
+                        {hasUsers ? "Fermer" : "Annuler"}
+                      </Button>
+                      {!hasUsers && (
+                        <Button variant="destructive" onClick={handleDelete} disabled={isDeleting}>
+                          Oui, supprimer
+                        </Button>
+                      )}
+                    </DialogFooter>
+                  </DialogContent>
+                </Dialog>
               </CardContent>
             </Card>
           </BlurFade>
