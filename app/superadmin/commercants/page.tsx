@@ -11,8 +11,23 @@ import { useCommercants } from "@/hooks/use-commercants";
 import { TableSkeleton } from "@/components/ui/skeletons";
 import { EmptyCommercants } from "@/components/ui/empty-state";
 
+import { MultiSelectFilter } from "@/components/ui/multi-select-filter";
+import { useStructures } from "@/hooks/use-structures";
+
 export default function SuperAdminCommercantsPage() {
-  const { data: commercants = [], isLoading } = useCommercants();
+  const [search, setSearch] = useState("");
+  const [selectedStructureIds, setSelectedStructureIds] = useState<number[]>([]);
+  
+  const { data: structures = [] } = useStructures();
+  const { data: commercants = [], isLoading } = useCommercants({
+    search: search,
+    structure_ids: selectedStructureIds.length > 0 ? selectedStructureIds : undefined
+  });
+
+  const structureOptions = structures.map(s => ({
+    id: s.id,
+    label: s.nom
+  }));
 
   return (
     <div className="space-y-6 max-w-7xl pb-16 md:pb-0">
@@ -30,12 +45,22 @@ export default function SuperAdminCommercantsPage() {
       <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center mb-6">
         <div className="relative w-full sm:max-w-md">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-          <Input placeholder="Rechercher par ID ou Nom..." className="pl-9 h-11" />
+          <Input 
+            placeholder="Rechercher par ID ou Nom..." 
+            className="pl-9 h-10" 
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
         </div>
-        <ActionButton variant="secondary" className="gap-2 w-full sm:w-auto h-11" toastMessage="Filtres avancés en développement.">
-          <Filter size={16} />
-          Filtre par Structure
-        </ActionButton>
+        <div className="w-full sm:w-auto min-w-[200px]">
+          <MultiSelectFilter
+            options={structureOptions}
+            selectedIds={selectedStructureIds}
+            onChange={setSelectedStructureIds}
+            placeholder="Structures"
+            className="w-full"
+          />
+        </div>
       </div>
 
       {isLoading ? (

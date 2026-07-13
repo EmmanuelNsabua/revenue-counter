@@ -15,7 +15,7 @@ export const commercantsService = {
   /**
    * Récupère la liste des commerçants avec filtres optionnels
    */
-  getAll: async (params?: { search?: string; zone?: string; status?: string }) => {
+  getAll: async (params?: { search?: string; zone?: string; status?: string; structure_ids?: number[] }) => {
     // On nettoie mais on ne force plus la casse car le backend semble sensible à la casse
     // notamment pour les codes commerçants (CD-KEN-...)
     const cleanParams = {
