@@ -33,7 +33,7 @@ export default function ConfigurationPage() {
 
       <div className="grid grid-cols-1 md:grid-cols-[250px_1fr] gap-8 items-start">
         {/* Left Sidebar Menu */}
-        <div className="flex flex-col space-y-1 bg-card border rounded-xl p-2 sticky top-24 shadow-sm h-[calc(100vh-7rem)] overflow-y-auto">
+        <div className="flex flex-col space-y-1 bg-card border rounded-xl p-2 sticky top-0 shadow-sm h-[calc(100vh-7rem)] overflow-y-auto">
           {tabs.map((tab) => (
             <button
               key={tab.id}
