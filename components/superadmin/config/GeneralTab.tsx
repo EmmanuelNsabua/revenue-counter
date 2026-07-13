@@ -109,15 +109,9 @@ export default function GeneralTab() {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
-      <div className="flex justify-between items-center bg-card p-4 rounded-xl border shadow-sm sticky top-24 z-10">
-        <div className="space-y-1">
-          <h2 className="text-lg font-bold">Paramètres Généraux</h2>
-          <p className="text-sm text-muted-foreground">Règles fondamentales du système</p>
-        </div>
-        <Button type="submit" disabled={mutation.isPending} className="gap-2 bg-primary">
-          {mutation.isPending ? <Loader2 className="animate-spin size-4" /> : <Save className="size-4" />}
-          Enregistrer
-        </Button>
+      <div className="space-y-1 mb-6">
+        <h2 className="text-2xl font-bold">Paramètres Généraux</h2>
+        <p className="text-sm text-muted-foreground">Règles fondamentales du système</p>
       </div>
 
       <BlurFade delay={0.2}>
@@ -274,6 +268,12 @@ export default function GeneralTab() {
           </CardContent>
         </Card>
       </BlurFade>
+      <div className="flex justify-end pt-6 border-t mt-8">
+        <Button type="submit" disabled={mutation.isPending} className="gap-2 bg-primary h-11 px-8 text-base shadow-sm">
+          {mutation.isPending ? <Loader2 className="animate-spin size-4" /> : <Save className="size-4" />}
+          Enregistrer les modifications
+        </Button>
+      </div>
     </form>
   );
 }
