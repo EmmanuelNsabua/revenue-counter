@@ -3,7 +3,7 @@
 import Sidebar from "@/components/layout/Sidebar";
 import Topbar from "@/components/layout/Topbar";
 import FloatingNav from "@/components/layout/FloatingNav";
-import { LayoutDashboard, Building2, Shield, Sliders, HelpCircle, Settings, Store, Banknote, Users } from "lucide-react";
+import { LayoutDashboard, Building2, Shield, Sliders, HelpCircle, Settings, Store, Banknote, Users, Activity } from "lucide-react";
 
 const superAdminNavItems = [
   { label: "Pilotage Global", href: "/superadmin/dashboard", icon: LayoutDashboard },
@@ -13,6 +13,7 @@ const superAdminNavItems = [
   { label: "Commerçants", href: "/superadmin/commercants", icon: Store },
   { label: "Administrateurs", href: "/superadmin/admins", icon: Shield },
   { label: "Configuration", href: "/superadmin/configuration", icon: Sliders },
+  { label: "Audit", href: "/superadmin/audit", icon: Activity },
 ];
 
 const superAdminBottomItems = [
