@@ -9,6 +9,8 @@ import { KpiSkeleton, ProgressSkeleton, ActivitySkeleton } from "@/components/ui
 import { EmptyAlertes } from "@/components/ui/empty-state";
 import { NumberTicker } from "@/components/magicui/number-ticker";
 import { BlurFade } from "@/components/magicui/blur-fade";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
 
 const statIcons = [Globe, Building2, Users, ShieldAlert];
 
@@ -154,9 +156,11 @@ export default function SuperAdminDashboardPage() {
                       </div>
                     </div>
                   ))}
-                  <ActionButton variant="outline" className="w-full mt-2 text-xs" toastMessage="Ouverture des archives d'audit...">
-                    Voir tout le journal d&apos;audit
-                  </ActionButton>
+                  <Link href="/superadmin/audit" className="w-full mt-2">
+                    <Button variant="outline" className="w-full text-xs">
+                      Voir tout le journal d&apos;audit
+                    </Button>
+                  </Link>
                 </div>
               )}
             </CardContent>

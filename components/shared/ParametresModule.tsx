@@ -17,9 +17,11 @@ import { BlurFade } from "@/components/magicui/blur-fade";
 import { RippleButton } from "@/components/magicui/ripple-button";
 import { useTheme } from "next-themes";
 import Image from "next/image";
+import { useEdgeStore } from "@/lib/edgestore";
 
 export function ParametresModule() {
   const { user, setUser } = useAuth();
+  const { edgestore } = useEdgeStore();
   const { theme, setTheme } = useTheme();
   const queryClient = useQueryClient();
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -54,10 +56,17 @@ export function ParametresModule() {
 
   const updateAvatarMutation = useMutation({
     mutationFn: async (file: File) => {
-      const formData = new FormData();
-      formData.append("avatar", file);
-      const res = await api.post("/user/avatar", formData, {
-        headers: { "Content-Type": "multipart/form-data" }
+      // 1. Upload vers EdgeStore
+      const resEdge = await edgestore.publicFiles.upload({
+        file,
+        options: {
+          replaceTargetUrl: user?.avatar_url || undefined, 
+        },
+      });
+
+      // 2. Envoi de la nouvelle URL au backend
+      const res = await api.post("/user/avatar", {
+        avatar_url: resEdge.url
       });
       return res.data;
     },
@@ -67,7 +76,8 @@ export function ParametresModule() {
         setUser(data.user);
       }
     },
-    onError: () => {
+    onError: (err) => {
+      console.error(err);
       toast.error("Erreur lors de l'upload de la photo.");
     }
   });

@@ -25,10 +25,12 @@ export default function SuperAdminStructuresPage() {
             <h1 className="text-3xl font-black tracking-tight uppercase">Structures</h1>
             <p className="text-sm text-muted-foreground mt-1">Gestion des entités administratives de la ville.</p>
           </div>
-          <ActionButton className="gap-2 w-full sm:w-auto h-12 px-6" toastMessage="Interface de création de structure (En développement)">
-            <Plus size={18} />
-            Ajouter une Structure
-          </ActionButton>
+          <Link href="/superadmin/structures/create" className="w-full sm:w-auto">
+            <Button className="gap-2 w-full h-12 px-6 bg-primary text-primary-foreground hover:bg-primary/90">
+              <Plus size={18} />
+              Ajouter une Structure
+            </Button>
+          </Link>
         </div>
       </BlurFade>
 
